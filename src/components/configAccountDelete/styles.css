@@ -1,0 +1,157 @@
+div.config-accDel{
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    color: rgb(174, 166, 166);
+    padding-bottom: 50px;
+}
+
+div.config-accDel > * {
+    margin: 5px 0;
+}
+
+div.config-accDel-header{
+    font-size: 11px;
+    font-weight: 900;
+}
+
+div.config-accDel > p{
+    font-size: 12px;
+}
+
+div.config-accDel-btns{
+    display: flex;
+}
+
+button.config-accDel-btns-Disable{
+    background-color: #f04747;
+    color: white;
+    border: none;
+    margin-right: 10px;
+    padding: 5px 15px;
+    border-radius: 3px;
+}
+
+button.config-accDel-btns-Disable:hover{
+    cursor: pointer;
+    background-color: #f13636;
+}
+
+button.config-accDel-btns-Delete{
+    color: #f04747;
+    border: 1px solid #f04747;
+    background-color: transparent;
+    padding: 5px 15px;
+    border-radius: 3px;
+}
+
+button.config-accDel-btns-Delete:hover{
+    cursor: pointer;
+}
+
+div.configDel-modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.856);
+}
+
+form.configDel-modal-form{
+    display: flex;
+    flex-direction: column;
+}
+
+div.configDel-modal-form-body{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(37, 33, 40);
+    padding: 0 20px;
+    border-radius: 5px 5px 0 0;
+}
+
+div.configDel-modal-form-body-header{
+    color: white;
+    font-size: 16px;
+    font-weight: 900;
+    text-align: left;
+    padding: 20px 0;
+}
+
+p.configDel-modal-form-body-text{
+    display: flex;
+    word-break: break-all;
+    max-width: 400px;
+    background-color: #e19517;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+div.configDel-modal-form-body-field{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+div.configDel-modal-form-body-field > label{
+    padding: 5px 0;
+    color: rgb(174, 166, 166);
+    font-size: 14px;
+    font-weight: 900;
+}
+
+input.configDel-modal-form-body-field-input{
+    background-color: rgb(26, 24, 26);
+    border: none;
+    border-radius: 5px;
+    padding: 15px 10px;
+    color: white;
+}
+
+div.configDel-modal-form-buttons{
+    background-color: rgb(26, 24, 26);
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 0 0 5px 5px;
+}
+
+button.configDel-modal-form-button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 13px;
+}
+
+button.configDel-modal-form-button.cancel{
+    background-color: transparent;
+}
+
+button.configDel-modal-form-button.cancel:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+button.configDel-modal-form-button.delete{
+    background-color: #7289da;
+}
+
+button.configDel-modal-form-button.delete:hover{
+    cursor: pointer;
+    background-color: #647dda ;
+}
+
+span.configDel-password-incorrect{
+    color: #f04747;
+    font-size: 12px;
+    margin-left: 10px;
+    display: none;
+}

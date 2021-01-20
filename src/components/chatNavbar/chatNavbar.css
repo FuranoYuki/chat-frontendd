@@ -1,0 +1,129 @@
+div.chatNavbar{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgb(11, 10, 10);
+    height: 50px;
+}
+
+div.chatNavbar-info{
+    display: flex;
+    width: auto;
+    align-items: center;
+}
+
+div.chatNavbar-info > * {
+    margin-right: 10px;
+}
+
+div.chatNavbar-info--aroba{
+    font-size: 24px;
+    color: rgb(174, 166, 166);
+}
+
+div.chatNavbar-info--name{
+    font-size: 14px;
+    color: white;
+    font-weight: 900;
+}
+
+div.chatNavbar-info--status{
+    position: relative;
+}
+
+div.chatNavbar-info--status--layer1{
+    height: 16px;
+    width: 16px;
+    background-color: rgb(37, 33, 40);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.chatNavbar-info--status--layer2{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-self: center;
+}
+
+div.chatNavbar-info--status-legend{
+    display: none;
+    position: absolute;
+    bottom: -40px;
+    left: -20px;
+    margin: auto;
+    background-color: rgb(105, 30, 181);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+div.chatNavbar-setting{
+    display: flex;
+}
+
+div.chatNavbar-setting-icons{
+    display:  flex;
+    font-size: 18px;
+    color: rgb(174, 166, 166);
+}
+
+div.chatNavbar-setting-icon{
+    padding: 0 10px;
+    transition: color 0.3s;
+    position: relative;
+}
+
+div.chatNavbar-setting-icon:hover{
+    cursor: pointer;
+    color: white;
+}
+
+div.chatNavbar-setting-search{
+    background-color: rgb(11, 10, 10);
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+input.chatNavbar-setting-search-input{
+    background-color: transparent;
+    border: none;
+    font-size: 12px;
+    color: white;
+    width: 120px;
+}
+
+div.chatNavbar-setting-search > svg{
+    color: rgb(174, 166, 166);
+    font-size: 14px;
+}
+
+div.chatNavbar-setting-help{
+    display: flex;
+    color: rgb(174, 166, 166);
+    font-size: 18px;
+}
+
+div.Online{
+    background-color: rgb(67, 181, 129);
+}
+
+div.Idle{
+    background-color: orange;
+}
+
+div.DND{
+    background-color: red;
+}
+
+div.Invisible, div.Offline{
+    background-color: gray;
+}

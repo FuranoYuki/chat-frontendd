@@ -1,0 +1,125 @@
+div.homenavbar{
+    display: flex;
+    width: 100%;
+    min-width: 676px;
+    border-bottom: 1px solid rgb(11, 10, 10);
+    height: 50px;
+    min-height: 50px;
+    justify-content: space-between;
+}
+
+div.homenavbar > ul {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    list-style: none;
+}
+
+ul.homenavbar__nav{
+    width: 80%;
+    overflow-x: hidden;
+}
+
+ul.homenavbar__options{
+    min-width: 158px;
+}
+
+li.homenavbar__nav-seperator{
+    border-right: 1px solid rgb(174, 166, 166);
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    color: white;
+    margin: 10px 15px;
+    padding-right: 15px;
+}
+
+
+/* arrumar depois */
+
+
+li.homenavbar__nav-li > span{
+    padding: 5px;
+    color: rgb(194, 193, 193);
+    border-radius: 5px;
+    font-size: 14px;
+    margin: 0 10px;
+}
+
+li.homenavbar__nav-li > span:hover{
+    background-color: rgb(45, 41, 48));
+    color: white;
+    cursor: pointer;
+}
+
+li.homenavbar__nav-li > div{
+    padding: 5px;
+    color: rgb(194, 193, 193);
+    border-radius: 5px;
+    font-size: 14px;
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+}
+
+li.homenavbar__nav-li > div:hover{
+    background-color: rgb(53, 49, 56);
+    color: white;
+    cursor: pointer;
+}
+
+div.homenavbar-li-feed{
+    margin-left: 10px;
+    padding: 3px;
+    background-color: red;
+    border-radius: 50%;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 900;
+    color: white;
+    height: 18px;
+    width: 18px;
+    text-align: center;
+    display: inline-block;
+}
+
+/* arrumar depois */
+
+
+
+
+li.homenavbar__nav-li > svg{
+    color: rgb(174, 166, 166);
+    font-size: 18px;
+    margin-left: 15px;
+}
+
+li.add--friends > div > div{
+    background-color: rgb(67, 181, 129);
+    color: white;
+    padding: 5px 10px;
+    white-space: nowrap;
+}
+
+li.add--friends > div > div:hover{
+    background-color: rgb(67, 181, 129);
+}
+
+ul.homenavbar__options{
+    margin-right: 10px;
+}
+
+li.homenavbar__options-li{
+    font-size: 18px;
+    color: rgb(174, 166, 166);
+    margin: 0 10px;
+}
+
+li.homenavbar__options-li:hover{
+    color: white;
+}
+
+
+li.homenavbar__options-li > svg:hover{
+    cursor: pointer;
+}

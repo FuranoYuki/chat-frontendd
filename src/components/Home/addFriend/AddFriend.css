@@ -1,0 +1,51 @@
+div.AddFriend{
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+div.AddFriend > *{
+    margin-bottom: 20px;
+}
+
+div.addFriend__header{
+    font-size: 18px;
+    color: white;
+    font-weight: 800;
+    font-family: 'Open Sans';
+}
+
+div.addFriend__body{
+    color: white;
+    font-size: 13px;
+    font-family: 'Open Sans';
+}
+
+form.addFriend__form{
+    background-color: rgb(26, 24, 26);
+    border: 1px solid rgb(11, 10, 10);
+    border-radius: 10px;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+input.addFriend__form--input{
+    background-color: transparent;
+    border: none;
+    padding: 10px;
+    color: rgb(187, 186, 186);
+    font-size: 16px;
+}
+
+input.addFriend__form--input:focus{
+    border: transparent;
+}
+
+button.addFriend__form--button{
+    background-color: rgb(105, 30, 181);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+}

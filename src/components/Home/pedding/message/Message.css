@@ -1,0 +1,14 @@
+div.pedding-message{
+}
+
+div.pedding-message-img{
+    background-image: url('https://discord.com/assets/b669713872b43ca42333264abf9c858e.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 300px;
+}
+
+div.pedding-message-text{
+    text-align: center;
+    color: rgb(174, 166, 166);
+}

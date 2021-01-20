@@ -1,0 +1,304 @@
+div.Social{
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    height: 100%;
+    background-color: rgb(26, 24, 26);
+    min-width: 230px;
+    font-family: 'Open Sans';
+    position: relative;
+}
+
+form.social__search{
+    padding: 10px;
+    border-bottom: 1px solid rgb(11, 10, 10);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+input.social__search--input{
+    background-color: rgb(11, 10, 10);
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    font-size: 13px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+div.social__settings{
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    border-top: 1px solid rgb(11, 10, 10);
+    background-color: rgb(18, 16, 19);
+}
+
+/* social settings actions */
+ul.social__settings--actions{
+    display: flex;
+    list-style: none;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+li.social__settings--actions-li{
+    font-size: 18px;
+    color:rgb(174, 166, 166);
+    border-radius: 5px;
+}
+
+li.social__settings--actions-li:hover{
+    background-color:  rgb(53, 49, 56);
+}
+
+li.social__settings--actions-li > a{
+    color: rgb(174, 166, 166);
+}
+
+li.social-microphone{
+    padding: 5px 10px;
+}
+
+li.social-headphones, li.social-cog{
+    padding: 5px 7px;
+}
+
+
+
+div.social__settings--info{
+    display: flex;
+    align-items: center;
+}
+
+
+/* user code and name */
+div.social__settings--info--user{
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    color: rgb(174, 166, 166);;
+}
+
+span.social__settings--info--user-name{
+    font-weight: bolder;
+}
+
+div.social__settings--info--status{
+    position: relative;
+}
+
+div.social__settings--info--status, div.social__body-friends-icon{
+    display: flex;
+    position: relative;
+    margin-right: 10px;
+}
+
+img.social__settings--info--status-img, img.social__body-friends-icon-img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: rgb(24, 22, 22);
+}
+
+div.social__settings--info--status:hover{
+    cursor: pointer;
+}
+
+/* icon status */
+div.social__settings--info--status-layer1, div.social__body-friends-icon-layer1{
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+}
+
+div.social__body-friends-icon-layer1{
+    background-color: rgb(26, 24, 26);
+}
+
+div.social__settings--info--status-layer1{
+    background-color: rgb(18, 16, 19);
+}
+
+div.social__settings--info--status-layer2, div.social__body-friends-icon-layer2{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: rgb(24, 22, 22);
+    display: flex;
+    margin: auto;
+    align-self: center;
+
+}
+
+div.social__settings--info--status-layer3, div.social__body-friends-icon-layer3{
+    height: 4px;
+    width: 4px;
+    border-radius: 50%;
+    background-color: rgb(59, 108, 182);
+    margin: auto;
+    display: flex;
+    align-self: center;
+}
+
+
+/* social body */
+div.social__body{
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-bottom: 65px;
+    height: 100vh;
+    width: 100%;
+    padding: 10px 10px;
+    overflow-y: auto;
+}
+
+ul.social__body--to_do{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    list-style: none;
+    border-radius: 5px;
+    font-family: 'Open Sans';
+
+}
+
+li.social__body--to_do-li{
+    border-radius: 5px;
+}
+
+li.social__body--to_do-li:hover{
+    background-color:   rgb(53, 49, 56);
+}
+
+a.social__body--to_do-link{
+    text-decoration: none;
+    padding: 10px 15px;
+    width: 100%;
+    display: flex;
+    color: rgb(174, 166, 166);
+}
+
+a.social__body--to_do-link > svg{
+    font-size: 18px;
+    margin-right: 15px;
+    color: rgb(174, 166, 166);
+}
+
+a.social__body--to_do-link > span{
+}
+
+li.social__body--friends-li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    font-weight: 800;
+}
+
+li.social__body--friends-li:hover{
+    background-color: rgb(53, 49, 56);
+    cursor: pointer;
+}
+
+div.social__delete-friend > svg{
+    font-size: 20px;
+    margin-right: 15px;
+    color: rgb(174, 166, 166);
+}
+
+div.social__delete-friend > svg:hover{
+    color: white;
+}
+
+div.social__delete-friend{
+    display: none;
+}
+
+a.social__body--friends-link{
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: rgb(174, 166, 166);
+}
+
+div.social__settings--info--status-list{
+    background-color: rgb(11, 10, 10);
+    display: none;
+    flex-direction: column;
+    padding: 10px;
+    border-radius: 3px;
+    position: absolute;
+    bottom: 55px;
+    left: 0;
+    width: 220px;
+}
+
+div.social__settings-info--status-list-li{
+    display: flex;
+    color: rgb(174, 166, 166);
+    padding: 10px 0;
+}
+
+div.social__settings-info--status-list-li:hover{
+    color: white;
+    background-color: rgb(105, 30, 181);
+}
+
+div.social__settings-info-li-icon{
+    padding: 5px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+div.social__settings-info-li-icon-2{
+    padding: 4.5px;
+    border-radius: 50%;
+}
+
+div.social__settings-info-li-text{
+    font-size: 13px;
+}
+
+div.social__settings-info-li-text-body{
+    font-size: 10px;
+}
+
+div.social__settings-info--status-list-li.custom{
+    border-top: 0.1px solid  rgba(174, 166, 166, 0.144);
+}
+
+div.social__settings-info--status-list-li.online{
+    border-bottom: 0.1px solid  rgba(174, 166, 166, 0.144);
+}
+
+div.Online{
+    background-color: rgb(67, 181, 129);
+}
+
+div.Idle{
+    background-color: orange;
+}
+
+div.DND{
+    background-color: red;
+}
+
+div.Invisible, div.Offline{
+    background-color: gray;
+}

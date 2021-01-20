@@ -1,0 +1,141 @@
+div.peding-view{
+    overflow-y: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+div.peding-view-header{
+    padding: 10px;
+    color: rgb(174, 166, 166);
+    font-size: 12px;
+    font-weight: 800;
+}
+
+div.peding-view-list{
+    display: flex;
+    justify-content: space-between;
+}
+
+div.peding-view-list{
+    display: flex;
+    flex-direction: column;
+}
+
+div.peding-view-list-field{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+div.peding-view-list-field:hover{
+    cursor: pointer;
+    background-color:rgb(45, 41, 48);
+}
+
+div.peding-field-west{
+    display: flex;
+}
+
+div.peding-field-west-perfil{
+    position: relative;
+}
+
+img.peding-field-west-perfil-img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: rgb(24, 22, 22);
+}
+
+div.peding-field-west-perfil-on{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: rgb(37, 33, 40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.peding-field-west-perfil-on-2{
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+    background-color: rgb(174, 166, 166);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div.peding-field-west-perfil-on-3{
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background-color: rgb(37, 33, 40);
+}
+
+div.peding-field-west-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+div.peding-field-west-info-names{
+    display: flex;
+}
+
+span.peding-field-west-info-name{
+    font-size: 14px;
+    font-weight: 900;
+    color: white;
+}
+
+span.peding-field-west-info-code{
+    font-size: 14px;
+    color: rgb(174, 166, 166);
+    display: none;
+}
+
+div.peding-field-west-info-message{
+    font-size: 12px;
+    color: rgb(174, 166, 166);
+}
+
+div.peding-field-east{
+    display: flex;
+    justify-content: space-between;
+}
+
+div.peding-field-east-icon{
+    background-color: rgb(26, 24, 26);
+    color: rgb(174, 166, 166);
+    border-radius: 50%;
+    font-size: 16px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    position: relative;
+}
+
+div.peding-field-east-icon:hover{
+    background-color: rgb(11, 10, 10);
+}
+
+div.peding-field-east-icon.accept:hover{
+    color: rgb(67, 181, 129);
+    cursor: pointer;
+}
+
+div.peding-field-east-icon.recuse:hover{
+    color: red;
+    cursor: pointer;
+}
