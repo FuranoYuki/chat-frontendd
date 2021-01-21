@@ -64,7 +64,7 @@ const ConfigAccountProfile = ({user}) => {
                                 :
 
                                     <img 
-                                        src={`/imagePerfil/${user.imagePerfil.key}`}
+                                        src={user.imagePerfil.path}
                                         alt="perfil image"
                                     />
                             }
@@ -88,7 +88,7 @@ const ConfigAccountProfile = ({user}) => {
                             </div>
                         </form>
                         <div className="accInfo-main-top-left-name">
-                            Furano
+                            {user.name}
                         </div>
                     </div>
 
@@ -105,8 +105,8 @@ const ConfigAccountProfile = ({user}) => {
                                 username
                             </div>      
                             <div className="accInfo-main-bot-left-bot">
-                                Furano
-                                <span>#9090</span>
+                                {user.name}
+                                <span>${user.code}</span>
                             </div>
                         </div>
                         <div className="accInfo-main-bot-right">
@@ -120,7 +120,7 @@ const ConfigAccountProfile = ({user}) => {
                                 EMAIL
                             </div>      
                             <div className="accInfo-main-bot-left-bot">
-                                viper@gmail.com
+                                {user.email}
                             </div>
                         </div>
                         <div className="accInfo-main-bot-right">
