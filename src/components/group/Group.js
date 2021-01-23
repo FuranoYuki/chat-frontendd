@@ -1,33 +1,69 @@
-//dependencies
-import React, {memo} from 'react';
-import {Link} from 'react-router-dom'
+// dependencies
+import React, { memo, useEffect, useState, useRef } from 'react'
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
-//external files
-import "./Group.css";
-import brand from '../../assets/logo_transparent.png'
+// style
+import './Group.css'
+// api
+import api from '../../services/http/api'
+// socket-io
+import socket from '../../services/websocket/socket'
+// callmodal
+import CallModal from '../callModal/CallModal'
+// action
+import call from '../../store/actions/call'
 
-//JSX
+// JSX
 const Group = () => {
+  const [friend, setFriend] = useState('')
+  const dispatch = useDispatch()
 
-    const groupMouseOver = event => {
-        const sign = event.currentTarget.firstElementChild;
+  const mounted = useRef(false)
 
-        sign.style.display = 'flex';
-        sign.style.height = 20 + 'px';
+  useEffect(() => {
+    mounted.current = true
+    return () => (mounted.current = false)
+  })
+
+  useEffect(() => {
+    if (mounted.current) {
+      socket.on('receving call', data => {
+        api.post('/user/getFriend', { id: data })
+          .then(response => {
+            setFriend(response.data)
+            console.log('aloalo')
+            dispatch(call({ navbar: true }))
+            dispatch(call({ modal: true }))
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      })
     }
+  }, [])
 
-    const groupMouseOut = event => {
-        const sign = event.currentTarget.firstElementChild;
+  const groupMouseOver = event => {
+    const sign = event.currentTarget.firstElementChild
 
-        sign.style.display = 'none';
-    }
+    sign.style.display = 'flex'
+    sign.style.height = 20 + 'px'
+  }
 
-    return(
+  const groupMouseOut = event => {
+    const sign = event.currentTarget.firstElementChild
+
+    sign.style.display = 'none'
+  }
+
+  return (
         <div className="Group">
-            
-            <Link 
+
+            <CallModal friend={friend} />
+
+            <Link
                 to="/"
-                className="group__discord" 
+                className="group__discord"
                 onMouseOver={groupMouseOver}
                 onMouseOut={groupMouseOut}
             >
@@ -36,7 +72,10 @@ const Group = () => {
                 </div>
 
                 <div className="group__discord--img">
-                    <img src='https://discord.com/assets/6debd47ed13483642cf09e832ed0bc1b.png' />
+                    <img
+                      src='https://discord.com/assets/6debd47ed13483642cf09e832ed0bc1b.png'
+                      alt='icon'
+                    />
                 </div>
 
                 <div className='group__discord--legend'>
@@ -71,7 +110,7 @@ const Group = () => {
                         </div>
 
                     </div>
-{/* 
+{/*
                     <div className="group__groups--legend">
                         Home
                     </div> */}
@@ -81,7 +120,7 @@ const Group = () => {
             </ul>
 
         </div>
-    )
+  )
 }
 
 export default memo(Group)

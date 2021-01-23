@@ -55,6 +55,11 @@ li.social__settings--actions-li{
     font-size: 18px;
     color:rgb(174, 166, 166);
     border-radius: 5px;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 li.social__settings--actions-li:hover{
@@ -63,14 +68,6 @@ li.social__settings--actions-li:hover{
 
 li.social__settings--actions-li > a{
     color: rgb(174, 166, 166);
-}
-
-li.social-microphone{
-    padding: 5px 10px;
-}
-
-li.social-headphones, li.social-cog{
-    padding: 5px 7px;
 }
 
 
@@ -90,7 +87,9 @@ div.social__settings--info--user{
 }
 
 span.social__settings--info--user-name{
-    font-weight: bolder;
+    font-weight: 600;
+    color: white;
+    font-size: 14px;
 }
 
 div.social__settings--info--status{
@@ -235,6 +234,11 @@ a.social__body--friends-link{
     padding: 5px 10px;
     text-decoration: none;
     color: rgb(174, 166, 166);
+}
+
+.social__body--friends-link > span{
+    font-weight: normal;
+    font-size: 16px;
 }
 
 div.social__settings--info--status-list{

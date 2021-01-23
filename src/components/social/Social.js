@@ -1,120 +1,126 @@
-//dependencies
-import React, {useEffect, useState, memo} from 'react';
-import {Link} from 'react-router-dom';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+// dependencies
+import React, { useEffect, useState, memo } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-        faUserFriends, 
-        faPlus,
-        faMicrophone,
-        faHeadphones,
-        faCog,
-        faTimes
-} from '@fortawesome/free-solid-svg-icons';
+  faUserFriends,
+  faPlus,
+  faMicrophone,
+  faMicrophoneAltSlash,
+  faHeadphones,
+  faCog,
+  faTimes
+} from '@fortawesome/free-solid-svg-icons'
 
-//external files
-import "./Social.css";
-
-//api
-import api from "../../services/http/api";
-
-//token
-import {logout} from '../../services/auth';
-
-//route
-import {useHistory} from 'react-router-dom';
-
-//socket-io
+// style
+import './Social.css'
+// api
+import api from '../../services/http/api'
+// token
+import { logout } from '../../services/auth'
+// socket-io
 import socket from '../../services/websocket/socket'
 
 const Social = () => {
+  // Hook - States
+  const [user, setUser] = useState({})
+  const [chat, setChats] = useState({})
+  const [search, setSearch] = useState('')
+  const [microPhone, setMicroPhone] = useState(faMicrophone)
 
-    //Hook - States
-    const [user, setUser] = useState({});
-    const [chat, setChats] = useState({})
-    const [search, setSearch] = useState('');
+  // route
+  const history = useHistory()
 
-    //route
-    const history = useHistory();
+  // Hook - Effects
+  useEffect(() => {
+    getChats()
+    getUser()
+  }, [])
 
-    //Hook - Effects
-    useEffect(() => {
-        getChats();
-        getUser();
-    }, []);
+  // socket
+  useEffect(() => {
+    socket.on('friendChangeStatus', () => {
+      console.log('friend change status')
+      getChats()
+    })
+  }, [])
 
-    //socket
-    useEffect(() => {
-        socket.on('friendChangeStatus', () => {
-            console.log('friend change status');
-            getChats();
-        })
-    }, [])
+  useEffect(() => {
+    if (user._id !== undefined) {
+      socket.emit('userRoom', user.friends, user._id)
+    }
+  }, [user])
 
-    useEffect(() => {
-        if(user._id !== undefined){
-            socket.emit('userRoom', user.friends, user._id);
+  // functions
+  const showDeleteFriend = (event) => {
+    event.currentTarget.lastElementChild.style.display = 'flex'
+    event.currentTarget.firstElementChild.lastElementChild.style.color = 'white'
+  }
+
+  const hiddenDeleteFriend = (event) => {
+    event.currentTarget.lastElementChild.style.display = 'none'
+    event.currentTarget.firstElementChild.lastElementChild.style.color = 'rgb(174, 166, 166)'
+  }
+
+  const searchChange = (event) => {
+    setSearch(event.target.value)
+  }
+
+  const changeStatus = () => {
+    const obj = document.querySelector('.social__settings--info--status-list')
+    obj.style.display === 'flex' ? obj.style.display = 'none' : obj.style.display = 'flex'
+  }
+
+  const statusChange = async (event) => {
+    if (user.status !== event.currentTarget.id) {
+      await api.post('/user/changeStatus', { status: event.currentTarget.id })
+      getUser()
+      socket.emit('changeStatus', user.friends)
+    }
+  }
+
+  const getUser = () => {
+    api.post('/user/getUser')
+      .then(response => {
+        setUser(response.data)
+      })
+      .catch(error => {
+        if (error.response.tokenExpired === undefined) {
+          logout()
+          history.push('/login')
         }
-    }, [user])
+      })
+  }
 
-    //functions
-    const showDeleteFriend = (event) => {
-        event.currentTarget.lastElementChild.style.display = 'flex'
-        event.currentTarget.firstElementChild.lastElementChild.style.color = 'white';
+  const microPhoneStatus = () => {
+    const obj = document.querySelector('#microphoneON')
+
+    if (obj) {
+      obj.id = 'microphoneOFF'
+      setMicroPhone(faMicrophoneAltSlash)
+    } else {
+      document.querySelector('#microphoneOFF').id = 'microphoneON'
+      setMicroPhone(faMicrophone)
     }
+  }
 
-    const hiddenDeleteFriend = (event) => {
-        event.currentTarget.lastElementChild.style.display = 'none'
-        event.currentTarget.firstElementChild.lastElementChild.style.color = 'rgb(174, 166, 166)';
-    }
+  const getChats = () => {
+    api.post('/user/getUserChats')
+      .then(data => {
+        setChats(data.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 
-    const searchChange = (event) => {
-        setSearch(event.target.value);
-    }
-
-    const changeStatus = () => {
-        const obj = document.querySelector(".social__settings--info--status-list");
-        obj.style.display === "flex" ? obj.style.display = "none" : obj.style.display = "flex"
-    }
-
-    const statusChange = async (event) => {
-        if(user.status !== event.currentTarget.id){
-            await api.post("/user/changeStatus", {status: event.currentTarget.id})
-            getUser();
-            socket.emit('changeStatus', user.friends);
-        }
-    }
-
-    const getUser = () => {
-        api.post("/user/getUser")
-        .then(response => {
-            setUser(response.data);
-            
-        })
-        .catch(error => {
-            if(error.response.tokenExpired === undefined){
-                logout();
-                history.push('/login');
-            }
-        });
-    }
-
-    const getChats = () => {
-        api.post('/user/getUserChats')
-        .then(data => {
-            setChats(data.data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
-    }
-
-    return(
+  return (
         <div className="Social">
 
             <form className="social__search">
-                <input 
-                    className="social__search--input" 
-                    placeholder="Encontre ou comece uma conversa" 
+                <input
+                    className="social__search--input"
+                    placeholder="Encontre ou comece uma conversa"
                     onChange={searchChange}
                 />
             </form>
@@ -136,26 +142,27 @@ const Social = () => {
                             <span>Create Group</span>
                         </Link>
                     </li>
-                
+
                 </ul>
 
                 <ul className="social__body--friends">
 
-                    {   
+                    {
                         chat.chats !== undefined &&
 
                         chat.chats.map(data => data.friend
-                            
+
                         ).filter(data => {
-                            if(search === ''){
-                                return data
-                            }else if(data.name.toLowerCase().includes(search.toLowerCase())){
-                                return data
-                            }
-                        }).map(friend => 
-                            <li 
+                          if (search === '') {
+                            return data
+                          } else if (data.name.toLowerCase().includes(search.toLowerCase())) {
+                            return data
+                          }
+                          return data
+                        }).map(friend =>
+                            <li
                                 key={friend._id}
-                                onMouseOver={showDeleteFriend} 
+                                onMouseOver={showDeleteFriend}
                                 className="social__body--friends-li"
                                 onMouseOut={hiddenDeleteFriend}
                             >
@@ -163,22 +170,12 @@ const Social = () => {
                                 <Link to={`/chat/${friend._id}`} className="social__body--friends-link">
                                     <div className="social__body-friends-icon">
 
-                                        {
-                                            friend.imagePerfil === undefined ?
-
-                                                <img 
-                                                    className="social__body-friends-icon-img"
-                                                    src={`/imagePerfil/${friend.imagePerfilDefault}`}
-                                                    alt="perfil"
-                                                />
-
-                                            :
-
-                                                <img 
-                                                    className="social__body-friends-icon-img"
-                                                    src={`/imagePerfil/${friend.imagePerfil.key}`}
-                                                    alt="perfil"
-                                                />
+                                        {friend.imagePerfilDefault !== undefined &&
+                                        <img
+                                            className="social__body-friends-icon-img"
+                                            src={`/imagePerfil/${friend.imagePerfilDefault}`}
+                                            alt="perfil"
+                                        />
                                         }
 
                                         <div className='social__body-friends-icon-layer1'>
@@ -195,7 +192,7 @@ const Social = () => {
                                 <div className="social__delete-friend">
                                     <FontAwesomeIcon icon={faTimes} />
                                 </div>
-                            </li>    
+                            </li>
                         )
                     }
 
@@ -206,31 +203,19 @@ const Social = () => {
             <div className="social__settings">
 
                 <div className="social__settings--info">
-                    
-                    <div 
+
+                    <div
                         className="social__settings--info--status"
                         onClick={changeStatus}
                     >
 
-                        {   
-                            user.imagePerfil === undefined ?
-
-                                <img 
-                                    src={`/imagePerfil/${user.imagePerfilDefault}`}
-                                    alt="perfil"
-                                    className="social__settings--info--status-img" 
-                                />
-
-                                :
-
-                                <img 
-                                    src={`/imagePerfil/${user.imagePerfil.key}`}
-                                    alt="perfil"
-                                    className="social__settings--info--status-img" 
-                                />
-
+                        {user.imagePerfilDefault !== undefined &&
+                        <img
+                            src={`/imagePerfil/${user.imagePerfilDefault}`}
+                            alt="perfil"
+                            className="social__settings--info--status-img"
+                        />
                         }
-
 
                         <div className="social__settings--info--status-layer1">
                             <div className={`social__settings--info--status-layer2 ${user.status}`}>
@@ -240,11 +225,11 @@ const Social = () => {
                             </div>
                         </div>
 
-                        <div 
+                        <div
                             className="social__settings--info--status-list"
                         >
 
-                            <div 
+                            <div
                                 className="social__settings-info--status-list-li online"
                                 onClick={statusChange}
                                 id="Online"
@@ -259,7 +244,7 @@ const Social = () => {
                                 </div>
                             </div>
 
-                            <div 
+                            <div
                                 className="social__settings-info--status-list-li"
                                 onClick={statusChange}
                                 id="Idle"
@@ -274,7 +259,7 @@ const Social = () => {
                                 </div>
                             </div>
 
-                            <div 
+                            <div
                                 className="social__settings-info--status-list-li"
                                 onClick={statusChange}
                                 id="DND"
@@ -282,7 +267,7 @@ const Social = () => {
                                 <div className="social__settings-info-li-icon">
                                     <div className="social__settings-info-li-icon-2 DND">
 
-                                    </div>  
+                                    </div>
                                 </div>
                                 <div className="social__settings-info-li-text">
                                     <div className="social__settings-info-li-text-header">
@@ -294,7 +279,7 @@ const Social = () => {
                                 </div>
                             </div>
 
-                            <div 
+                            <div
                                 className="social__settings-info--status-list-li"
                                 onClick={statusChange}
                                 id="Offline"
@@ -339,8 +324,12 @@ const Social = () => {
                 </div>
 
                 <ul className="social__settings--actions">
-                    <li className="social__settings--actions-li social-microphone">
-                        <FontAwesomeIcon icon={faMicrophone} />
+                    <li
+                        className="social__settings--actions-li social-microphone"
+                        id="microphoneON"
+                        onClick={microPhoneStatus}
+                    >
+                        <FontAwesomeIcon icon={microPhone} />
                     </li>
                     <li className="social__settings--actions-li social-headphones">
                         <FontAwesomeIcon icon={faHeadphones} />
@@ -355,7 +344,7 @@ const Social = () => {
             </div>
 
         </div>
-    )
+  )
 }
 
 export default memo(Social)

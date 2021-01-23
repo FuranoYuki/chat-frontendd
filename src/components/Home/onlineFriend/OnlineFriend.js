@@ -1,26 +1,24 @@
-//dependencies
-import React, {memo} from 'react';
+// dependencies
+import React, { memo } from 'react'
 
-//external files
-import './OnlineFriend.css';
-
+// external files
+import './OnlineFriend.css'
 
 const OnlineFriend = (props) => {
-
-    return(
+  return (
         <div className="OnlineFriend">
-            
+
             <div className="onlineFriend-nofriend">
                 <div className="onlineFriend-nofriend-img">
 
                 </div>
                 <div className="onlineFriend-nofriend-text">
-                    No one's around to play with Wumpus.
+                    No one&apos;s around to play with Wumpus.
                 </div>
             </div>
 
         </div>
-    )
+  )
 }
 
-export default memo(OnlineFriend);
+export default memo(OnlineFriend)

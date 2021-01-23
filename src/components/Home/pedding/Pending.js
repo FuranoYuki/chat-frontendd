@@ -1,28 +1,25 @@
-import React, {memo} from 'react';
+import React, { memo } from 'react'
 
-//style
-import './Pedding.css';
+// style
+import './Pedding.css'
 
-//components
-import View from './view/View';
-import Message from './message/Message';
+// components
+import View from './view/View'
+import Message from './message/Message'
 
+const Pending = ({ pending }) => {
+  // -- JSX --
 
-const Pending = ({pending}) => {
-
-    // -- JSX --
-
-    return(
+  return (
         <div className="Pedding">
-            {   
-                pending.length > 0 ?
+            {
+                pending.length > 0
 
-                    <View pending={pending} />
-                :   
-                    <Message />
+                  ? <View pending={pending} />
+                  : <Message />
             }
         </div>
-    )
+  )
 }
 
-export default memo(Pending);
+export default memo(Pending)

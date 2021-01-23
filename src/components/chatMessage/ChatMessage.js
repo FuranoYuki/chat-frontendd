@@ -1,70 +1,48 @@
-//dependencies 
-import React, {memo} from 'react';
+// dependencies
+import React, { memo } from 'react'
 
-//external files
-import './ChatMessage.css';
+// external files
+import './ChatMessage.css'
 
-
-const ChatMessage = ({chat}) => {
-
-    const verifyUser = (id) => {
-        if(id === chat.user._id){
-            if(chat.user.imagePerfil === undefined){
-                return (
-                    <img 
-                        className="chatMessage-perfil-img"
-                        alt="perfil"
-                        src={`/imagePerfil/${chat.user.imagePerfilDefault}`}
-                    />
-                )
-            }else{
-                return (
-                    <img 
-                        className="chatMessage-perfil-img"
-                        alt="perfil"
-                        src={`/imagePerfil/${chat.user.imagePerfil.key}`}
-                    />
-                )
-            }
-        }else{
-            if(chat.friend.imagePerfil === undefined){
-                return (
-                    <img 
-                        className="chatMessage-perfil-img"
-                        alt="perfil"
-                        src={`/imagePerfil/${chat.friend.imagePerfilDefault}`}
-                    />
-                )
-            }else{
-                return (
-                    <img 
-                        className="chatMessage-perfil-img"
-                        alt="perfil"
-                        src={`/imagePerfil/${chat.friend.imagePerfil}`}
-                    />
-                )
-            }
-        }
+const ChatMessage = ({ chat }) => {
+  const verifyUser = (id) => {
+    if (id === chat.user._id) {
+      return (
+        <img
+            className="chatMessage-perfil-img"
+            alt="perfil"
+            src={`/imagePerfil/${chat.user.imagePerfilDefault}`}
+        />
+      )
+    } else {
+      return (
+        <img
+            className="chatMessage-perfil-img"
+            alt="perfil"
+            src={`/imagePerfil/${chat.friend.imagePerfilDefault}`}
+        />
+      )
     }
+  }
 
-    //jsx
-    return(
+  // jsx
+  return (
 
         <>
-            {   
+            {
                 chat.messages !== undefined &&
 
-                chat.messages.map(message => 
-                    
+                chat.messages.map(message =>
+
                     <div
-                        key={message._id} 
+                        key={message._id}
                         className="ChatMessage">
                         <div className="chatMessage-perfil">
 
                             {
                                 verifyUser(message.user)
                             }
-            
+
                         </div>
                         <div className="chatMessage-msg">
                             <div className="chatMessage-msg-info">
@@ -86,7 +64,7 @@ const ChatMessage = ({chat}) => {
             }
         </>
 
-    )
+  )
 }
 
-export default memo(ChatMessage);
+export default memo(ChatMessage)

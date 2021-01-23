@@ -1,56 +1,53 @@
-//dependencies
-import React, {useEffect} from 'react';
-import {Link, useHistory} from 'react-router-dom';
-import {useForm} from 'react-hook-form';
+// dependencies
+import React, { useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
 
-//external files
+// external files
 import './Login.css'
 import brand from '../../assets/logo_transparent.png'
-import {login, isAuthenticated} from '../../services/auth';
-import api from '../../services/http/api';
+import { login, isAuthenticated } from '../../services/auth'
+import api from '../../services/http/api'
 
 const Login = () => {
+  const { register, handleSubmit } = useForm()
+  const history = useHistory()
 
-    const {register, handleSubmit} = useForm();
-    const history = useHistory();
-
-    useEffect(() => {
-        if(isAuthenticated()){
-            history.push("/")
-        }
-    }, [])
-
-    const handleLoginForm = (data) => {
-        const {email, password} = data;
-
-        if(email && password){
-            api.post("/user/login", {email, password})
-            .then(response => {
-                
-                login(response.data.token);
-                history.push("/");
-            })
-            .catch(error => {
-                if(error.response.data.indexOf('email') !== -1){
-                    document.querySelector(".register__email-warning").style.display = 'flex';
-                }
-                if(error.response.data.indexOf('password') !== -1){
-                    document.querySelector(".register__password-warning").style.display = 'flex';
-                }
-            });
-        }else{
-            if(!email){
-                document.querySelector(".register__email-warning").style.display = 'flex';
-                document.querySelector(".register__password-warning").style.display = 'none';
-            }else{
-                document.querySelector(".register__password-warning").style.display = 'flex';
-                document.querySelector(".register__email-warning").style.display = 'none';
-            }
-        }
+  useEffect(() => {
+    if (isAuthenticated()) {
+      history.push('/')
     }
+  }, [])
 
+  const handleLoginForm = (data) => {
+    const { email, password } = data
 
-    return(
+    if (email && password) {
+      api.post('/user/login', { email, password })
+        .then(response => {
+          login(response.data.token)
+          history.push('/')
+        })
+        .catch(error => {
+          if (error.response.data.indexOf('email') !== -1) {
+            document.querySelector('.register__email-warning').style.display = 'flex'
+          }
+          if (error.response.data.indexOf('password') !== -1) {
+            document.querySelector('.register__password-warning').style.display = 'flex'
+          }
+        })
+    } else {
+      if (!email) {
+        document.querySelector('.register__email-warning').style.display = 'flex'
+        document.querySelector('.register__password-warning').style.display = 'none'
+      } else {
+        document.querySelector('.register__password-warning').style.display = 'flex'
+        document.querySelector('.register__email-warning').style.display = 'none'
+      }
+    }
+  }
+
+  return (
         <div className="register">
             <form onSubmit={handleSubmit(handleLoginForm)} className="register__form">
                 <img className="register__form--brand" src={brand} alt="funny brand" />
@@ -61,12 +58,12 @@ const Login = () => {
                     <div className="reguster__form--inputs-info">
                         <span>Email</span>
                         <p className="register__email-warning">
-                            this e-mail isn't register in our database
+                            this e-mail isn&apos;t register in our database
                         </p>
                     </div>
-                    <input 
-                        className="register__form-input-email" 
-                        placeholder="type your e-mail" 
+                    <input
+                        className="register__form-input-email"
+                        placeholder="type your e-mail"
                         name="email"
                         ref={register}
                     />
@@ -78,7 +75,7 @@ const Login = () => {
                             this password is wrong
                         </p>
                     </div>
-                    <input 
+                    <input
                         className="register__Form-input-password"
                         placeholder="type your password"
                         name="password"
@@ -95,7 +92,7 @@ const Login = () => {
                 </Link>
             </form>
         </div>
-    )
+  )
 }
 
 export default Login

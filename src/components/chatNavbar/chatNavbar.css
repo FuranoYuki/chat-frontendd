@@ -1,10 +1,17 @@
-div.chatNavbar{
+.chatNavbar{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+div.chatNavbar-main{
     width: 100%;
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
     border-bottom: 1px solid rgb(11, 10, 10);
-    height: 50px;
+    min-height: 50px;
 }
 
 div.chatNavbar-info{
@@ -77,6 +84,8 @@ div.chatNavbar-setting-icon{
     padding: 0 10px;
     transition: color 0.3s;
     position: relative;
+    display: flex;
+    align-self: center;
 }
 
 div.chatNavbar-setting-icon:hover{

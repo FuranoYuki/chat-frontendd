@@ -1,44 +1,43 @@
-//dependencies
-import React, {useEffect, useState, memo} from 'react';
-import {useDispatch} from 'react-redux';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faInbox, faCommentAlt, faQuestionCircle, faUserFriends} from '@fortawesome/free-solid-svg-icons';
+// dependencies
+import React, { useEffect, useState, memo } from 'react'
+import { useDispatch } from 'react-redux'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInbox, faCommentAlt, faQuestionCircle, faUserFriends } from '@fortawesome/free-solid-svg-icons'
 
-//external files
-import "./homeNavbar.css";
+// external files
+import './homeNavbar.css'
 
-//action redux
-import HomeNavbarAction from '../../../store/actions/HomeNavbarAction';
+// action redux
+import HomeNavbarAction from '../../../store/actions/HomeNavbarAction'
 
 const HomeNavbar = (props) => {
+  // Hook-states
+  const [pending, setPending] = useState({})
+  const [pendingLength, setPendingLength] = useState(0)
 
-    //Hook-states
-    const [pending, setPending] = useState({})
-    const [pendingLength, setPendingLength] = useState(0)
+  // Hook-effects
+  useEffect(() => {
+    setPending(props.user.pending)
+  }, [props])
 
-    //Hook-effects
-    useEffect(() => {
-        setPending(props.user.pending);
-    }, [props]);
-
-    useEffect(() => {
-        if(pending !== undefined){
-            if(pending.length > 0){
-                setPendingLength(pending.filter(data => data.receiver === true).length)
-            }
-        }
-    }, [pending])
-
-    //Redux-dispatch
-    const dispatch = useDispatch();
-
-    //functions
-    const navbarClick = (event) => {
-        const obj = event.currentTarget.firstElementChild.firstElementChild.innerText;
-        dispatch(HomeNavbarAction(obj));
+  useEffect(() => {
+    if (pending !== undefined) {
+      if (pending.length > 0) {
+        setPendingLength(pending.filter(data => data.receiver === true).length)
+      }
     }
+  }, [pending])
 
-    return(
+  // Redux-dispatch
+  const dispatch = useDispatch()
+
+  // functions
+  const navbarClick = (event) => {
+    const obj = event.currentTarget.firstElementChild.firstElementChild.innerText
+    dispatch(HomeNavbarAction(obj))
+  }
+
+  return (
         <div className="homenavbar">
 
             <ul className="homenavbar__nav">
@@ -64,7 +63,7 @@ const HomeNavbar = (props) => {
                     <div>
                         <div>Pending</div>
 
-                        {   
+                        {
                             pendingLength > 0 &&
 
                             <div className="homenavbar-li-feed">{pendingLength}</div>
@@ -102,7 +101,7 @@ const HomeNavbar = (props) => {
             </ul>
 
         </div>
-    )
+  )
 }
 
 export default memo(HomeNavbar)

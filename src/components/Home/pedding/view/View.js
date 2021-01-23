@@ -1,50 +1,49 @@
-import React from 'react';
-//fontAwesome
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTimes, faCheck} from '@fortawesome/free-solid-svg-icons';
-//css
+import React from 'react'
+// fontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes, faCheck } from '@fortawesome/free-solid-svg-icons'
+// css
 import './View.css'
-//api
-import api from '../../../../services/http/api';
-import socket from '../../../../services/websocket/socket';
+// api
+import api from '../../../../services/http/api'
+import socket from '../../../../services/websocket/socket'
 
-const View = ({pending}) => {
+const View = ({ pending }) => {
+  // functions
+  const mouseOver = () => {
+    document.querySelector('.peding-field-west-info-code').style.display = 'flex'
+  }
 
-    //functions
-    const mouseOver = () => {
-        document.querySelector('.peding-field-west-info-code').style.display = 'flex'
-    }
+  const mouseOut = () => {
+    document.querySelector('.peding-field-west-info-code').style.display = 'none'
+  }
 
-    const mouseOut = () => {
-        document.querySelector('.peding-field-west-info-code').style.display = 'none'
-    }
+  const recusePending = () => {
+    api.post('/user/recusePending', {
+      id: document.querySelector('.peding-field-east-icon.recuse').id
+    }).then(() => {
+      socket.emit('pending')
+    }).catch(error => {
+      console.log(error.response.data)
+    })
+  }
 
-    const recusePending = () => {
-        api.post("/user/recusePending", {
-            id: document.querySelector('.peding-field-east-icon.recuse').id,
-        }).then(() => {
-            socket.emit('pending');
-        }).catch(error => {
-            console.log(error.response.data);
-        })
-    };
+  const acceptPending = () => {
+    api.post('/user/acceptPending', {
+      id: document.querySelector('.peding-field-east-icon.accept').id
+    }).then(() => {
+      socket.emit('pending')
+    }).catch(error => {
+      console.log(error.response.data)
+    })
+  }
 
-    const acceptPending = () => {
-        api.post("/user/acceptPending", {
-            id: document.querySelector('.peding-field-east-icon.accept').id
-        }).then(() => {
-            socket.emit('pending');
-        }).catch(error => {
-            console.log(error.response.data);
-        })
-    }
-
-    //jsx
-    return(
+  // jsx
+  return (
         <div className="peding-view">
 
             {
-            pending !== undefined && 
+            pending !== undefined &&
                 <>
                 <div className="peding-view-header">
                     Pending - {pending.length}
@@ -53,11 +52,11 @@ const View = ({pending}) => {
                 <div className="peding-view-list">
 
                     {
-                        pending.map(data => 
-                            <div    
-                                key={data._id}   
-                                className="peding-view-list-field" 
-                                onMouseOver={mouseOver} 
+                        pending.map(data =>
+                            <div
+                                key={data._id}
+                                className="peding-view-list-field"
+                                onMouseOver={mouseOver}
                                 onMouseOut={mouseOut}
                             >
 
@@ -66,16 +65,15 @@ const View = ({pending}) => {
                                     <div className="peding-field-west-perfil">
 
                                         {
-                                        data.user.imagePerfil === undefined ?
+                                        data.user.imagePerfil === undefined
 
-                                            <img 
-                                                className="peding-field-west-perfil-img" 
+                                          ? <img
+                                                className="peding-field-west-perfil-img"
                                                 src={`/imagePerfil/${data.user.imagePerfilDefault}`}
                                                 alt="perfil"
                                             />
-                                        :
-                                            <img 
-                                                className="peding-field-west-perfil-img" 
+                                          : <img
+                                                className="peding-field-west-perfil-img"
                                                 src={`/imagePerfil/${data.user.imagePerfil.key}`}
                                                 alt="perfil"
                                             />
@@ -111,9 +109,9 @@ const View = ({pending}) => {
 
                                 <div className="peding-field-east">
                                     {
-                                        data.receiver && 
+                                        data.receiver &&
 
-                                        <div 
+                                        <div
                                             className="peding-field-east-icon accept"
                                             onClick={acceptPending}
                                             id={data.user._id}
@@ -121,7 +119,7 @@ const View = ({pending}) => {
                                             <FontAwesomeIcon icon={faCheck} />
                                         </div>
                                     }
-                                    <div    
+                                    <div
                                         className="peding-field-east-icon recuse"
                                         onClick={recusePending}
                                         id={data.user._id}
@@ -130,7 +128,7 @@ const View = ({pending}) => {
                                     </div>
                                 </div>
 
-                            </div>    
+                            </div>
                         )
                     }
 
@@ -138,7 +136,7 @@ const View = ({pending}) => {
                 </>
             }
         </div>
-    )
+  )
 }
 
 export default View

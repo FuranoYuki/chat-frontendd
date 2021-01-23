@@ -1,95 +1,93 @@
-//React
-import React, {useEffect, useState} from 'react';
+// React
+import React, { useState } from 'react'
 
-//router Link
-import {Link} from 'react-router-dom';
+// router Link
+import { Link } from 'react-router-dom'
 
-//FontAwesome
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEllipsisV, faCommentAlt} from '@fortawesome/free-solid-svg-icons';
+// FontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEllipsisV, faCommentAlt } from '@fortawesome/free-solid-svg-icons'
 
-//removeFriend component
-import RemoveFriend from './removeFriend/RemoveFriend';
+// removeFriend component
+import RemoveFriend from './removeFriend/RemoveFriend'
 
-//css
+// css
 import './View.css'
 
-const View = ({friends, online}) => {
+const View = ({ friends, online }) => {
+  // hooks-state
+  const [userRemove, setUserRemove] = useState('')
+  // const [verify, setVerify] = useState(false)
+  // const [click, setClick] = useState(false)
+  const [field, setField] = useState({})
 
-    //hooks-state
-    const [userRemove, setUserRemove] = useState('')
-    const [verify, setVerify] = useState(false);
-    const [click, setClick] = useState(false);
-    const [field, setField] = useState({})
+  // // hooks-effects
+  // useEffect(() => {
+  //   document.addEventListener('click', () => {
+  //     setClick(true)
+  //   })
+  // }, [])
 
-    //hooks-effects
-    useEffect(() => {
-        document.addEventListener("click", () => {
-            setClick(true);
-        })
-    }, []);
+  // useEffect(() => {
+  //   if (!verify && click && field.style) {
+  //     field.style.display = 'none'
+  //     setClick(false)
+  //     setField({})
+  //   } else {
+  //     setClick(false)
+  //   }
+  // }, [click])
 
-    useEffect(() => {
-        if(!verify && click && field.style){
-            field.style.display = "none"
-            setClick(false);
-            setField({})
-        }else{
-            setClick(false)
-        }
-    }, [click])
+  // functions
+  const mouseOver = (event) => {
+    event.currentTarget
+      .firstElementChild
+      .lastElementChild
+      .firstElementChild
+      .lastElementChild.style.display = 'flex'
+  }
 
-    //functions
-    const mouseOver = (event) => {
-        event.currentTarget
-        .firstElementChild
-        .lastElementChild
-        .firstElementChild
-        .lastElementChild.style.display = 'flex'
+  const mouseOut = (event) => {
+    event.currentTarget
+      .firstElementChild
+      .lastElementChild
+      .firstElementChild
+      .lastElementChild.style.display = 'none'
+  }
+
+  const fieldEast = (event) => {
+    const obj = event.currentTarget.lastElementChild
+
+    if (field.style !== undefined) {
+      field.style.display = 'none'
     }
 
-    const mouseOut = (event) => {
-        event.currentTarget
-        .firstElementChild
-        .lastElementChild
-        .firstElementChild
-        .lastElementChild.style.display = 'none'
+    obj.style.display === 'flex' ? obj.style.display = 'none' : obj.style.display = 'flex'
+
+    setField(obj)
+  }
+
+  function removeFriend (obj) {
+    if (obj !== undefined) {
+      setUserRemove(obj.target.id)
+      document.querySelector('.RemoveFriend').style.display = 'flex'
     }
+  }
 
-    const fieldEast = (event) => {     
-        const obj = event.currentTarget.lastElementChild;
-
-        if(field.style !== undefined){
-            field.style.display = "none"
-        }
-
-        obj.style.display === "flex" ? obj.style.display = "none" : obj.style.display = "flex";
-
-        setField(obj);
-    }
-
-    function removeFriend(obj){
-        if(obj !== undefined){
-            setUserRemove(obj.target.id);
-            document.querySelector('.RemoveFriend').style.display = 'flex';
-        }
-    }
-
-    //jsx
-    return(
+  // jsx
+  return (
         <div className="all-view">
 
             {
-            friends !== undefined && 
+            friends !== undefined &&
                 <>
-            {   
-                online ? 
+            {
+                online
 
-                    <div className="all-view-header">
+                  ? <div className="all-view-header">
                         ONLINE - {friends.filter(data => data.status !== 'Offline').length}
                     </div>
-                :
-                    <div className="all-view-header">
+                  : <div className="all-view-header">
                         ALL FRIENDS - {friends.length}
                     </div>
 
@@ -99,13 +97,13 @@ const View = ({friends, online}) => {
 
                     {
                         friends
-                        .filter(data => online ? data.status !== 'Offline' : data)
-                        .map(data => 
+                          .filter(data => online ? data.status !== 'Offline' : data)
+                          .map(data =>
 
-                            <div    
-                                key={data._id}   
-                                className="all-view-list-field" 
-                                onMouseOver={mouseOver} 
+                            <div
+                                key={data._id}
+                                className="all-view-list-field"
+                                onMouseOver={mouseOver}
                                 onMouseOut={mouseOut}
                             >
 
@@ -113,23 +111,13 @@ const View = ({friends, online}) => {
 
                                     <div className="all-field-west-perfil">
 
-                                        {
-                                            data.imagePerfil === undefined ?
+                                        {data.imagePerfilDefault !== undefined &&
 
-                                                <img 
-                                                    className="all-field-west-perfil-img" 
-                                                    alt="perfil"
-                                                    src={`/imagePerfil/${data.imagePerfilDefault}`}
-                                                />
-
-                                            :   
-
-                                                <img 
-                                                    className="all-field-west-perfil-img" 
-                                                    alt="perfil"
-                                                    src={`/imagePerfil/${data.imagePerfil.key}`}
-                                                />
-
+                                          <img
+                                              className="all-field-west-perfil-img"
+                                              alt="perfil"
+                                              src={`/imagePerfil/${data.imagePerfilDefault}`}
+                                          />
                                         }
 
                                         <div className="all-field-west-perfil-on">
@@ -157,31 +145,31 @@ const View = ({friends, online}) => {
                                     </div>
 
                                 </div>
-                                
+
                                 <div className="all-field-east">
-                                    <Link 
+                                    <Link
                                         to={`/chat/${data._id}`}
                                         className="all-field-east-option message"
                                     >
                                         <FontAwesomeIcon icon={faCommentAlt} />
                                     </Link>
-                                    <div 
+                                    <div
                                         className="all-field-east-option more"
                                         onClick={fieldEast}
-                                        onMouseOut={() => {setVerify(false)}}
-                                        onMouseOver={() => {setVerify(true)}}
+                                        // onMouseOut={() => { setVerify(false) }}
+                                        // onMouseOver={() => { setVerify(true) }}
                                     >
                                         <FontAwesomeIcon icon={faEllipsisV} />
 
-                                        <div 
+                                        <div
                                             className="all-field-east-more"
                                         >
-                                            
+
                                             <div className="all-field-east-more-option start">
                                                 Start Voice Call
                                             </div>
-                                            <div    
-                                                    onClick={removeFriend} 
+                                            <div
+                                                    onClick={removeFriend}
                                                     className="all-field-east-more-option remove"
                                                     id={`${data._id}#${data.name}`}
                                             >
@@ -193,8 +181,8 @@ const View = ({friends, online}) => {
                                     </div>
                                 </div>
 
-                            </div>    
-                        )
+                            </div>
+                          )
                     }
 
                     <RemoveFriend user={userRemove}/>
@@ -202,7 +190,7 @@ const View = ({friends, online}) => {
                 </>
             }
         </div>
-    )
+  )
 }
 
 export default View

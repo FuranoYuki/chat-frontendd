@@ -1,45 +1,42 @@
-import React, {useEffect, useState} from 'react';
-//css
-import './RemoveFriend.css';
-//api
-import api from '../../../../../services/http/api';
-//socket
-import socket from '../../../../../services/websocket/socket';
-
+import React, { useEffect, useState } from 'react'
+// css
+import './RemoveFriend.css'
+// api
+import api from '../../../../../services/http/api'
+// socket
+import socket from '../../../../../services/websocket/socket'
 
 const RemoveFriend = (props) => {
+  const [user, setUser] = useState({})
 
-    const [user, setUser] = useState({});
+  useEffect(() => {
+    const user = props.user.split('#')
+    setUser({ id: user[0].replace('#', ''), name: user[1] })
+  }, [props.user])
 
-    useEffect(() => {
-        const user = props.user.split('#');
-        setUser({id: user[0].replace('#', ''), name: user[1]});
-    }, [props.user]);
+  // functios
+  const cancelRemove = () => {
+    document.querySelector('.RemoveFriend').style.display = 'none'
+  }
 
-    //functios
-    const cancelRemove = () => {
-        document.querySelector('.RemoveFriend').style.display = 'none';
+  const cancelModal = (event) => {
+    if (event.currentTarget === event.target) {
+      cancelRemove()
     }
+  }
 
-    const cancelModal = (event) => {
-        if(event.currentTarget === event.target){
-            cancelRemove();
-        }
-    }
+  const removeFriend = () => {
+    api.post('/user/removeFriend', { id: user.id, name: user.name })
+      .then(() => {
+        cancelRemove()
+        socket.emit('pending')
+      })
+  }
 
-    const removeFriend = () => {
-        api.post('/user/removeFriend', {id: user.id, name: user.name})
-        .then(() => {
-            cancelRemove();
-            socket.emit('pending');
-        })
-    }
-
-
-    //jsx
-    return(
+  // jsx
+  return (
         <div onClick={cancelModal} className="RemoveFriend">
-        {   
+        {
             user.name &&
             <div className="removeFriends-modal">
 
@@ -48,7 +45,7 @@ const RemoveFriend = (props) => {
                 </div>
 
                 <div className="removeFriends-modal-body">
-                    Are you sure you want to permanently remove 
+                    Are you sure you want to permanently remove
                     <span>{` ${user.name}`}</span>  from your friends?
                 </div>
 
@@ -66,8 +63,8 @@ const RemoveFriend = (props) => {
             </div>
         }
         </div>
-        
-    )
+
+  )
 }
 
 export default RemoveFriend

@@ -32,6 +32,16 @@ li.homenavbar__nav-seperator{
     color: white;
     margin: 10px 15px;
     padding-right: 15px;
+
+}
+
+li.homenavbar__nav-seperator > span{
+    font-size: 16px;
+    font-weight: 600;
+}
+
+li.homenavbar__nav-seperator > svg{
+    color: rgb(174, 166, 166);
 }
 
 
@@ -56,7 +66,7 @@ li.homenavbar__nav-li > div{
     padding: 5px;
     color: rgb(194, 193, 193);
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 16px;
     margin: 0 10px;
     display: flex;
     align-items: center;

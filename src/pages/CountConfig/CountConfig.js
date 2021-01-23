@@ -1,35 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react'
 
-//style
+// style
 import './CountConfig.css'
 
-//external components
-import ConfigAccountProfile from '../../components/configAccountProfile/ConfigAccountProfile';
-import ConfigAccountSecurity from '../../components/configAccountSecurity';
-import ConfigAccountDelete from '../../components/configAccountDelete';
-//router
-import {Link} from 'react-router-dom';
-//api
-import api from '../../services/http/api';
+// external components
+import ConfigAccountProfile from '../../components/configAccountProfile/ConfigAccountProfile'
+import ConfigAccountSecurity from '../../components/configAccountSecurity'
+import ConfigAccountDelete from '../../components/configAccountDelete'
+// router
+import { Link } from 'react-router-dom'
+// api
+import api from '../../services/http/api'
 
 const CountConfig = () => {
-    //react-states
-    const [user, setUser] = useState({})
+  // react-states
+  const [user, setUser] = useState({})
 
+  // react-effects
+  useEffect(() => {
+    api.post('/user/getUserConfig')
+      .then(data => {
+        setUser(data.data)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }, [])
 
-    //react-effects
-    useEffect(() => {
-        api.post('/user/getUserConfig')
-        .then(data => {
-            setUser(data.data)
-        })
-        .catch(error => {
-            console.log('failed at getUserConfig');
-        });
-    }, [])
-
-    //jsx
-    return(
+  // jsx
+  return (
         <div className="CountConfig">
 
             <div className="config-navbar">
@@ -43,7 +42,7 @@ const CountConfig = () => {
 
             <div className="config-exit">
                 <div className="config-exit-div">
-                    <Link 
+                    <Link
                         to="/"
                         className="config-exist-div-icon"
                     >
@@ -56,8 +55,7 @@ const CountConfig = () => {
             </div>
 
         </div>
-    )
+  )
 }
 
 export default CountConfig
-

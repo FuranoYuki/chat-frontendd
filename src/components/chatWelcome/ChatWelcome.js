@@ -1,31 +1,21 @@
-//dependencies
-import React, {memo} from 'react';
+// dependencies
+import React, { memo } from 'react'
 
-//external files
-import './ChatWelcome.css';
+// external files
+import './ChatWelcome.css'
 
-
-const ChatWelcome = ({friend}) => {
-
-    return(
+const ChatWelcome = ({ friend }) => {
+  return (
         <div className="ChatWelcome">
-            {   
+            {
                 friend !== undefined &&
                 <>
-                    {
-                    friend.imagePerfil === undefined ?
-
-                        <img 
-                            className="chatWelcome-img"
-                            src={`/imagePerfil/${friend.imagePerfilDefault}`}
-                            alt="perfil"
-                        />
-                    :
-                        <img 
-                            className="chatWelcome-img"
-                            src={`/imagePerfil/${friend.imagePerfil}`}
-                            alt="perfil"
-                        />
+                    {friend.imagePerfilDefault !== undefined &&
+                    <img
+                        className="chatWelcome-img"
+                        src={`/imagePerfil/${friend.imagePerfilDefault}`}
+                        alt="perfil"
+                    />
                     }
 
                     <div className="chatWelcome-user">
@@ -38,7 +28,7 @@ const ChatWelcome = ({friend}) => {
                 </>
             }
         </div>
-    )
+  )
 }
 
-export default memo(ChatWelcome);
+export default memo(ChatWelcome)

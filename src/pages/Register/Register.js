@@ -1,74 +1,71 @@
-//dependencies
-import React, {useEffect} from 'react';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faVideo, faComments, faUsers} from '@fortawesome/free-solid-svg-icons'
-import {useForm} from 'react-hook-form';
-import {useHistory} from 'react-router-dom'
+// dependencies
+import React, { useEffect } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faVideo, faComments, faUsers } from '@fortawesome/free-solid-svg-icons'
+import { useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 
-//external files
-import './Register.css';
+// external files
+import './Register.css'
 import logo from '../../assets/logo_transparent.png'
-import api from '../../services/http/api';
-import {login, isAuthenticated} from '../../services/auth'
+import api from '../../services/http/api'
+import { login, isAuthenticated } from '../../services/auth'
 
 const Register = () => {
-    const {register, handleSubmit} = useForm();
-    const history = useHistory()
+  const { register, handleSubmit } = useForm()
+  const history = useHistory()
 
-
-    useEffect(() => {
-        if(isAuthenticated()){
-            history.push("/");
-        }
-    }, [])
-
-    //logic for when the user submit the login form
-    const formLoginSubmit = async (data) => {
-        const {email, password} = data;
-        const name = email.split("@")[0];
-
-        if(password.length > 6){
-            //call api for  register a new account
-            api.post("/user/register", {
-                name,
-                email,
-                password
-            }).then(response => {
-
-                login(response.data.token);
-                history.push("/")
-                
-            }).catch(error => {
-                emailExist(error.response.data);
-            });
-        }else{
-            //error message
-            const obj = document.querySelector(".error--password");
-            obj.innerHTML = "The password need to have more than 6 characters !";
-            obj.style.display = "flex"
-    
-            //input red
-            document.querySelector(".password-area-input").style.border = "1px solid   rgb(255, 16, 16)"
-        }
+  useEffect(() => {
+    if (isAuthenticated()) {
+      history.push('/')
     }
-    
-    //logic for when the user try to register an e-mail that is already register
-    const emailExist = (data) => {
-        //error message
-        const obj = document.querySelector(".error--email");
-        obj.innerHTML = data;
-        obj.style.display = "flex"
+  }, [])
 
-        //input red
-        document.querySelector(".email-area-input").style.border = "1px solid   rgb(255, 16, 16)"
+  // logic for when the user submit the login form
+  const formLoginSubmit = async (data) => {
+    const { email, password } = data
+    const name = email.split('@')[0]
+
+    if (password.length > 6) {
+      // call api for  register a new account
+      api.post('/user/register', {
+        name,
+        email,
+        password
+      }).then(response => {
+        login(response.data.token)
+        history.push('/')
+      }).catch(error => {
+        emailExist(error.response.data)
+      })
+    } else {
+      // error message
+      const obj = document.querySelector('.error--password')
+      obj.innerHTML = 'The password need to have more than 6 characters !'
+      obj.style.display = 'flex'
+
+      // input red
+      document.querySelector('.password-area-input').style.border = '1px solid   rgb(255, 16, 16)'
     }
+  }
 
-    return(
+  // logic for when the user try to register an e-mail that is already register
+  const emailExist = (data) => {
+    // error message
+    const obj = document.querySelector('.error--email')
+    obj.innerHTML = data
+    obj.style.display = 'flex'
+
+    // input red
+    document.querySelector('.email-area-input').style.border = '1px solid   rgb(255, 16, 16)'
+  }
+
+  return (
 
         <div className="Login">
 
             <div className="login__marketing">
-                
+
                 <div className="login__marketing--call lm1-div">
                     <div className="login__marketing--call-icon lm3-icon">
                         <FontAwesomeIcon icon={faVideo} />
@@ -76,7 +73,7 @@ const Register = () => {
                     <div className="login__marketing--call-text lm2-txt">
                         Do it video call with you friends using Funy
                     </div>
-                    
+
                 </div>
 
                 <div className="login__marketing--chat lm1-div">
@@ -112,7 +109,7 @@ const Register = () => {
                             </label>
                             <span className="error--email"></span>
                         </div>
-                        <input 
+                        <input
                             name="email"
                             className="login__form--input"
                             ref={register}
@@ -139,7 +136,7 @@ const Register = () => {
             </form>
 
         </div>
-    )
+  )
 }
 
 export default Register
