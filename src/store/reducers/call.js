@@ -1,7 +1,13 @@
 const INIT_STATE = {
   modal: false,
   navbar: false,
-  inCall: false
+  startCall: false,
+  inCall: false,
+  friendInCall: false,
+  acceptedCall: false,
+  recusedCall: false,
+  friend: false,
+  friendId: false
 }
 
 function navbarCall (state = INIT_STATE, action) {

@@ -1,5 +1,5 @@
 // dependencies
-import React, { useEffect, useCallback } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faPhoneSquareAlt,
@@ -11,36 +11,25 @@ import {
   faInbox
 }
   from '@fortawesome/free-solid-svg-icons'
-import { useSelector, useDispatch } from 'react-redux'
-
+// react redux
+import { useDispatch } from 'react-redux'
 // style
 import './chatNavbar.css'
-// callDisplay
+// components
 import ChatNavbarCall from '../chatNavbarCall/ChatNavbarCall'
-// socket-io
-import socket from '../../services/websocket/socket'
 // action
 import callAction from '../../store/actions/call'
 
 const ChatNavbar = ({ friend }) => {
-  const call = useSelector(state => state.call)
   const dispatch = useDispatch()
 
-  const changeNavbar = useCallback(() => {
-    document.querySelector('.ChatNavbarCall').style.display = 'flex'
-    document.querySelector('.chatNavbar').style.backgroundColor = 'rgb(18, 16, 19)'
-    document.querySelector('.chatNavbar-main').style.border = 'none'
-  }, [])
-
-  const openCall = useCallback(() => {
-    dispatch(callAction({ navbar: true }))
-    changeNavbar()
-  }, [friend, changeNavbar])
-
-  const initCall = () => {
-    socket.emit('startCall', friend._id)
-    dispatch(callAction({ navbar: true, inCall: true }))
-    changeNavbar()
+  const initCall = async () => {
+    dispatch(callAction({
+      startCall: true,
+      friend: `${friend.name + '' + friend.code}`,
+      navbar: true,
+      inCall: true
+    }))
   }
 
   const overFocus = event => {
@@ -50,12 +39,6 @@ const ChatNavbar = ({ friend }) => {
   const outFocus = event => {
     event.target.style.width = 120 + 'px'
   }
-
-  useEffect(() => {
-    if (call.navbar) {
-      openCall()
-    }
-  }, [openCall, call.navbar])
 
   // jsx
   return (
@@ -129,7 +112,7 @@ const ChatNavbar = ({ friend }) => {
                 </>
                 }
             </div>
-            <ChatNavbarCall call={call}/>
+            <ChatNavbarCall/>
         </div>
   )
 }

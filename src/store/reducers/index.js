@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux'
-import userReducer from './UserReducer'
 import HomeNavbarReducer from './HomeNavbarReducer'
 import call from './call'
+import userData from './userData'
+import notification from './notification'
 
 const rootReducers = combineReducers({
-  userReducer,
   HomeNavbarReducer,
-  call
+  call,
+  userData,
+  notification
 })
 
 export default rootReducers

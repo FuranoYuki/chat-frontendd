@@ -1,34 +1,27 @@
 // dependencies
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-
+import { useSelector, useDispatch } from 'react-redux'
 // components
 import './Home.css'
-import Social from '../../components/social/Social'
 import HomeNavbar from '../../components/Home/homeNavbar/homeNavbar'
-import Group from '../../components/group/Group'
 import AddFriend from '../../components/Home/addFriend/AddFriend'
 import Pending from '../../components/Home/pedding/Pending'
 import All from '../../components/Home/all/All'
-
 // api http
 import api from '../../services/http/api'
 // api websocket
 import socket from '../../services/websocket/socket'
 // token
-import { logout } from '../../services/auth'
-// route
-import { useHistory } from 'react-router-dom'
+import tokenExpired from '../../components/tokenExpired/tokenExpired'
+// action
+import notificationAction from '../../store/actions/notification'
 
 const Home = () => {
   const [friends, setFriends] = useState('')
   const [pending, setPending] = useState({})
-  const [homeNav, setHomeNav] = useState('Online')
-
   const state = useSelector(state => state.HomeNavbarReducer)
-  const userReducer = useSelector(state => state.userReducer)
-
-  const history = useHistory()
+  const notification = useSelector(state => state.notification)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     getFriend()
@@ -36,29 +29,21 @@ const Home = () => {
   }, [])
 
   useEffect(() => {
-    socket.on('friendChangeStatus', () => {
-      getFriend()
-    })
-
-    socket.on('newPending', () => {
-      console.log('new Pending')
+    if (notification.pending) {
       getPending()
-    })
+      dispatch(notificationAction({ pending: false }))
+    }
+  }, [notification])
+
+  useEffect(() => {
+    socket.on('friendChangeStatus', () => { getFriend() })
+    socket.on('pendingNotification', () => { getPending() })
   }, [])
 
-  useEffect(() => {
-    setHomeNav(state)
-  }, [state])
-
-  useEffect(() => {
-    setFriends(userReducer)
-  }, [userReducer])
-
-  // -- FUNCTIONS --
   const dicideView = (data) => {
     switch (data) {
       case 'Add Friend':
-        return <AddFriend />
+        return <AddFriend/>
       case 'Pending':
         return <Pending pending={pending.pending}/>
       case 'Online':
@@ -76,10 +61,7 @@ const Home = () => {
         setFriends(response.data)
       })
       .catch(error => {
-        if (error.response.tokenExpired === undefined) {
-          logout()
-          history.push('/login')
-        }
+        tokenExpired(error)
       })
   }
 
@@ -89,27 +71,19 @@ const Home = () => {
         setPending(response.data)
       })
       .catch(error => {
-        console.log(error)
+        tokenExpired(error)
       })
   }
 
-  // -- JSX --
-
   return (
-        <div className="Home">
-
-            <Group/>
-
-            <Social/>
-
-            <div className="home__body">
-                <HomeNavbar user={friends}/>
-                {
-                    dicideView(homeNav)
-                }
-            </div>
-
-        </div>
+    <div className="Home">
+      <div className="home__body">
+          <HomeNavbar user={friends}/>
+          {
+              dicideView(state)
+          }
+      </div>
+    </div>
   )
 }
 

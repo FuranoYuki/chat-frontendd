@@ -1,27 +1,22 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react'
 
-import './NotFoundPage.css';
+import './NotFoundPage.css'
 
-//router
-import {useHistory, Redirect} from 'react-router-dom';
+// router
+import { useHistory } from 'react-router-dom'
 
 const NotFoundPage = () => {
+  const [count, setCount] = useState(3)
+  const history = useHistory()
 
-    const [count, setCount] = useState(3);
-    const history = useHistory()
+  useEffect(() => {
+    const obj = document.querySelector('.notfoundpage-count > span')
+    setInterval(() => {
+      !Number(obj.innerHTML) ? history.push('/') : setCount(Number(obj.innerHTML) - 1)
+    }, 1000)
+  }, [])
 
-    useEffect(() => {
-        const obj = document.querySelector('.notfoundpage-count > span');
-        setInterval(() => {
-            !Number(obj.innerHTML) ? history.push('/') : setCount(Number(obj.innerHTML) - 1)
-        }, 1000)
-    }, [])
-
-    const countdown = () => {
-        setCount();
-    }
-
-    return(
+  return (
         <div className="NotFoundPage">
             <div className="notfoundpage-header">
                 404 Not found Page
@@ -33,7 +28,7 @@ const NotFoundPage = () => {
 
             </div>
         </div>
-    )
+  )
 }
 
 export default NotFoundPage

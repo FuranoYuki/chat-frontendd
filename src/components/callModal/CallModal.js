@@ -5,36 +5,41 @@ import { faPhoneSquareAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 // style
 import './CallModal.css'
 // router
-import { useParams, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 // action
-import call from '../../store/actions/call'
+import callAction from '../../store/actions/call'
+import socket from '../../services/websocket/socket'
 
-const CallModal = ({ friend }) => {
-  const modal = useSelector(state => state.call.modal)
-  const dispatch = useDispatch()
-  const { friend: url } = useParams()
+const CallModal = ({ friendId }) => {
   const history = useHistory()
+  const dispatch = useDispatch()
+  const call = useSelector(state => state.call)
 
-  const closeModal = () => {
-    dispatch(call({ modal: false }))
+  const recuseCall = (to) => {
+    socket.emit('recusedCall', to)
+    dispatch(callAction({ navbar: false, friendInCall: false, modal: false, friend: false }))
   }
 
-  const acceptCall = () => {
-    dispatch(call({ inCall: true, modal: false }))
-    if (friend._id !== url) {
-      history.push(`chat/${friend._id}`)
-    }
+  const acceptCall = (to, id) => {
+    socket.emit('acceptedCall', to)
+    dispatch(callAction({ inCall: true }))
+    history.push(`/chat/${id}`)
+
+    document.querySelector('.callmodal-main-text-body')
+      .innerHTML = 'please allow us to use your microphone'
+    document.querySelector('.callmodal-main-buttons').style.display = 'none'
   }
 
   useEffect(() => {
-    if (modal) {
+    if (call.modal) {
       document.querySelector('.CallModal').style.display = 'flex'
     } else {
+      document.querySelector('.callmodal-main-text-body').innerHTML = 'Incoming call ...'
       document.querySelector('.CallModal').style.display = 'none'
     }
-  }, [modal])
+  }, [call.modal])
 
   return (
         <div className="CallModal">
@@ -46,7 +51,7 @@ const CallModal = ({ friend }) => {
                 />
                 <div className="callmodal-main-text">
                     <div className="callmodal-main-text-header">
-                        {friend.name}
+                        Antonio
                     </div>
                     <div className="callmodal-main-text-body">
                         Incoming call ...
@@ -55,13 +60,12 @@ const CallModal = ({ friend }) => {
                 <div className="callmodal-main-buttons">
                     <div
                         className="callmodal-main-button decline"
-                        onClick={closeModal}
+                        onClick={() => recuseCall(call.friend)}
                     >
                         <FontAwesomeIcon icon={faTimes} />
                     </div>
                     <div
-                        to={`/chat/${friend._id}/${true}`}
-                        onClick={acceptCall}
+                        onClick={() => acceptCall(call.friend, call.friendId)}
                         className="callmodal-main-button accept"
                     >
                         <FontAwesomeIcon icon={faPhoneSquareAlt} />

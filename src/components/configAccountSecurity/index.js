@@ -1,85 +1,82 @@
-//react
-import React from 'react';
-//fontAwesome
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faTimes} from '@fortawesome/free-solid-svg-icons';
-
-import {useForm} from 'react-hook-form';
-
-//api
-import api from '../../services/http/api';
-
-//style
-import './styles.css';
+// react
+import React from 'react'
+// fontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimes } from '@fortawesome/free-solid-svg-icons'
+// form
+import { useForm } from 'react-hook-form'
+// api
+import api from '../../services/http/api'
+// style
+import './styles.css'
 
 const ConfigAccountSecurity = () => {
+  // form
+  const { register, handleSubmit } = useForm()
 
-    //form
-    const {register, handleSubmit} = useForm();
-    
-    //functions
-    const modalChangePassword = () => {
-        document.querySelector('.modal-changePassword').style.display = 'flex';
+  // functions
+  const modalChangePassword = () => {
+    document.querySelector('.modal-changePassword').style.display = 'flex'
+  }
+
+  const closeModal = () => {
+    document.querySelector('.modal-changePassword').style.display = 'none'
+  }
+
+  const verifyModal = (event) => {
+    if (event.target === event.currentTarget) {
+      closeModal()
+    }
+  }
+
+  const changePassword = (data) => {
+    const { password, newPassword } = data
+
+    if (password.length < 6) {
+      document.querySelector('.incorrect-pass').style.display = 'inline'
+    } else {
+      document.querySelector('.incorrect-pass').style.display = 'none'
     }
 
-    const closeModal = () => {
-        document.querySelector('.modal-changePassword').style.display = 'none';
+    if (newPassword.length < 6) {
+      document.querySelector('.atLeast-4').style.display = 'inline'
+    } else {
+      document.querySelector('.atLeast-4').style.display = 'none'
     }
 
-    const verifyModal = (event) => {
-        if(event.target === event.currentTarget){
-            closeModal();
-        }
-    }
-
-    const changePassword = (data) => {
-        const {password, newPassword} = data;
-        
-        if(password.length < 6){
+    if (password.length >= 6 && newPassword.length >= 6) {
+      api.post('/user/changePassword', {
+        password,
+        newPassword
+      })
+        .then(() => {
+          closeModal()
+        })
+        .catch(error => {
+          if (error.response.data === 'failed at changePassword, password incorrect') {
             document.querySelector('.incorrect-pass').style.display = 'inline'
-        }else{
-            document.querySelector('.incorrect-pass').style.display = 'none'
-        }
-
-        if(newPassword.length < 6){
-            document.querySelector('.atLeast-4').style.display = 'inline'
-        }else{
-            document.querySelector('.atLeast-4').style.display = 'none'
-        }
-
-        if(password.length >= 6 && newPassword.length >= 6){
-            api.post('/user/changePassword', {
-                password,
-                newPassword
-            })
-            .then(() => {
-                closeModal();
-            })
-            .catch(error => {
-                if(error.response.data === 'failed at changePassword, password incorrect'){
-                    document.querySelector('.incorrect-pass').style.display = 'inline'
-                }
-            })
-        }
+          }
+        })
     }
-    
-    return(
+  }
+
+  return (
         <>
             <div className="config-accSec">
                 <div className="config-accSec-left">
                     <div className="config-accSec-left-header">
                         Password and Authentication
                     </div>
-                    <button 
+                    <button
                         className="config-accSec-left-button"
                         onClick={modalChangePassword}
                     >
                             Change Password
-                    </button> 
+                    </button>
                     <div className="config-accSec-left-twoF">
                         <div className="config-accSec-left-twoF-header">
                             TWO-FACTOR AUTHENTICATION
-                        </div>  
+                        </div>
                         <p>
                             You must verify your account before you can enable two-factor authentication
                         </p>
@@ -89,24 +86,24 @@ const ConfigAccountSecurity = () => {
                     </div>
                 </div>
                 <div className="config-accSec-right">
-                    <img 
-                        src="https://discord.com/assets/cdea41ede63f61153e4a3c0531fa3873.svg"  
+                    <img
+                        src="https://discord.com/assets/cdea41ede63f61153e4a3c0531fa3873.svg"
                         atl="change your password"
                         className="config-accSec-right-img"
                     />
                 </div>
             </div>
 
-            <div 
+            <div
                 className="modal-changePassword"
                 onClick={verifyModal}
             >
                 <form
-                    onSubmit={handleSubmit(changePassword)} 
+                    onSubmit={handleSubmit(changePassword)}
                     className="changePassword-body"
                 >
                     <div className="changePassword-body-main">
-                        <div 
+                        <div
                             className="changePassword-body-main-exit"
                             onClick={closeModal}
                         >
@@ -126,7 +123,7 @@ const ConfigAccountSecurity = () => {
                                 </span>
                             </label>
                             <input
-                                id="changePassword-body-main-field-password" 
+                                id="changePassword-body-main-field-password"
                                 className="changePassword-body-main-field-password"
                                 name="password"
                                 type="password"
@@ -141,7 +138,7 @@ const ConfigAccountSecurity = () => {
                                 </span>
                             </label>
                             <input
-                                id="changePassword-body-main-field-newPassword" 
+                                id="changePassword-body-main-field-newPassword"
                                 className="changePassword-body-main-field-password"
                                 name="newPassword"
                                 type="password"
@@ -150,13 +147,13 @@ const ConfigAccountSecurity = () => {
                         </div>
                     </div>
                     <div className="changePassword-body-buttons">
-                        <button 
+                        <button
                             className="changePassword-body-button cancel"
                             onClick={closeModal}
                         >
                             Cancel
                         </button>
-                        <button 
+                        <button
                             className="changePassword-body-button done"
                             type="submit"
                         >
@@ -166,7 +163,7 @@ const ConfigAccountSecurity = () => {
                 </form>
             </div>
         </>
-    )
+  )
 }
 
 export default ConfigAccountSecurity

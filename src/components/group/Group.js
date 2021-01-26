@@ -1,66 +1,24 @@
 // dependencies
-import React, { memo, useEffect, useState, useRef } from 'react'
+import React, { memo } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 
 // style
 import './Group.css'
-// api
-import api from '../../services/http/api'
-// socket-io
-import socket from '../../services/websocket/socket'
-// callmodal
-import CallModal from '../callModal/CallModal'
-// action
-import call from '../../store/actions/call'
 
 // JSX
 const Group = () => {
-  const [friend, setFriend] = useState('')
-  const dispatch = useDispatch()
-
-  const mounted = useRef(false)
-
-  useEffect(() => {
-    mounted.current = true
-    return () => (mounted.current = false)
-  })
-
-  useEffect(() => {
-    if (mounted.current) {
-      socket.on('receving call', data => {
-        api.post('/user/getFriend', { id: data })
-          .then(response => {
-            setFriend(response.data)
-            console.log('aloalo')
-            dispatch(call({ navbar: true }))
-            dispatch(call({ modal: true }))
-          })
-          .catch(error => {
-            console.log(error)
-          })
-      })
-    }
-  }, [])
-
   const groupMouseOver = event => {
     const sign = event.currentTarget.firstElementChild
-
     sign.style.display = 'flex'
     sign.style.height = 20 + 'px'
   }
 
   const groupMouseOut = event => {
-    const sign = event.currentTarget.firstElementChild
-
-    sign.style.display = 'none'
+    event.currentTarget.firstElementChild.style.display = 'none'
   }
 
   return (
         <div className="Group">
-
-            <CallModal friend={friend} />
-
             <Link
                 to="/"
                 className="group__discord"

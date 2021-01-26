@@ -3,10 +3,8 @@ import React, { useEffect, useState, memo } from 'react'
 import { useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInbox, faCommentAlt, faQuestionCircle, faUserFriends } from '@fortawesome/free-solid-svg-icons'
-
 // external files
 import './homeNavbar.css'
-
 // action redux
 import HomeNavbarAction from '../../../store/actions/HomeNavbarAction'
 

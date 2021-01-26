@@ -8,6 +8,9 @@ import { isAuthenticated } from './services/auth'
 import Loading from './components/loading/Loading'
 // NotFoundPage
 import NotFoundPage from './components/notFoundPage/NotFoundPage'
+import Group from './components/group/Group'
+import Social from './components/social/Social'
+import WebRTC from './components/webRTC/WebRTC'
 
 // -pages
 const Home = lazy(() => import('./pages/Home/Home'))
@@ -34,6 +37,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 )
 
 const Routes = () => (
+
     <Router>
         <Suspense fallback={Loading}>
           <Switch>
@@ -41,9 +45,30 @@ const Routes = () => (
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
 
-            <PrivateRoute exact path="/" component={Home} />
-            <PrivateRoute exact path={['/chat/:friend/:inCall', '/chat/:friend']} component={Chat} />
-            <PrivateRoute exact path="/config" component={CountConfig} />
+            <PrivateRoute exact path="/" component={() => (
+              <>
+                <Group/>
+                <Social/>
+                <Home/>
+                <WebRTC/>
+              </>
+            )} />
+
+            <PrivateRoute exact path={['/chat/:friend/:inCall', '/chat/:friend']} component={() => (
+              <>
+                <Group/>
+                <Social/>
+                <Chat/>
+                <WebRTC/>
+              </>
+            )} />
+
+            <PrivateRoute exact path="/config" component={() => (
+              <>
+                <CountConfig/>
+                <WebRTC/>
+              </>
+            )} />
 
             <Route path='*' component={NotFoundPage} />
           </Switch>

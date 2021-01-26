@@ -1,11 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-//style
-import './Loading.css';
+// style
+import './Loading.css'
 
 const Loading = () => {
-
-    return(
+  return (
         <div className="Loading">
             <div className="loading-header">
                 Loading Page
@@ -18,7 +17,7 @@ const Loading = () => {
             </div>
 
         </div>
-    )
+  )
 }
 
-export default Loading;
+export default Loading

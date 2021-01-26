@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 // styles
 import './ChatNavbarCall.css'
 // fontAwesome
@@ -12,23 +12,33 @@ import {
   faChevronDown
 } from '@fortawesome/free-solid-svg-icons'
 // redux
-import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 // action
-import callAction from '../../store/actions/call'
 
-const ChatNavbarCall = ({ call }) => {
-  const dispatch = useDispatch()
+const ChatNavbarCall = () => {
+  const call = useSelector(state => state.call)
 
   const closeCall = () => {
-    dispatch(callAction({ navbar: false }))
     document.querySelector('.ChatNavbarCall').style.display = 'none'
     document.querySelector('.chatNavbar').style.backgroundColor = 'transparent'
     document.querySelector('.chatNavbar-main').style.borderBottom = '1px solid rgb(11, 10, 10)'
   }
 
+  const openNavbar = () => {
+    document.querySelector('.ChatNavbarCall').style.display = 'flex'
+    document.querySelector('.chatNavbar').style.backgroundColor = 'rgb(18, 16, 19)'
+    document.querySelector('.chatNavbar-main').style.border = 'none'
+  }
+
+  useEffect(() => {
+    call.navbar ? openNavbar() : closeCall()
+  }, [call.navbar])
+
   return (
         <div className="ChatNavbarCall">
             <div className="chatnavbarcall-users">
+
+                {call.friendInCall &&
                 <div className="chatnavbarcall-user outsider">
                     <img
                         className="chatnavbarcall-user-img"
@@ -38,6 +48,7 @@ const ChatNavbarCall = ({ call }) => {
                         <FontAwesomeIcon icon={faMicrophone} />
                     </div>
                 </div>
+                }
 
                 {call.inCall &&
                 <div className="chatnavbarcall-user you">

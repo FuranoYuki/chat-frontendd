@@ -10,13 +10,11 @@ const ChatWelcome = ({ friend }) => {
             {
                 friend !== undefined &&
                 <>
-                    {friend.imagePerfilDefault !== undefined &&
                     <img
                         className="chatWelcome-img"
                         src={`/imagePerfil/${friend.imagePerfilDefault}`}
                         alt="perfil"
                     />
-                    }
 
                     <div className="chatWelcome-user">
                         {friend.name}

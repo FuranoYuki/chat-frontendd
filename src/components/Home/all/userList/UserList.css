@@ -68,7 +68,6 @@ div.all-field-west-perfil-on-2{
     height: 9px;
     width: 9px;
     border-radius: 50%;
-    background-color: rgb(174, 166, 166);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,7 +77,6 @@ div.all-field-west-perfil-on-3{
     height: 5px;
     width: 5px;
     border-radius: 50%;
-    background-color: rgb(37, 33, 40);
 }
 
 div.all-field-west-info{
@@ -92,19 +90,19 @@ div.all-field-west-info-names{
 }
 
 span.all-field-west-info-name{
-    font-size: 14px;
-    font-weight: 900;
+    font-size: 15px;
+    font-weight: 600;
     color: white;
 }
 
 span.all-field-west-info-code{
-    font-size: 14px;
+    font-size: 15px;
     color: rgb(174, 166, 166);
     display: none;
 }
 
 div.all-field-west-info-message{
-    font-size: 12px;
+    font-size: 14px;
     color: rgb(174, 166, 166);
 }
 
@@ -171,4 +169,21 @@ div.all-field-east-more-option.remove{
 div.all-field-east-more-option.remove:hover{
     color: white;
     background-color: #f04747;
+}
+
+
+.Online{
+    background-color: rgb(67, 181, 129);
+}
+
+.Idle{
+    background-color: orange;
+}
+
+.DND{
+    background-color: red;
+}
+
+.Invisible, div.Offline{
+    background-color: gray;
 }

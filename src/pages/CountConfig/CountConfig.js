@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react'
-
 // style
 import './CountConfig.css'
-
-// external components
-import ConfigAccountProfile from '../../components/configAccountProfile/ConfigAccountProfile'
-import ConfigAccountSecurity from '../../components/configAccountSecurity'
-import ConfigAccountDelete from '../../components/configAccountDelete'
 // router
 import { Link } from 'react-router-dom'
 // api
 import api from '../../services/http/api'
+// external components
+import ConfigAccountProfile from '../../components/configAccountProfile/ConfigAccountProfile'
+import ConfigAccountSecurity from '../../components/configAccountSecurity'
+import ConfigAccountDelete from '../../components/configAccountDelete'
 
 const CountConfig = () => {
   // react-states

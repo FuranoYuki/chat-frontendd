@@ -21,28 +21,31 @@ const Login = () => {
 
   const handleLoginForm = (data) => {
     const { email, password } = data
+    const emailWarning = document.querySelector('.register__email-warning')
+    const passwordWarning = document.querySelector('.register__password-warning')
 
     if (email && password) {
       api.post('/user/login', { email, password })
         .then(response => {
+          console.log(response)
           login(response.data.token)
           history.push('/')
         })
         .catch(error => {
           if (error.response.data.indexOf('email') !== -1) {
-            document.querySelector('.register__email-warning').style.display = 'flex'
+            emailWarning.style.display = 'flex'
           }
           if (error.response.data.indexOf('password') !== -1) {
-            document.querySelector('.register__password-warning').style.display = 'flex'
+            passwordWarning.style.display = 'flex'
           }
         })
     } else {
       if (!email) {
-        document.querySelector('.register__email-warning').style.display = 'flex'
-        document.querySelector('.register__password-warning').style.display = 'none'
+        emailWarning.style.display = 'flex'
+        passwordWarning.style.display = 'none'
       } else {
-        document.querySelector('.register__password-warning').style.display = 'flex'
-        document.querySelector('.register__email-warning').style.display = 'none'
+        passwordWarning.style.display = 'flex'
+        emailWarning.style.display = 'none'
       }
     }
   }

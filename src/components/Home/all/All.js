@@ -1,35 +1,36 @@
-// react
-import React, { memo } from 'react'
-
-// style
-import './All.css'
-
-// view
-import View from './view/View'
-
-// message
+// React
+import React, { useState, useEffect } from 'react'
+// message component
 import Message from './message/Message'
+// css
+import './All.css'
+import UserList from './userList/UserList'
 
 const All = ({ friends, online }) => {
-  // functions
-  const definyView = (user) => {
-    if (friends !== undefined) {
-      if (friends.length > 0) {
-        return <View friends={friends} online={online} />
+  const [view, setView] = useState(false)
+
+  useEffect(() => {
+    const numbFriendsOnline = friends !== undefined ? friends.filter(data => data.status !== 'Offline').length : 0
+
+    if (friends === undefined) {
+      setView(false)
+    } else {
+      if ((online && numbFriendsOnline > 0) || (!online && friends.length > 0)) {
+        setView(true)
+      } else {
+        setView(false)
       }
-
-      return <Message />
     }
-  }
+  }, [friends, online])
 
-  // jsx
   return (
-        <div className="All">
-            {
-                definyView(friends)
-            }
-        </div>
+    <div className="All-friends">
+      {view
+        ? <UserList friends={friends} online={online} />
+        : <Message online={online}/>
+      }
+    </div>
   )
 }
 
-export default memo(All)
+export default All

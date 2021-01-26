@@ -42,6 +42,7 @@ li.homenavbar__nav-seperator > span{
 
 li.homenavbar__nav-seperator > svg{
     color: rgb(174, 166, 166);
+    margin-right: 10px;
 }
 
 

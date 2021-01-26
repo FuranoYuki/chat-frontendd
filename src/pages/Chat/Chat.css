@@ -1,11 +1,11 @@
 div.Chat{
     background-color:  rgb(37, 33, 40);
     display: flex;
-    max-width: 100vw;
     overflow: hidden;
     font-family: 'Open Sans';
     max-height: 100vh;
     height: 100vh;
+    flex-grow: 1;
 }
 
 div.chat-body{
@@ -44,7 +44,7 @@ div.chat-body-input-margin{
 
 }
 
-div.chat-body-input-icon{
+form.chat-body-input-icon{
     font-size: 20px;
     transition: color 0.3s;;
     display: flex;
@@ -52,7 +52,7 @@ div.chat-body-input-icon{
 
 }
 
-div.chat-body-input-icon > svg:hover{
+form.chat-body-input-icon > svg:hover{
     color: white;
     cursor: pointer;
 }
@@ -63,6 +63,8 @@ input.chat-body-input-text{
     margin-left: 20px;
     color: white;
     width: 400px;
+    font-size: 15px;
+    font-weight: 400;
 }
 
 div.chat-body-input-info > span{
