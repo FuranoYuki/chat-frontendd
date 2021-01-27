@@ -11,12 +11,13 @@ div.config-accDel > * {
 }
 
 div.config-accDel-header{
-    font-size: 11px;
-    font-weight: 900;
+    font-size: 12px;
+    font-weight: 600;
 }
 
 div.config-accDel > p{
-    font-size: 12px;
+    font-size: 14px;
+    font-weight: 400;
 }
 
 div.config-accDel-btns{
@@ -28,8 +29,9 @@ button.config-accDel-btns-Disable{
     color: white;
     border: none;
     margin-right: 10px;
-    padding: 5px 15px;
+    padding: 8px 15px;
     border-radius: 3px;
+    font-size: 14px;
 }
 
 button.config-accDel-btns-Disable:hover{
@@ -41,8 +43,9 @@ button.config-accDel-btns-Delete{
     color: #f04747;
     border: 1px solid #f04747;
     background-color: transparent;
-    padding: 5px 15px;
+    padding: 8px 15px;
     border-radius: 3px;
+    font-size: 14px;
 }
 
 button.config-accDel-btns-Delete:hover{
@@ -77,8 +80,8 @@ div.configDel-modal-form-body{
 
 div.configDel-modal-form-body-header{
     color: white;
-    font-size: 16px;
-    font-weight: 900;
+    font-size: 14px;
+    font-weight: 600;
     text-align: left;
     padding: 20px 0;
 }
@@ -91,20 +94,23 @@ p.configDel-modal-form-body-text{
     color: white;
     padding: 10px 20px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 400;
 }
 
 div.configDel-modal-form-body-field{
     display: flex;
     flex-direction: column;
     padding: 20px 0;
+    font-size: 14px;
+    font-weight: 600;
 }
 
 div.configDel-modal-form-body-field > label{
     padding: 5px 0;
     color: rgb(174, 166, 166);
     font-size: 14px;
-    font-weight: 900;
+    font-weight: 600;
 }
 
 input.configDel-modal-form-body-field-input{
@@ -113,6 +119,7 @@ input.configDel-modal-form-body-field-input{
     border-radius: 5px;
     padding: 15px 10px;
     color: white;
+    font-size: 14px;
 }
 
 div.configDel-modal-form-buttons{
@@ -128,7 +135,7 @@ button.configDel-modal-form-button{
     border: none;
     border-radius: 5px;
     color: white;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 button.configDel-modal-form-button.cancel{

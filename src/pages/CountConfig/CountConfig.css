@@ -14,6 +14,10 @@ div.config-navbar{
     width: 250px;
     background-color: rgb(26, 24, 26);
     position: fixed;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    justify-content: flex-end;
 }
 
 div.config-main{
@@ -59,4 +63,40 @@ a.config-exist-div-icon{
 a.config-exist-div-icon:hover{
     background-color: rgba(174, 166, 166, 0.24);
     cursor: pointer;
+}
+
+.config-navbar-logout{
+    color: #f04747;
+    font-size: 16px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.config-navbar-logout:hover{
+    cursor: pointer;
+    background-color: rgba(240, 71, 71, 0.1);
+}
+
+.config-navbar-social{
+    color: rgb(174, 166, 166);
+    font-size: 20px;
+    display: flex;
+    margin-top: 10px;
+}
+
+.config-navbar-social > svg{
+    margin-right: 10px;
+}
+
+.config-navbar-social > svg:hover{
+    cursor: pointer;
+    color: white;
+}
+
+.config-navbar-createdBy{
+    display: flex;
+    flex-direction: column;
+    color: white;
+    font-size: 14px;
+    margin-top: 10px;
 }

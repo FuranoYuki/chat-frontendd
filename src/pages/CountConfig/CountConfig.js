@@ -9,6 +9,10 @@ import api from '../../services/http/api'
 import ConfigAccountProfile from '../../components/configAccountProfile/ConfigAccountProfile'
 import ConfigAccountSecurity from '../../components/configAccountSecurity'
 import ConfigAccountDelete from '../../components/configAccountDelete'
+import LogoutModal from '../../components/logoutModal/LogoutModal'
+// fontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInstagram, faFacebookSquare, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 const CountConfig = () => {
   // react-states
@@ -25,11 +29,36 @@ const CountConfig = () => {
       })
   }, [])
 
+  const logoutAccount = () => {
+    document.querySelector('.LogoutModal').style.display = 'flex'
+  }
+
   // jsx
   return (
         <div className="CountConfig">
 
             <div className="config-navbar">
+              <div
+                className="config-navbar-logout"
+                onClick={logoutAccount}
+              >
+                Log Out
+              </div>
+              <div className="config-navbar-contact">
+                <div className="config-navbar-social">
+                  <FontAwesomeIcon icon={faTwitter} />
+                  <FontAwesomeIcon icon={faFacebookSquare} />
+                  <FontAwesomeIcon icon={faInstagram} />
+                </div>
+                <div className="config-navbar-createdBy">
+                  <div className="createdBy">
+                    <span>By:</span> Furano Yuki Prando
+                  </div>
+                  <div className="createdEmail">
+                    <span>Email:</span> matheus.a.prando@gmail.com
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="config-main">
@@ -52,6 +81,7 @@ const CountConfig = () => {
                 </div>
             </div>
 
+          <LogoutModal/>
         </div>
   )
 }

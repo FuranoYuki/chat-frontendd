@@ -37,7 +37,7 @@ const CallController = () => {
       try {
         const response = await api.post('/user/changeStatus', { status: event.currentTarget.id })
         setUser(response.data)
-        socket.emit('changeStatus', response.data.friends)
+        socket.emit('changeStatus', ({ friends: response.data.friends }))
       } catch (error) {
         console.log(error)
       }

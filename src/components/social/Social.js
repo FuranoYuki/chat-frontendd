@@ -1,5 +1,5 @@
 // dependencies
-import React, { useEffect, useState, memo } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -29,7 +29,7 @@ const Social = () => {
 
   // socket
   useEffect(() => {
-    socket.on('friendChangeStatus', () => {
+    socket.on('friendChangeStatus', (data) => {
       getChats()
     })
   }, [])
@@ -148,4 +148,4 @@ const Social = () => {
   )
 }
 
-export default memo(Social)
+export default Social

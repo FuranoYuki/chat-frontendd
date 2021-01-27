@@ -84,6 +84,7 @@ const ConfigAccountProfile = ({ user }) => {
                         </form>
                         <div className="accInfo-main-top-left-name">
                             {user.name}
+                            <span>{user.code}</span>
                         </div>
                     </div>
 
@@ -101,7 +102,7 @@ const ConfigAccountProfile = ({ user }) => {
                             </div>
                             <div className="accInfo-main-bot-left-bot">
                                 {user.name}
-                                <span>${user.code}</span>
+                                <span>{user.code}</span>
                             </div>
                         </div>
                         <div className="accInfo-main-bot-right">

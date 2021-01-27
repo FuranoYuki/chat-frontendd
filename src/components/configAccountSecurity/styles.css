@@ -13,8 +13,8 @@ div.config-accSec-left{
 
 div.config-accSec-left-header{
     color: white;
-    font-size: 18px;
-    font-weight: 900;
+    font-size: 16px;
+    font-weight: 600;
 }
 
 button.config-accSec-left-button{
@@ -25,6 +25,7 @@ button.config-accSec-left-button{
     background-color: #7289da;
     color: white;
     border: none;
+    font-size: 14px;
 }
 
 button.config-accSec-left-button:hover, button.config-accSec-left-twoF-button:hover{
@@ -40,14 +41,15 @@ div.config-accSec-left-twoF{
 }
 
 div.config-accSec-left-twoF-header{
-    font-weight: 900;
-    font-size: 11px;
+    font-weight: 600;
+    font-size: 12px;
 
 }
 
 div.config-accSec-left-twoF > p{
-    font-size: 12px;
+    font-size: 14px;
     margin: 10px 0;
+    font-weight: 400;
 }
 
 button.config-accSec-left-twoF-button{
@@ -57,6 +59,7 @@ button.config-accSec-left-twoF-button{
     background-color: #7289da;
     color: white;
     border: none;
+    font-size: 14px;
 }
 
 div.config-accSec-right{
@@ -114,17 +117,18 @@ div.changePassword-body-main-exit:hover{
 
 div.changePassword-body-main-header{
     color: white;
-    font-weight: 900;
-    font-size: 18px;
+    font-weight: 700;
+    font-size: 24px;
     text-align: center;
     padding: 10px 0;
 }
 
 div.changePassword-body-main-subHeader{
     color: rgb(174, 166, 166);
-    font-size: 13px;
+    font-size: 16px;
+    font-weight: 400;
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 div.changePassword-body-main-field{
@@ -153,7 +157,9 @@ input.changePassword-body-main-field-password{
     padding: 10px;
     min-width: 400px;
     color: white;
-    font-size: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 5px;
 }
 
 div.changePassword-body-buttons{
@@ -168,7 +174,7 @@ button.changePassword-body-button{
     padding: 10px 30px;
     border: none;
     border-radius: 3px;
-    font-size: 12px;
+    font-size: 14px;
     margin-left: 10px;
     color: white;
 }

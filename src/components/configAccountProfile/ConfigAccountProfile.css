@@ -61,10 +61,16 @@ div.accInfo-main-top-left-imgDiv-icon{
 }
 
 div.accInfo-main-top-left-name{
-    font-size: 18px;
-    font-weight: 900;
+    font-size: 20px;
+    font-weight: 600;
     color: white;
     padding-left: 10px;
+}
+
+div.accInfo-main-top-left-name > span{
+    font-size: 16px;
+    font-weight: 400;
+    color: rgb(174, 166, 166);
 }
 
 div.accInfo-main-top-right{
@@ -93,12 +99,14 @@ div.accInfo-main-bottom-li{
 
 div.acInfo-main-bot-left-top{
     color: rgb(174, 166, 166);
-    font-size: 12px;
+    font-size: 13px;
+    font-weight: 600;
 }
 
 div.accInfo-main-bot-left-bot{
-    font-size: 15px;
+    font-size: 16px;
     color: white;
+    font-weight: 400;
 }
 
 div.accInfo-main-bot-left-bot > span{

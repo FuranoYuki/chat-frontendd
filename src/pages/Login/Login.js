@@ -27,7 +27,6 @@ const Login = () => {
     if (email && password) {
       api.post('/user/login', { email, password })
         .then(response => {
-          console.log(response)
           login(response.data.token)
           history.push('/')
         })

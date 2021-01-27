@@ -10,7 +10,7 @@ const All = ({ friends, online }) => {
   const [view, setView] = useState(false)
 
   useEffect(() => {
-    const numbFriendsOnline = friends !== undefined ? friends.filter(data => data.status !== 'Offline').length : 0
+    const numbFriendsOnline = friends !== undefined ? Object.values(friends).filter(data => data.status !== 'Offline').length : 0
 
     if (friends === undefined) {
       setView(false)

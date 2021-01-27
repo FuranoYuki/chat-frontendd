@@ -32,11 +32,7 @@ const UserList = ({ friends, online }) => {
     obj.style.display === 'flex' ? obj.style.display = 'none' : obj.style.display = 'flex'
   }
 
-  //   const closeField = (data) => {
-
-  //   }
-
-  function removeFriend (event) {
+  const removeFriend = (event) => {
     setUserRemove(event.target.id)
     document.querySelector('.RemoveFriend').style.display = 'flex'
   }
@@ -47,7 +43,7 @@ const UserList = ({ friends, online }) => {
         <div className="all-view">
             {online
               ? <div className="all-view-header">
-                    ONLINE - {friends.filter(data => data.status !== 'Offline').length}
+                    ONLINE - {Object.values(friends).filter(data => data.status !== 'Offline').length}
                 </div>
               : <div className="all-view-header">
                     ALL FRIENDS - {friends.length}
@@ -56,7 +52,7 @@ const UserList = ({ friends, online }) => {
 
             <div className="all-view-list">
 
-            {friends
+            {Object.values(friends)
               .filter(data => online ? data.status !== 'Offline' : data)
               .map(data =>
 
