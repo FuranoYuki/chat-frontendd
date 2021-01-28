@@ -17,7 +17,6 @@ const Home = lazy(() => import('./pages/Home/Home'))
 const Login = lazy(() => import('./pages/Login/Login'))
 const Register = lazy(() => import('./pages/Register/Register'))
 const Chat = lazy(() => import('./pages/Chat/Chat'))
-const CountConfig = lazy(() => import('./pages/CountConfig/CountConfig'))
 
 // component
 
@@ -59,13 +58,6 @@ const Routes = () => (
                 <Group/>
                 <Social/>
                 <Chat/>
-                <WebRTC/>
-              </>
-            )} />
-
-            <PrivateRoute exact path="/config" component={() => (
-              <>
-                <CountConfig/>
                 <WebRTC/>
               </>
             )} />

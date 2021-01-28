@@ -7,11 +7,12 @@ import {
   faSmile
 } from '@fortawesome/free-solid-svg-icons'
 
-// external components
-import './Chat.css'
+// components
 import ChatNavbar from '../../components/chatNavbar/chatNavbar'
 import ChatWelcome from '../../components/chatWelcome/ChatWelcome'
 
+// styles
+import './Chat.css'
 // router history
 import { useParams } from 'react-router-dom'
 // api

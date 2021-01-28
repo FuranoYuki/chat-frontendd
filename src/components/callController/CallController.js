@@ -1,5 +1,4 @@
-import React, { useState, useEffect, memo } from 'react'
-import './CallController.css'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faMicrophone,
@@ -7,9 +6,14 @@ import {
   faHeadphones,
   faCog
 } from '@fortawesome/free-solid-svg-icons'
+// api
 import api from '../../services/http/api'
+// socket-io
 import socket from '../../services/websocket/socket'
-import { Link } from 'react-router-dom'
+// style
+import './CallController.css'
+// component
+import CountConfig from '../CountConfig/CountConfig'
 
 const CallController = () => {
   const [microPhoneIcon, setMicroPhoneIcon] = useState(faMicrophone)
@@ -53,6 +57,10 @@ const CallController = () => {
     }
   }
 
+  const openConfig = () => {
+    document.querySelector('.CountConfig').style.display = 'flex'
+  }
+
   useEffect(() => {
     if (user._id !== undefined) {
       socket.emit('userRoom', `${user.name + '' + user.code}`)
@@ -64,6 +72,7 @@ const CallController = () => {
   }, [])
 
   return (
+      <>
         <div className="social__settings">
 
             <div className="social__settings--info">
@@ -198,14 +207,17 @@ const CallController = () => {
                 <li className="social__settings--actions-li social-headphones">
                     <FontAwesomeIcon icon={faHeadphones} />
                 </li>
-                <li className="social__settings--actions-li social-cog">
-                    <Link to="/config">
-                        <FontAwesomeIcon icon={faCog} />
-                    </Link>
+                <li
+                    className="social__settings--actions-li social-cog"
+                    onClick={openConfig}
+                >
+                    <FontAwesomeIcon icon={faCog} />
                 </li>
             </ul>
         </div>
+        <CountConfig/>
+    </>
   )
 }
 
-export default memo(CallController)
+export default CallController

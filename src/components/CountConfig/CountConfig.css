@@ -4,7 +4,11 @@ div.CountConfig{
     max-height: 100vh;
     background-color: rgb(37, 33, 40);
     overflow-y: scroll;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: none;
+    z-index: 4;
 }
 
 
@@ -47,7 +51,7 @@ div.config-exit-div{
 
 }
 
-a.config-exist-div-icon{
+div.config-exist-div-icon{
     padding: 5px;
     border-radius: 50%;
     font-size: 16px;
@@ -60,7 +64,7 @@ a.config-exist-div-icon{
     text-decoration: none;
 }
 
-a.config-exist-div-icon:hover{
+div.config-exist-div-icon:hover{
     background-color: rgba(174, 166, 166, 0.24);
     cursor: pointer;
 }

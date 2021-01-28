@@ -12,7 +12,7 @@ import api from '../../services/http/api'
 // api websocket
 import socket from '../../services/websocket/socket'
 // token
-import tokenExpired from '../../components/tokenExpired/tokenExpired'
+import ErrorHandler from '../../components/errorHandler/ErrorHandler'
 // action
 import notificationAction from '../../store/actions/notification'
 
@@ -64,7 +64,7 @@ const Home = () => {
         setFriends(response.data.friends)
       })
       .catch(error => {
-        tokenExpired(error)
+        ErrorHandler(error)
       })
   }
 
@@ -74,7 +74,7 @@ const Home = () => {
         setPending(response.data.pending)
       })
       .catch(error => {
-        tokenExpired(error)
+        ErrorHandler(error)
       })
   }
 

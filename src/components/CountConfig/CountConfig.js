@@ -1,41 +1,48 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 // style
 import './CountConfig.css'
-// router
-import { Link } from 'react-router-dom'
 // api
 import api from '../../services/http/api'
+// errorHandle
+import ErrorHandler from '../errorHandler/ErrorHandler'
+
 // external components
-import ConfigAccountProfile from '../../components/configAccountProfile/ConfigAccountProfile'
-import ConfigAccountSecurity from '../../components/configAccountSecurity'
-import ConfigAccountDelete from '../../components/configAccountDelete'
-import LogoutModal from '../../components/logoutModal/LogoutModal'
+import ConfigAccountProfile from '../configAccountProfile/ConfigAccountProfile'
+import ConfigAccountSecurity from '../configAccountSecurity'
+import ConfigAccountDelete from '../configAccountDelete'
+import LogoutModal from '../logoutModal/LogoutModal'
 // fontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInstagram, faFacebookSquare, faTwitter } from '@fortawesome/free-brands-svg-icons'
 
 const CountConfig = () => {
-  // react-states
+  const config = useRef(null)
   const [user, setUser] = useState({})
 
-  // react-effects
-  useEffect(() => {
-    api.post('/user/getUserConfig')
-      .then(data => {
-        setUser(data.data)
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }, [])
+  const closeConfig = () => {
+    config.current.style.display = 'none'
+  }
 
   const logoutAccount = () => {
     document.querySelector('.LogoutModal').style.display = 'flex'
   }
 
+  const getUserConfig = async () => {
+    try {
+      const res = await api.post('/user/getUserConfig')
+      setUser(res.data)
+    } catch (error) {
+      ErrorHandler(error)
+    }
+  }
+
+  useEffect(() => {
+    getUserConfig()
+  }, [])
+
   // jsx
   return (
-        <div className="CountConfig">
+        <div ref={config} className="CountConfig">
 
             <div className="config-navbar">
               <div
@@ -69,12 +76,12 @@ const CountConfig = () => {
 
             <div className="config-exit">
                 <div className="config-exit-div">
-                    <Link
-                        to="/"
+                    <div
                         className="config-exist-div-icon"
+                        onClick={closeConfig}
                     >
                         X
-                    </Link>
+                    </div>
                     <div className="config-exist-div-text">
                         Esc
                     </div>

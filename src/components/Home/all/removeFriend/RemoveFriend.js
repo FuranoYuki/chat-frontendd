@@ -4,7 +4,7 @@ import './RemoveFriend.css'
 // api
 import api from '../../../../services/http/api'
 // token
-import tokenExpired from '../../../tokenExpired/tokenExpired'
+import ErrorHandler from '../../../errorHandler/ErrorHandler'
 
 const RemoveFriend = (props) => {
   const [user, setUser] = useState({})
@@ -31,7 +31,7 @@ const RemoveFriend = (props) => {
         cancelRemove()
       })
       .catch(error => {
-        tokenExpired(error)
+        ErrorHandler(error)
       })
   }
 

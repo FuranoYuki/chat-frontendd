@@ -21,9 +21,11 @@
     "redux": "^4.0.5",
     "simple-peer": "^9.9.3",
     "socket.io-client": "^3.0.1",
+    "source-map-explorer": "^2.5.2",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

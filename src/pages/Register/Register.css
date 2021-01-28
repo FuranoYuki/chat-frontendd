@@ -7,53 +7,22 @@ div.Login{
 
 }
 
-.login__marketing{
-    width: 50%;
-    height: 100vh;
-    background-color: rgb(24, 22, 22);
-    color: rgb(235, 235, 235);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.lm1-div{
-    display: flex;
-    flex-direction: column;
-    margin: 40px 0;
-}
-
-.lm2-txt{
-    max-width: 70%;
-    margin: auto;
-    margin-top: 10px;
-    font-size: 16px;
-    text-align: center;
-    font-family: 'Quicksand';
-}
-
-div.lm3-icon{
-    font-size: 32px;
-    text-align: center;
-    background-color: rgb(59, 108, 182);
-    border-radius: 50%;
-    color: rgb(24, 22, 22);
-    display: flex;
-    align-self: center;
-    padding: 10px;
-}
 
 
 form.login__form{
     background-image: linear-gradient(to top, rgb(13, 26, 104), rgb(59, 108, 182));
-    width: 50%;
+    width: 100%;
     text-align: center;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 img.login__form--logo{
-    height: 250px;
+    height: 80px;
+    border-radius: 50%;
 }
 
 div.login__form--header{
@@ -65,8 +34,9 @@ div.login__form--header{
 div.login__form--inputs{
     display: flex;
     flex-direction: column;
-    width: 80%;
-    margin: auto;
+    width: 400px;
+    margin: 0 auto;
+
 }
 
 div.login__form--input-area{
@@ -106,17 +76,20 @@ span.error--email, span.error--password{
 
 
 button.login__form--button{
-    width: 80%;
+    width: 300px;
     height: 50px;
     font-size: 22px;
     font-weight: 800;
-    margin: auto;
-    box-shadow: 2px 2px 2px 1px rgb(68, 68, 68);
-    margin-top: 10px;
+    margin: 20px auto;
+    background-color: rgb(18, 16, 19);
+    color: white;
+    border: none;
+    border-radius: 5px;
 }
 
 button.login__form--button:hover{
-    color: rgb(72, 7, 97);
+    cursor: pointer;
+    background-color: rgb(32, 30, 34);
 }
 
 @media screen and (max-width: 755px){
@@ -136,4 +109,8 @@ button.login__form--button:hover{
     form.login__form{
         height: 100vh;
     }
+}
+
+.have-account{
+    color: white;
 }
