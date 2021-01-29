@@ -7,7 +7,8 @@ const INIT_STATE = {
   acceptedCall: false,
   recusedCall: false,
   friend: false,
-  friendId: false
+  friendId: false,
+  stream: {}
 }
 
 function navbarCall (state = INIT_STATE, action) {

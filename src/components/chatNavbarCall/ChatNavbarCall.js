@@ -12,16 +12,19 @@ import {
   faChevronDown
 } from '@fortawesome/free-solid-svg-icons'
 // redux
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 // action
+import callAction from '../../store/actions/call'
 
 const ChatNavbarCall = () => {
   const call = useSelector(state => state.call)
+  const dispatch = useDispatch()
 
   const closeCall = () => {
     document.querySelector('.ChatNavbarCall').style.display = 'none'
     document.querySelector('.chatNavbar').style.backgroundColor = 'transparent'
     document.querySelector('.chatNavbar-main').style.borderBottom = '1px solid rgb(11, 10, 10)'
+    dispatch(callAction({ navbar: false, inCall: false }))
   }
 
   const openNavbar = () => {

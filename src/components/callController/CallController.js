@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faMicrophone,
@@ -12,24 +12,34 @@ import api from '../../services/http/api'
 import socket from '../../services/websocket/socket'
 // style
 import './CallController.css'
+// Errors handler
+import ErrorHandler from '../errorHandler/ErrorHandler'
 // component
 import CountConfig from '../CountConfig/CountConfig'
+import WebRTC from '../webRTC/WebRTC'
 
 const CallController = () => {
-  const [microPhoneIcon, setMicroPhoneIcon] = useState(faMicrophone)
+  const microphoneObj = useRef(null)
   const [user, setUser] = useState('')
+  const [mute, setMute] = useState(false)
+  const [stream, setStream] = useState(false)
 
-  const microPhoneStatus = () => {
-    const obj = document.querySelector('#microphoneON')
-
-    if (obj) {
-      obj.id = 'microphoneOFF'
-      setMicroPhoneIcon(faMicrophoneAltSlash)
-    } else {
-      document.querySelector('#microphoneOFF').id = 'microphoneON'
-      setMicroPhoneIcon(faMicrophone)
-    }
+  const changeMute = (state) => {
+    setMute(state)
   }
+
+  const microPhoneIconChange = useCallback((boon = true) => {
+    setStream(boon)
+  }, [changeMute, stream, mute])
+
+  useEffect(() => {
+    const obj = document.querySelector('#microphoneON')
+    if (obj) {
+      microphoneObj.current.id = 'microphoneOFF'
+    } else {
+      microphoneObj.current.id = 'microphoneON'
+    }
+  }, [mute])
 
   const changeStatus = () => {
     const obj = document.querySelector('.social__settings--info--status-list')
@@ -39,11 +49,11 @@ const CallController = () => {
   const statusChange = async (event) => {
     if (user.status !== event.currentTarget.id) {
       try {
-        const response = await api.post('/user/changeStatus', { status: event.currentTarget.id })
-        setUser(response.data)
-        socket.emit('changeStatus', ({ friends: response.data.friends }))
+        const res = await api.post('/user/changeStatus', { status: event.currentTarget.id })
+        setUser(res.data)
+        socket.emit('changeStatus', ({ friends: res.data.friends }))
       } catch (error) {
-        console.log(error)
+        ErrorHandler(error)
       }
     }
   }
@@ -53,7 +63,7 @@ const CallController = () => {
       const response = await api.post('/user/getUserBasicInfo')
       setUser(response.data)
     } catch (error) {
-      console.log(error)
+      ErrorHandler(error)
     }
   }
 
@@ -197,13 +207,26 @@ const CallController = () => {
             </div>
 
             <ul className="social__settings--actions">
-                <li
+
+                {mute
+                  ? <li
+                    ref={microphoneObj}
                     className="social__settings--actions-li social-microphone"
                     id="microphoneON"
-                    onClick={microPhoneStatus}
+                    onClick={microPhoneIconChange}
                 >
-                    <FontAwesomeIcon icon={microPhoneIcon} />
+                    <FontAwesomeIcon icon={faMicrophone} />
                 </li>
+                  : <li
+                    ref={microphoneObj}
+                    className="social__settings--actions-li social-microphone"
+                    id="microphoneOFF"
+                    onClick={microPhoneIconChange}
+                >
+                    <FontAwesomeIcon icon={faMicrophoneAltSlash} />
+                </li>
+                }
+
                 <li className="social__settings--actions-li social-headphones">
                     <FontAwesomeIcon icon={faHeadphones} />
                 </li>
@@ -216,6 +239,7 @@ const CallController = () => {
             </ul>
         </div>
         <CountConfig/>
+        <WebRTC user={user} mute={mute} changeMute={changeMute} stream={stream} microPhoneIconChange={microPhoneIconChange}/>
     </>
   )
 }

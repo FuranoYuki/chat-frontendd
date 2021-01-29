@@ -10,7 +10,6 @@ import Loading from './components/loading/Loading'
 import NotFoundPage from './components/notFoundPage/NotFoundPage'
 import Group from './components/group/Group'
 import Social from './components/social/Social'
-import WebRTC from './components/webRTC/WebRTC'
 
 // -pages
 const Home = lazy(() => import('./pages/Home/Home'))
@@ -49,7 +48,6 @@ const Routes = () => (
                 <Group/>
                 <Social/>
                 <Home/>
-                <WebRTC/>
               </>
             )} />
 
@@ -58,7 +56,6 @@ const Routes = () => (
                 <Group/>
                 <Social/>
                 <Chat/>
-                <WebRTC/>
               </>
             )} />
 
