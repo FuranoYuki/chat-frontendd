@@ -1,0 +1,143 @@
+.chatnavbar{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatnavbar_main{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgb(11, 10, 10);
+    min-height: 50px;
+}
+
+.chatnavbar_info{
+    display: flex;
+    width: auto;
+    align-items: center;
+}
+
+.chatnavbar_info > * {
+    margin-right: 10px;
+}
+
+.info_aroba{
+    font-size: 24px;
+    color: rgb(174, 166, 166);
+}
+
+.info_name{
+    font-size: 14px;
+    color: white;
+    font-weight: 900;
+}
+
+.info_status{
+    position: relative;
+}
+
+.status_layer1{
+    height: 16px;
+    width: 16px;
+    background-color: rgb(37, 33, 40);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status_layer2{
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    display: flex;
+    align-self: center;
+}
+
+.status_legend{
+    display: none;
+    position: absolute;
+    bottom: -40px;
+    left: -20px;
+    margin: auto;
+    background-color: rgb(105, 30, 181);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.chatnavbar_setting{
+    display: flex;
+}
+
+.setting_icons{
+    display:  flex;
+    font-size: 18px;
+    color: rgb(174, 166, 166);
+}
+
+.setting_icon{
+    padding: 0 10px;
+    transition: color 0.3s;
+    position: relative;
+    display: flex;
+    align-self: center;
+}
+
+.setting_icon:hover{
+    cursor: pointer;
+    color: white;
+}
+
+.setting_search{
+    background-color: rgb(11, 10, 10);
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 0 10px;
+}
+
+.search_input{
+    background-color: transparent;
+    border: none;
+    font-size: 12px;
+    color: white;
+    width: 120px;
+    margin-right: 5px;
+}
+
+.search_input:focus{
+    outline: none;
+}
+
+.setting_search > svg{
+    color: rgb(174, 166, 166);
+    font-size: 14px;
+}
+
+.setting_help{
+    display: flex;
+    color: rgb(174, 166, 166);
+    font-size: 18px;
+}
+
+.Online{
+    background-color: rgb(67, 181, 129);
+}
+
+.Idle{
+    background-color: orange;
+}
+
+.DND{
+    background-color: red;
+}
+
+.Invisible, .Offline{
+    background-color: gray;
+}

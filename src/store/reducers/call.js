@@ -4,11 +4,11 @@ const INIT_STATE = {
   startCall: false,
   inCall: false,
   friendInCall: false,
-  acceptedCall: false,
-  recusedCall: false,
   friend: false,
   friendId: false,
-  stream: {}
+  mute: false,
+  closeCall: false,
+  to: false
 }
 
 function navbarCall (state = INIT_STATE, action) {

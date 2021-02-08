@@ -1,0 +1,117 @@
+.login{
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    display: flex;
+    font-family: 'Open Sans';
+}
+
+.login_form{
+    background-color: rgb(37, 33, 40);
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_icon{
+    height: 80px;
+    border-radius: 50%;
+}
+
+.form_header{
+    font-size: 32px;
+    font-weight: bolder;
+    color: rgb(235, 235, 235);
+}
+
+.form_inputs{
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    margin: 0 auto;
+
+}
+
+.input_area{
+    margin-top: 15px;
+    width: 100%;
+    background-color: rgb(24, 22, 22);
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.area_top{
+    display: flex;
+    margin-bottom: 5px;
+    color: rgb(59, 108, 182);
+    align-items: baseline;
+}
+
+.form_label{
+    font-size: 14px;
+}
+
+.form_input{
+    background-color: transparent;
+    border: none;
+    color: rgb(235, 235, 235);
+    font-size: 18px;
+}
+
+.form_input:focus{
+    outline: none;
+}
+
+.error_email, .error_password{
+    color: rgb(255, 24, 24);
+    margin-left: 10px;
+    font-weight: 600;
+    font-size: 12px;
+    text-align: left;
+}
+
+
+.form_button{
+    width: 300px;
+    height: 50px;
+    font-size: 22px;
+    font-weight: 800;
+    margin: 20px auto;
+    background-color: rgb(18, 16, 19);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.form_button:hover{
+    cursor: pointer;
+    background-color: rgb(32, 30, 34);
+}
+
+@media screen and (max-width: 755px){
+    .login{
+        flex-direction: column-reverse;
+        overflow-x: hidden;
+    }
+
+    .login > * {
+        width: 100%;
+    }
+
+    .login__marketing{
+        height: 100vh;
+    }
+
+    .login_form{
+        height: 100vh;
+    }
+}
+
+.have-account{
+    color: white;
+}

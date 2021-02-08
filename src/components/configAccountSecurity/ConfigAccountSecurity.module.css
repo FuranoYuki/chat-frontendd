@@ -1,0 +1,198 @@
+.config_accSec{
+    border-top: .5px solid gray;
+    border-bottom: .5px solid gray;
+    margin: 0 40px;
+    padding: 30px 0;
+    display: flex;
+}
+
+.accSec_left{
+    display: flex;
+    flex-direction: column;
+}
+
+.left_header{
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.left_button{
+    margin: 25px 0;
+    width: 150px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #7289da;
+    color: white;
+    border: none;
+    font-size: 14px;
+}
+
+.left-button:hover, .twoF_button:hover{
+    cursor: pointer;
+    background-color: #627cda;
+}
+
+.left_twoF{
+    display: flex;
+    flex-direction: column;
+    color: rgb(174, 166, 166);
+
+}
+
+.twoF_header{
+    font-weight: 600;
+    font-size: 12px;
+
+}
+
+.left_twoF > p{
+    font-size: 14px;
+    margin: 10px 0;
+    font-weight: 400;
+}
+
+.twoF_button{
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #7289da;
+    color: white;
+    border: none;
+    font-size: 14px;
+}
+
+.accSec_right{
+    min-width: 200px;
+    width: 200px;
+    height: 100%;
+    display: flex;
+    align-self: flex-end;
+}
+
+.right_img{
+    width: 200px;
+}
+
+.modal_changePassword{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.815);
+    top: 0;
+    left: 0;
+    z-index: 3;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.changePassword_body{
+    border-radius: 10px;
+}
+
+.body_main{
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgb(37, 33, 40);
+    position: relative;
+    border-radius: 5px 5px 0 0;
+}
+
+.main_exit{
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    color: rgb(174, 166, 166);
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.main_exit:hover{
+    color: white;
+    cursor: pointer;
+}
+
+.main_header{
+    color: white;
+    font-weight: 700;
+    font-size: 24px;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.main_subHeader{
+    color: rgb(174, 166, 166);
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.main_field{
+    display: flex;
+    flex-direction: column;
+    margin: 5px 0;
+}
+
+.main_field > label{
+    color: rgb(174, 166, 166);
+    padding: 5px 0;
+    font-weight: 900;
+    font-size: 11px;
+}
+
+.incorrect_pass{
+    margin-left: 10px;
+    color: #f13636;
+    display: none;
+}
+
+.field_password{
+    background-color: rgb(26, 24, 26);
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    min-width: 400px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.body_buttons{
+    background-color: rgb(26, 24, 26);
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+    border-radius: 0 0 5px 5px;
+}
+
+.body_button{
+    padding: 10px 30px;
+    border: none;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-left: 10px;
+    color: white;
+}
+
+.cancel{
+    background-color: transparent;
+}
+
+.cancel:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.done{
+    background-color: #7289da;
+}
+
+.done:hover{
+    background-color: #627cda;
+    cursor: pointer;
+}

@@ -1,23 +1,23 @@
 // dependencies
 import React, { memo } from 'react'
 
-// external files
-import './OnlineFriend.css'
+// styles
+import styles from './OnlineFriend.module.css'
 
 const OnlineFriend = (props) => {
   return (
-        <div className="OnlineFriend">
+    <div className={styles.onlinefriend}>
 
-            <div className="onlineFriend-nofriend">
-                <div className="onlineFriend-nofriend-img">
+        <div className={styles.onlinefriend_nofriend}>
+            <div className={styles.nofriend_img}>
 
-                </div>
-                <div className="onlineFriend-nofriend-text">
-                    No one&apos;s around to play with Wumpus.
-                </div>
             </div>
-
+            <div className={styles.nofriend_text}>
+                No one&apos;s around to play with Wumpus.
+            </div>
         </div>
+
+    </div>
   )
 }
 

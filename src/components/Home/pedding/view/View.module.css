@@ -1,0 +1,139 @@
+.peding_view{
+    overflow-y: auto;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+.view_header{
+    padding: 10px;
+    color: rgb(174, 166, 166);
+    font-size: 10px;
+    font-weight: 600;
+    margin: 0 8px;
+    border-bottom: .1px solid rgba(50, 50, 50, 0.700);
+}
+
+.view_list{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.list_field{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border-radius: 10px;
+}
+
+.list_field:hover{
+    cursor: pointer;
+    background-color:rgb(45, 41, 48);
+}
+
+.field_west{
+    display: flex;
+}
+
+.west_perfil{
+    position: relative;
+}
+
+.perfil_img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    background-color: rgb(24, 22, 22);
+}
+
+.perfil_on{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: rgb(37, 33, 40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.perfil_on2{
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+    background-color: rgb(174, 166, 166);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.perfil_on3{
+    height: 5px;
+    width: 5px;
+    border-radius: 50%;
+    background-color: rgb(37, 33, 40);
+}
+
+.west_info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.info_names{
+    display: flex;
+}
+
+.info_name{
+    font-size: 14px;
+    font-weight: 900;
+    color: white;
+}
+
+.info_code{
+    font-size: 14px;
+    color: rgb(174, 166, 166);
+    display: none;
+}
+
+.info_message{
+    font-size: 12px;
+    color: rgb(174, 166, 166);
+}
+
+.field_east{
+    display: flex;
+    justify-content: space-between;
+}
+
+.east_icon{
+    background-color: rgb(26, 24, 26);
+    color: rgb(174, 166, 166);
+    border-radius: 50%;
+    font-size: 16px;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    position: relative;
+}
+
+.east_icon:hover{
+    background-color: rgb(11, 10, 10);
+}
+
+.accept:hover{
+    color: rgb(67, 181, 129);
+    cursor: pointer;
+}
+
+.recuse:hover{
+    color: red;
+    cursor: pointer;
+}

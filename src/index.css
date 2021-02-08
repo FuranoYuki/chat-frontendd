@@ -16,3 +16,19 @@ html, body, .App, .root{
     display: flex;
     flex-wrap: nowrap;
 }
+
+.Online{
+    background-color: rgb(67, 181, 129);
+}
+
+.Idle{
+    background-color: orange;
+}
+
+.DND{
+    background-color: red;
+}
+
+.Invisible, .Offline{
+    background-color: gray;
+}

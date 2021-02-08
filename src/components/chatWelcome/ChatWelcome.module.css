@@ -1,0 +1,28 @@
+.chatwelcome{
+    display: flex;
+    flex-direction: column;
+    padding-top: 80px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.chatwelcome_img{
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    background-color: violet;
+}
+
+.chatwelcome_user{
+    font-size: 26px;
+    font-weight: 900;
+    color: white;
+    margin-top: 10px;
+}
+
+.chatwelcome_text{
+    color: rgb(174, 166, 166);
+    font-size: 15px;
+    padding: 10px 0;
+}

@@ -3,11 +3,13 @@ import React, { useEffect, useRef } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 // styles
-import './Login.css'
+import styles from './Login.module.css'
 // set token in localStorage and pass authorization to api
 import { login, isAuthenticated } from '../../services/auth'
 // base api withou authorization
 import api from '../../services/http/api'
+// icon
+import icon from '../../assets/discord.png'
 
 const Login = () => {
   const history = useHistory()
@@ -21,7 +23,7 @@ const Login = () => {
       try {
         const res = await api.post('/user/login', { email, password })
         login(res.data.token)
-        history.push('/')
+        window.location.href = '/'
       } catch (error) {
         handleError(error)
       }
@@ -56,48 +58,48 @@ const Login = () => {
   }, [])
 
   return (
-        <div className="register">
-            <form onSubmit={handleSubmit(handleLoginForm)} className="register__form">
-                <img className="register__form--brand" src='https://discord.com/assets/6debd47ed13483642cf09e832ed0bc1b.png' alt="funny brand" />
-                <div className="register__form--inputs">
-                    <div className="reguster__form--inputs-info">
-                        <span>Email</span>
-                        <p ref={emailWarning} className="register__email-warning">
-                            this e-mail isn&apos;t register in our database
-                        </p>
-                    </div>
-                    <input
-                        className="register__form-input-email"
-                        placeholder="type your e-mail"
-                        name="email"
-                        ref={register}
-                    />
+    <div className={styles.register}>
+        <form onSubmit={handleSubmit(handleLoginForm)} className={styles.register_form}>
+            <img className={styles.form_icon} src={icon} alt="funny brand" />
+            <div className={styles.form_inputs}>
+                <div className={styles.input_info}>
+                    <span>Email</span>
+                    <p ref={emailWarning} className={styles.email_warning}>
+                      this e-mail isn&apos;t register in our database
+                    </p>
                 </div>
-                <div className="register__form--inputs">
-                <div className="reguster__form--inputs-info">
-                        <span>Password</span>
-                        <p ref={passwordWarning} className="register__password-warning">
-                            this password is wrong
-                        </p>
-                    </div>
-                    <input
-                        className="register__Form-input-password"
-                        placeholder="type your password"
-                        type="password"
-                        name="password"
-                        ref={register}
-                    />
+                <input
+                  className={styles.form_input}
+                  placeholder="type your e-mail"
+                  name="email"
+                  ref={register}
+                />
+            </div>
+            <div className={styles.form_inputs}>
+                <div className={styles.input_info}>
+                    <span>Password</span>
+                    <p ref={passwordWarning} className={styles.password_warning}>
+                      this password is wrong
+                    </p>
                 </div>
+                <input
+                  className={styles.form_input}
+                  placeholder="type your password"
+                  type="password"
+                  name="password"
+                  ref={register}
+                />
+            </div>
 
-                <button className="register__form--button">
-                    Log In
-                </button>
+            <button className={styles.form_button}>
+              Log In
+            </button>
 
-                <Link to="/register" className="register__form--make-account">
-                    Click here to create an account!
-                </Link>
-            </form>
-        </div>
+            <Link to="/register" className={styles.make_account}>
+              Click here to create an account!
+            </Link>
+        </form>
+    </div>
   )
 }
 

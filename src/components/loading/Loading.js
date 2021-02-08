@@ -1,22 +1,22 @@
 import React from 'react'
 
 // style
-import './Loading.css'
+import styles from './Loading.module.css'
 
 const Loading = () => {
   return (
-        <div className="Loading">
-            <div className="loading-header">
-                Loading Page
-            </div>
-
-            <div className="loading-dots">
-                <div className="bounce"></div>
-                <div className="bounce2"></div>
-                <div className="bounce3"></div>
-            </div>
-
+    <div className={styles.loading}>
+        <div className={styles.loading_header}>
+            Loading Page
         </div>
+
+        <div className={styles.loading_dots}>
+            <div className={styles.bounce}></div>
+            <div className={styles.bounce2}></div>
+            <div className="bounce3"></div>
+        </div>
+
+    </div>
   )
 }
 

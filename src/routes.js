@@ -17,8 +17,6 @@ const Login = lazy(() => import('./pages/Login/Login'))
 const Register = lazy(() => import('./pages/Register/Register'))
 const Chat = lazy(() => import('./pages/Chat/Chat'))
 
-// component
-
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
       {...rest}

@@ -1,24 +1,20 @@
 import React, { memo } from 'react'
-
 // style
-import './Pedding.css'
-
+import styles from './Pedding.module.css'
 // components
 import View from './view/View'
 import Message from './message/Message'
 
 const Pending = ({ pending }) => {
-  // -- JSX --
-
   return (
-        <div className="Pedding">
-            {
-                pending.length > 0
+    <div className={styles.pedding}>
+        {
+          pending.length > 0
 
-                  ? <View pending={pending} />
-                  : <Message />
-            }
-        </div>
+            ? <View pending={pending} />
+            : <Message />
+        }
+    </div>
   )
 }
 

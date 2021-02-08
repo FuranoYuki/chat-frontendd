@@ -1,0 +1,193 @@
+.social{
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    height: 100%;
+    background-color: rgb(26, 24, 26);
+    min-width: 230px;
+    width: 230px;
+    font-family: 'Open Sans';
+    position: relative;
+}
+
+.social_form{
+    padding: 10px;
+    border-bottom: 1px solid rgb(11, 10, 10);
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.form_input{
+    background-color: rgb(11, 10, 10);
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    font-size: 13px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.form_input:focus{
+    outline: none;
+}
+
+/* social body */
+.social_body{
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-bottom: 65px;
+    height: 100vh;
+    width: 100%;
+    padding: 10px 10px;
+    overflow-y: auto;
+}
+
+.body_list{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    list-style: none;
+    border-radius: 5px;
+    font-family: 'Open Sans';
+}
+
+.list_li{
+    border-radius: 5px;
+}
+
+.list_li:hover{
+    background-color:   rgb(53, 49, 56);
+}
+
+.li_a{
+    text-decoration: none;
+    padding: 10px 15px;
+    width: 100%;
+    display: flex;
+    color: rgb(174, 166, 166);
+    align-items: center;
+}
+
+.li_a > svg{
+    font-size: 18px;
+    margin-right: 15px;
+    color: rgb(174, 166, 166);
+}
+
+.friends_li{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    font-weight: 800;
+}
+
+.friends_header{
+    padding: 10px;
+    color: rgb(174, 166, 166);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.friends_header:hover{
+    color: white;
+}
+
+.friends_li:hover{
+    background-color: rgb(53, 49, 56);
+    cursor: pointer;
+}
+
+.friend_delete > svg{
+    font-size: 20px;
+    margin-right: 15px;
+    color: rgb(174, 166, 166);
+}
+
+.friend_delete > svg:hover{
+    color: white;
+}
+
+.friend_delete{
+    display: none;
+}
+
+.friends_li_a{
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: rgb(174, 166, 166);
+}
+
+.friends_li_a > span{
+    font-weight: normal;
+    font-size: 16px;
+}
+
+.friends_icon{
+    display: flex;
+    position: relative;
+    margin-right: 10px;
+}
+
+
+.friends_img{
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+}
+
+.friends_layer1{
+    background-color: rgb(26, 24, 26);
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.friends_layer2{
+    height: 9px;
+    width: 9px;
+    border-radius: 50%;
+    background-color: rgb(24, 22, 22);
+    display: flex;
+    align-self: center;
+}
+
+.friends_layer3{
+    height: 4px;
+    width: 4px;
+    border-radius: 50%;
+    background-color: rgb(59, 108, 182);
+    margin: auto;
+    display: flex;
+    align-self: center;
+}
+
+.Online{
+    background-color: rgb(67, 181, 129);
+}
+
+.Idle{
+    background-color: orange;
+}
+
+.DND{
+    background-color: red;
+}
+
+.Invisible, .Offline{
+    background-color: gray;
+}

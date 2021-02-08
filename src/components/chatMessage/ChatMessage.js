@@ -1,68 +1,72 @@
-// dependencies
-import React, { memo } from 'react'
+import React, { memo, useEffect, useRef } from 'react'
+// style
+import styles from './ChatMessage.module.css'
 
-// external files
-import './ChatMessage.css'
+const ChatMessage = ({ chat, scroll }) => {
+  const isMounted = useRef(false)
 
-const ChatMessage = ({ chat }) => {
-  const verifyUser = (id) => {
-    if (id === chat.user._id) {
-      return (
-        <img
-            className="chatMessage-perfil-img"
-            alt="perfil"
-            src={`/imagePerfil/${chat.user.imagePerfilDefault}`}
-        />
-      )
-    } else {
-      return (
-        <img
-            className="chatMessage-perfil-img"
-            alt="perfil"
-            src={`/imagePerfil/${chat.friend.imagePerfilDefault}`}
-        />
-      )
+  useEffect(() => {
+    isMounted.current = true
+    return () => {
+      isMounted.current = false
     }
-  }
+  })
 
-  // jsx
+  useEffect(() => {
+    if (isMounted) {
+      scroll()
+    }
+  }, [isMounted])
+
   return (
-
     <>
-        {chat.messages !== undefined &&
+      {chat.messages !== undefined &&
 
-        chat.messages.map(message =>
+      chat.messages.map(message =>
 
-            <div
-                key={message._id}
-                className="ChatMessage">
-                <div className="chatMessage-perfil">
+        <div
+          key={message._id}
+          className={styles.chatmessage}
+        >
+          <div className="chatMessage-perfil">
 
-                    {
-                        verifyUser(message.user)
-                    }
+            {message.user === chat.user._id
+              ? <img
+                className={styles.perfil_img}
+                alt="perfil"
+                src={chat.user.imagePerfil === undefined ? chat.user.imagePerfilDefault : chat.user.imagePerfil.path}
+              />
+              : <img
+                className={styles.perfil_img}
+                alt="perfil"
+                src={chat.friend.imagePerfil === undefined ? chat.friend.imagePerfilDefault : chat.friend.imagePerfil.path}
+              />
+            }
 
-                </div>
-                <div className="chatMessage-msg">
-                    <div className="chatMessage-msg-info">
-                        <div className="chatMessage-msg-info-name">
-                            {
-                                message.user === chat.user._id ? chat.user.name : chat.friend.name
-                            }
-                        </div>
-                        <div className="chatMessage-msg-info-data">
-                            {new Date(message.createdAt).toUTCString().replace('GMT', '')}
-                        </div>
-                    </div>
-                    <div className="chatMessage-msg-text">
-                        {message.text}
-                    </div>
-                </div>
+          </div>
+
+          <div className={styles.chatmessage_msg}>
+
+            <div className={styles.msg_info}>
+              <div className={styles.info_name}>
+                {message.user === chat.user._id ? chat.user.name : chat.friend.name}
+              </div>
+
+              <div className={styles.info_data}>
+                {new Date(message.createdAt).toUTCString().replace('GMT', '')}
+              </div>
             </div>
-        )
-        }
-    </>
 
+            <div className={styles.msg_text}>
+              {message.text}
+            </div>
+
+          </div>
+
+        </div>
+      )
+      }
+    </>
   )
 }
 

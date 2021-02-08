@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 // styles
-import './ChatNavbarCall.css'
+import styles from './ChatNavbarCall.module.css'
 // fontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -15,75 +15,81 @@ import {
 import { useSelector, useDispatch } from 'react-redux'
 // action
 import callAction from '../../store/actions/call'
+// icon
+import icon from '../../assets/discord.png'
 
-const ChatNavbarCall = () => {
-  const call = useSelector(state => state.call)
+const ChatNavbarCall = ({ name, code }) => {
   const dispatch = useDispatch()
+  const navbarcall = useRef(null)
+  const call = useSelector(state => state.call)
 
-  const closeCall = () => {
-    document.querySelector('.ChatNavbarCall').style.display = 'none'
+  const closeNavbar = () => {
+    navbarcall.current.style.display = 'none'
     document.querySelector('.chatNavbar').style.backgroundColor = 'transparent'
     document.querySelector('.chatNavbar-main').style.borderBottom = '1px solid rgb(11, 10, 10)'
-    dispatch(callAction({ navbar: false, inCall: false }))
   }
 
   const openNavbar = () => {
-    document.querySelector('.ChatNavbarCall').style.display = 'flex'
+    navbarcall.current.style.display = 'flex'
     document.querySelector('.chatNavbar').style.backgroundColor = 'rgb(18, 16, 19)'
     document.querySelector('.chatNavbar-main').style.border = 'none'
   }
 
+  const closeCall = () => {
+    dispatch(callAction({ inCall: false, closeCall: true, to: `${name + '' + code}`, navbar: false }))
+  }
+
   useEffect(() => {
-    call.navbar ? openNavbar() : closeCall()
+    call.navbar ? openNavbar() : closeNavbar()
   }, [call.navbar])
 
   return (
-        <div className="ChatNavbarCall">
-            <div className="chatnavbarcall-users">
+        <div className={styles.chatnavbarcall} ref={navbarcall}>
+            <div className={styles.chatnavbarcall_users}>
 
                 {call.friendInCall &&
-                <div className="chatnavbarcall-user outsider">
+                <div className={styles.chatnavbarcall_user}>
                     <img
-                        className="chatnavbarcall-user-img"
-                        src="https://discord.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
+                        className={styles.user_img}
+                        src={icon}
                     />
-                    <div className="chatnavbarcall-user-microphone">
+                    <div className={styles.user_microphone}>
                         <FontAwesomeIcon icon={faMicrophone} />
                     </div>
                 </div>
                 }
 
                 {call.inCall &&
-                <div className="chatnavbarcall-user you">
+                <div className={styles.chatnavbarcall_user}>
                     <img
-                        className="chatnavbarcall-user-img"
-                        src="https://discord.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
+                        className={styles.user_img}
+                        src={icon}
                     />
-                    <div className="chatnavbarcall-user-microphone">
+                    <div className={styles.user_microphone}>
                         <FontAwesomeIcon icon={faMicrophone} />
                     </div>
                 </div>
                 }
 
             </div>
-            <div className="chatnavbarcall-settings">
-                <div className="chatnavbarcall-settings-option black">
+            <div className={styles.chatnavbarcall_settings}>
+                <div className={styles.settings_option}>
                     <FontAwesomeIcon icon={faVideo} />
-                    <div className="chatnavbarcall-settings-option-dw">
+                    <div className={styles.option_dw}>
                         <FontAwesomeIcon icon={faChevronDown} />
                     </div>
                 </div>
-                <div className="chatnavbarcall-settings-option black">
+                <div className={styles.settings_option}>
                     <FontAwesomeIcon icon={faDesktop} />
                 </div>
-                <div className="chatnavbarcall-settings-option white">
+                <div className={`${styles.settings_option} ${styles.white}`}>
                     <FontAwesomeIcon icon={faMicrophoneSlash} />
-                    <div className="chatnavbarcall-settings-option-dw white">
+                    <div className={`${styles.option_dw} ${styles.dw_white}`}>
                         <FontAwesomeIcon icon={faChevronDown} />
                     </div>
                 </div>
                 <div
-                    className="chatnavbarcall-settings-option red"
+                    className={`${styles.settings_option} ${styles.red}`}
                     onClick={closeCall}
                 >
                     <FontAwesomeIcon icon={faPhoneSlash} />

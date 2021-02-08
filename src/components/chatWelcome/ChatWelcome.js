@@ -2,30 +2,29 @@
 import React, { memo } from 'react'
 
 // external files
-import './ChatWelcome.css'
+import styles from './ChatWelcome.module.css'
 
 const ChatWelcome = ({ friend }) => {
   return (
-        <div className="ChatWelcome">
-            {
-                friend !== undefined &&
-                <>
-                    <img
-                        className="chatWelcome-img"
-                        src={`/imagePerfil/${friend.imagePerfilDefault}`}
-                        alt="perfil"
-                    />
+    <div className={styles.chatwelcome}>
+        {friend !== undefined &&
+        <>
+            <img
+                className={styles.chatwelcome_img}
+                src={friend.imagePerfil === undefined ? friend.imagePerfilDefault : friend.imagePerfil.path}
+                alt="perfil"
+            />
 
-                    <div className="chatWelcome-user">
-                        {friend.name}
-                    </div>
+            <div className={styles.chatwelcome_user}>
+                {friend.name}
+            </div>
 
-                    <div className="chatWelcome-text">
-                        This is the beginning of your direct message history with @{friend.name}
-                    </div>
-                </>
-            }
-        </div>
+            <div className={styles.chatwelcome_text}>
+                This is the beginning of your direct message history with @{friend.name}
+            </div>
+        </>
+        }
+    </div>
   )
 }
 

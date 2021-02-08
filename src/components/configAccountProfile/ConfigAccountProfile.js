@@ -1,147 +1,186 @@
 // react
-import React from 'react'
+import React, { useRef } from 'react'
+import { useDispatch } from 'react-redux'
 // fontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisH, faImage } from '@fortawesome/free-solid-svg-icons'
 // style
-import './ConfigAccountProfile.css'
-// form
-import { useForm } from 'react-hook-form'
+import styles from './ConfigAccountProfile.module.css'
 // api
 import api from '../../services/http/api'
+// error
+import ErrorHandler from '../errorHandler/ErrorHandler'
+// action
+import userUpdate from '../../store/actions/userUpdate'
+// components
+import ConfigUserModal from './configUserModal/ConfigUserModal'
+import ConfigEmailModal from './configEmailModal/ConfigEmailModal'
 
 const ConfigAccountProfile = ({ user }) => {
-  // form
-  const { register, handleSubmit } = useForm()
+  const avatar = useRef(null)
+  const imageRef = useRef(null)
+  const imgInput = useRef(null)
+  const imgButton = useRef(null)
+  const dispatch = useDispatch()
 
-  // functions
-  const openFile = () => {
-    document.querySelector('.accInfo-img-input').click()
+  const openUserModal = () => {
+    document.querySelector('.configusermodal').style.display = 'flex'
+    document.querySelector('.name').value = user.name
+    document.querySelector('.user_password').value = ''
   }
 
-  const closeInput = (event) => {
+  const openEmailModal = () => {
+    document.querySelector('.configemailmodal').style.display = 'flex'
+    document.querySelector('.email').value = user.email
+    document.querySelector('.email_password').value = ''
+  }
+
+  const openFileInput = () => {
+    imgInput.current.click()
+  }
+
+  const closeFileInput = (event) => {
     if (event.target.value.length) {
-      document.querySelector('.accInfo-img-button').click()
+      imgButton.current.click()
     }
   }
 
-  const imgForm = async (data) => {
-    const image = new FormData()
-    image.append('file', data.img[0])
+  const avatarMouseOver = () => {
+    avatar.current.style.display = 'flex'
+  }
 
-    api.post('/user/changeImagePerfil', image)
+  const avatarMouseOut = () => {
+    avatar.current.style.display = 'none'
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const image = new FormData()
+    image.append('file', imgInput.current.files[0])
+
+    api.post('/user/changeImagePerfil', image, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+      .then(() => {
+        setTimeout(() => {
+          dispatch(userUpdate({ image: true }))
+        }, 2000)
+      })
+      .catch(error => {
+        ErrorHandler(error)
+      })
   }
 
   return (
-        <div className="config-main-accInfo">
+    <div className={styles.main_accInfo}>
 
-            <div className="accInfo-header">
-                MY ACCOUNT
+        <div className={styles.accInfo_header}>
+            MY ACCOUNT
+        </div>
+
+        <div className={styles.accInfo_main}>
+            <div className={styles.main_top}>
+
+                <div className={styles.top_left}>
+                    <form
+                        className={styles.left_imgDiv}
+                        onClick={openFileInput}
+                        onSubmit={handleSubmit}
+                        encType="multipart/form-data"
+                        onMouseOver={avatarMouseOver}
+                        onMouseOut={avatarMouseOut}
+                    >
+                        <div className={styles.avatar_over} ref={avatar}>
+                            CHANGE<br/>AVATAR
+                        </div>
+
+                        <img
+                            alt='perfil'
+                            src={user.imagePerfil === undefined ? user.imagePerfilDefault : user.imagePerfil.path}
+                            ref={imageRef}
+                        />
+
+                        <div className={styles.imgDiv_icon}>
+                            <input
+                                name="img"
+                                type="file"
+                                style={{ display: 'none' }}
+                                className="accInfo-img-input"
+                                onChange={closeFileInput}
+                                ref={imgInput}
+                            />
+                            <button
+                                className="accInfo-img-button"
+                                type="submit"
+                                style={{ display: 'none' }}
+                                ref={imgButton}
+                            >
+                            </button>
+                            <FontAwesomeIcon icon={faImage} />
+                        </div>
+                    </form>
+                    <div className={styles.left_name}>
+                        {user.name}
+                        <span>{user.code}</span>
+                    </div>
+                </div>
+
+                <div className={styles.top_right}>
+                    <FontAwesomeIcon icon={faEllipsisH} />
+                </div>
+
             </div>
+            <div className={styles.main_bottom}>
 
-            <div className="accInfo-main">
-                <div className="accInfo-main-top">
-
-                    <div className="accInfo-main-top-left">
-                        <form
-                            className="accInfo-main-top-left-imgDiv"
-                            onClick={openFile}
-                            onSubmit={handleSubmit(imgForm)}
-                            encType="multipart/form-data"
-                        >
-
-                            {
-                                user.imagePerfil === undefined
-
-                                  ? <img
-                                        src={`/imagePerfil/${user.imagePerfilDefault}`}
-                                        alt="perfil image"
-                                    />
-
-                                  : <img
-                                        src={user.imagePerfil.path}
-                                        alt="perfil image"
-                                    />
-                            }
-
-                            <div className="accInfo-main-top-left-imgDiv-icon">
-                                <input
-                                    name="img"
-                                    type="file"
-                                    style={{ display: 'none' }}
-                                    className="accInfo-img-input"
-                                    onChange={closeInput}
-                                    ref={register}
-                                />
-                                <button
-                                    className="accInfo-img-button"
-                                    type="submit"
-                                    style={{ display: 'none' }}
-                                >
-                                </button>
-                                <FontAwesomeIcon icon={faImage} />
-                            </div>
-                        </form>
-                        <div className="accInfo-main-top-left-name">
+                <div className={styles.bottom_li}>
+                    <div className="accInfo-main-bot-left">
+                        <div className={styles.left_top}>
+                            USERNAME
+                        </div>
+                        <div className={styles.left_bot}>
                             {user.name}
                             <span>{user.code}</span>
                         </div>
                     </div>
-
-                    <div className="accInfo-main-top-right">
-                        <FontAwesomeIcon icon={faEllipsisH} />
+                    <div className={styles.bot_right} onClick={openUserModal}>
+                        Edit
                     </div>
-
                 </div>
-                <div className="accInfo-main-bottom">
 
-                    <div className="accInfo-main-bottom-li">
-                        <div className="accInfo-main-bot-left">
-                            <div className="acInfo-main-bot-left-top">
-                                username
-                            </div>
-                            <div className="accInfo-main-bot-left-bot">
-                                {user.name}
-                                <span>{user.code}</span>
-                            </div>
+                <div className={styles.bottom_li}>
+                    <div className="accInfo-main-bot-left">
+                        <div className={styles.left_top}>
+                            EMAIL
                         </div>
-                        <div className="accInfo-main-bot-right">
-                            Edit
+                        <div className={styles.left_bot}>
+                            {user.email}
                         </div>
                     </div>
+                    <div className={styles.bot_right} onClick={openEmailModal}>
+                        Edit
+                    </div>
+                </div>
 
-                    <div className="accInfo-main-bottom-li">
-                        <div className="accInfo-main-bot-left">
-                            <div className="acInfo-main-bot-left-top">
-                                EMAIL
-                            </div>
-                            <div className="accInfo-main-bot-left-bot">
-                                {user.email}
-                            </div>
+                <div className={styles.bottom_li}>
+                    <div className="accInfo-main-bot-left">
+                        <div className={styles.left_top}>
+                            PHONE NUMBER
                         </div>
-                        <div className="accInfo-main-bot-right">
-                            Edit
+                        <div className={styles.left_bot}>
+                            You haven&apos;t added a phone number yet
                         </div>
                     </div>
-
-                    <div className="accInfo-main-bottom-li">
-                        <div className="accInfo-main-bot-left">
-                            <div className="acInfo-main-bot-left-top">
-                                PHONE NUMBER
-                            </div>
-                            <div className="accInfo-main-bot-left-bot">
-                                You haven&apos;t added a phone number yet
-                            </div>
-                        </div>
-                        <div className="accInfo-main-bot-right">
-                            Edit
-                        </div>
+                    <div className={styles.bot_right}>
+                        Add
                     </div>
-
                 </div>
             </div>
-
         </div>
+        <ConfigUserModal />
+        <ConfigEmailModal />
+    </div>
   )
 }
 

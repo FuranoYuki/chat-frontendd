@@ -1,8 +1,8 @@
 // dependencies
-import React, { memo } from 'react'
+import React, { memo, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 // css
-import './AddFriend.css'
+import styles from './AddFriend.module.css'
 // socket
 import socket from '../../../services/websocket/socket'
 // api
@@ -13,73 +13,73 @@ import { useDispatch } from 'react-redux'
 import notification from '../../../store/actions/notification'
 
 const AddFriend = () => {
-  // form
-  const { register, handleSubmit } = useForm()
+  const button = useRef(null)
+  const warning = useRef(null)
   const dispatch = useDispatch()
+  const { register, handleSubmit } = useForm()
 
   const addFriendSubmit = async (data) => {
     const { user: name, code } = data
-    const warning = document.querySelector('.addFriend__body')
 
     if (name.length > 0 && code.length === 5) {
       try {
         await api.post('/user/pendingAdd', { name, code })
-        socket.emit('pending', `${name + '' + code}`)
+        socket.emit('pendingRequest', `${name + '' + code}`)
         dispatch(notification({ pending: true }))
         document.querySelector('.addFriend__form--input').value = ''
         document.querySelector('.addFriend__inputCode').value = ''
 
-        warning.innerHTML = `Success! Your friend request to ${name + '' + code} was sent.`
-        warning.style.color = '#43b581'
+        warning.current.innerHTML = `Success! Your friend request to ${name + '' + code} was sent.`
+        warning.current.style.color = '#43b581'
       } catch (error) {
-        warning.innerHTML = 'Hm, didn\'t work. Double check that the capitalization, spelling, any spaces and number are correct.'
-        warning.style.color = '#f04747'
+        warning.current.innerHTML = error.response.data.error
+        warning.current.style.color = '#f04747'
       }
     } else {
-      warning.innerHTML = `We need ${name}'s for digit tag so we know which one they are`
-      warning.style.color = '#f04747'
+      warning.current.innerHTML = `We need ${name}'s for digit tag so we know which one they are`
+      warning.current.style.color = '#f04747'
     }
   }
 
   const abledButton = (event) => {
-    const button = document.querySelector('.addFriend__form--button')
-    event.target.value.length > 0 ? button.disabled = false : button.disabled = true
+    event.target.value.length > 0
+      ? button.current.disabled = false
+      : button.current.disabled = true
   }
 
-  // JSX
   return (
-        <div className="AddFriend">
+    <div className={styles.addfriend}>
 
-            <div className="addFriend__header">
-                ADD FRIEND
-            </div>
-
-            <div className="addFriend__body">
-                You can add a friend with their Discord tag. It&apos;s cAsE sEnSitIvE!
-            </div>
-
-            <form onSubmit={handleSubmit(addFriendSubmit)} className="addFriend__form">
-
-                <input
-                    placeholder="Enter a username"
-                    className="addFriend__form--input"
-                    name="user"
-                    ref={register}
-                    onChange={abledButton}
-                />
-                <input
-                  placeholder="#0000"
-                  className="addFriend__inputCode"
-                  name="code"
-                  ref={register}
-                />
-
-                <button disabled={true} className="addFriend__form--button">
-                    Send a Friend Request
-                </button>
-
-            </form>
+        <div className={styles.addfriend_header}>
+          ADD FRIEND
         </div>
+
+        <div className={styles.addfriend_body} ref={warning}>
+          You can add a friend with their Discord tag. It&apos;s cAsE sEnSitIvE!
+        </div>
+
+        <form onSubmit={handleSubmit(addFriendSubmit)} className={styles.addfriend_form}>
+
+            <input
+              placeholder="Enter a username"
+              className={`${styles.form_input} addFriend__form--input`}
+              name="user"
+              ref={register}
+              onChange={abledButton}
+            />
+            <input
+              placeholder="#0000"
+              className={`${styles.inputCode} addFriend__inputCode`}
+              name="code"
+              ref={register}
+            />
+
+            <button disabled={true} className={styles.form_button} ref={button}>
+              Send a Friend Request
+            </button>
+
+        </form>
+    </div>
   )
 }
 

@@ -14,7 +14,7 @@ import {
 // react redux
 import { useDispatch } from 'react-redux'
 // style
-import './chatNavbar.css'
+import styles from './chatNavbar.module.css'
 // components
 import ChatNavbarCall from '../chatNavbarCall/ChatNavbarCall'
 // action
@@ -40,80 +40,81 @@ const ChatNavbar = ({ friend }) => {
     event.target.style.width = 120 + 'px'
   }
 
-  // jsx
   return (
-        <div className="chatNavbar">
-            <div className="chatNavbar-main">
-                {friend !== undefined &&
-                <>
-                    <div className="chatNavbar-info">
+    <div className={`${styles.chatnavbar} chatNavbar`}>
+        <div className={`${styles.chatnavbar_main} chatNavbar-main`}>
+            {friend !== undefined &&
+            <>
+                <div className={styles.chatnavbar_info}>
 
-                        <div className="chatNavbar-info--aroba">
-                            @
-                        </div>
+                    <div className={styles.info_aroba}>
+                        @
+                    </div>
 
-                        <div className="chatNavbar-info--name">
-                            {friend.name}
-                        </div>
+                    <div className={styles.info_name}>
+                        {friend.name}
+                    </div>
 
-                        <div className="chatNavbar-info--status">
-                            <div className={'chatNavbar-info--status--layer1'}>
-                                <div className={`chatNavbar-info--status--layer2 ${friend.status}`}>
-                                </div>
+                    <div className={styles.info_status}>
+                        <div className={styles.status_layer1}>
+                            <div className={`${styles.status_layer2} ${friend.status}`}>
                             </div>
-                            <div className="chatNavbar-info--status-legend">
-                                {friend.status}
-                            </div>
+                        </div>
+                        <div className={styles.status_legend}>
+                            {friend.status}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className={styles.chatnavbar_setting}>
+
+                    <div className={styles.setting_icons}>
+
+                        <div
+                            className={styles.setting_icon}
+                            onClick={initCall}
+                        >
+                            <FontAwesomeIcon icon={faPhoneSquareAlt} />
+                        </div>
+                        <div className={styles.setting_icon}>
+                            <FontAwesomeIcon icon={faVideo} />
+                        </div>
+                        <div className={styles.setting_icon}>
+                            <FontAwesomeIcon icon={faPaperclip} />
+                        </div>
+                        <div className={styles.setting_icon}>
+                            <FontAwesomeIcon icon={faUserPlus}/>
                         </div>
 
                     </div>
 
-                    <div className="chatNavbar-setting">
-
-                        <div className="chatNavbar-setting-icons">
-
-                            <div
-                                className="chatNavbar-setting-icon"
-                                onClick={initCall}
-                            >
-                                <FontAwesomeIcon icon={faPhoneSquareAlt} />
-                            </div>
-                            <div className="chatNavbar-setting-icon">
-                                <FontAwesomeIcon icon={faVideo} />
-                            </div>
-                            <div className="chatNavbar-setting-icon">
-                                <FontAwesomeIcon icon={faPaperclip} />
-                            </div>
-                            <div className="chatNavbar-setting-icon">
-                                <FontAwesomeIcon icon={faUserPlus}/>
-                            </div>
-
-                        </div>
-
-                        <div className="chatNavbar-setting-search">
-                            <input placeholder="Search"
-                                    className="chatNavbar-setting-search-input"
-                                    onFocus={overFocus}
-                                    onBlur={outFocus}
-                            />
-                            <FontAwesomeIcon icon={faSearch} />
-                        </div>
-
-                        <div className="chatNavbar-setting-help">
-                            <div className="chatNavbar-setting-icon">
-                                <FontAwesomeIcon icon={faInbox} />
-                            </div>
-                            <div className="chatNavbar-setting-icon">
-                                <FontAwesomeIcon icon={faQuestionCircle} />
-                            </div>
-                        </div>
-
+                    <div className={styles.setting_search}>
+                        <input
+                            onBlur={outFocus}
+                            onFocus={overFocus}
+                            autoComplete="off"
+                            placeholder="Search"
+                            className={styles.search_input}
+                        />
+                        <FontAwesomeIcon icon={faSearch} />
                     </div>
-                </>
-                }
-            </div>
-            <ChatNavbarCall/>
+
+                    <div className={styles.setting_help}>
+                        <div className={styles.setting_icon}>
+                            <FontAwesomeIcon icon={faInbox} />
+                        </div>
+                        <div className={styles.setting_icon}>
+                            <FontAwesomeIcon icon={faQuestionCircle} />
+                        </div>
+                    </div>
+
+                </div>
+            </>
+            }
         </div>
+        <ChatNavbarCall name={friend.name} code={friend.code} />
+    </div>
   )
 }
 

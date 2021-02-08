@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 // message component
 import Message from './message/Message'
 // css
-import './All.css'
+import styles from './All.module.css'
 import UserList from './userList/UserList'
 
 const All = ({ friends, online }) => {
@@ -24,7 +24,7 @@ const All = ({ friends, online }) => {
   }, [friends, online])
 
   return (
-    <div className="All-friends">
+    <div className={styles.all_friends}>
       {view
         ? <UserList friends={friends} online={online} />
         : <Message online={online}/>

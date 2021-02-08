@@ -4,28 +4,42 @@ import callAction from '../../store/actions/call'
 import socket from '../../services/websocket/socket'
 import CallModal from '../callModal/CallModal'
 
-const WebRTC = ({ user, mute, changeMute, stream, microPhoneIconChange }) => {
+const WebRTC = ({ user, stream, microPhoneIconChange }) => {
   const dispatch = useDispatch()
-  const [rtcPeer, setRtcPeer] = useState('')
   const call = useSelector(state => state.call)
+  const [rtcPeer, setRtcPeer] = useState(false)
+  const [doAnswer, setDoAnswer] = useState(false)
+  const [doOffer, setDoOffer] = useState(false)
+  const [mediaStream, setMedia] = useState(false)
 
   const getUserMedia = async () => {
     try {
-      changeMute(true)
       const stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true } })
+      setMedia(stream)
+      dispatch(callAction({ mute: true }))
       return stream
     } catch (error) {
       const stream = new MediaStream()
-      changeMute(false)
+      dispatch(callAction({ mute: false }))
+      setMedia(stream)
       return stream
     }
   }
 
-  const muteConfig = (able, microEvent, microIcon, peer) => {
-    rtcPeer.getSenders()[0].track.enabled = able
-    microPhoneIconChange(microEvent)
-    changeMute(microIcon)
+  const createPeer = () => {
+    const peerConnection = new RTCPeerConnection({
+      iceServers: [
+        { urls: 'stun:stun.l.google.com:19302' }
+      ]
+    })
+    setRtcPeer(peerConnection)
   }
+
+  // const muteConfig = (able, microEvent, microIcon, peer) => {
+  //   rtcPeer.getSenders()[0].track.enabled = able
+  //   microPhoneIconChange(microEvent)
+  //   changeMute(microIcon)
+  // }
 
   const addTrack = (peerConnection, stream) => {
     stream.getTracks().forEach(track => {
@@ -35,20 +49,22 @@ const WebRTC = ({ user, mute, changeMute, stream, microPhoneIconChange }) => {
   }
 
   const onTrack = (event) => {
+    document.getElementById('localVideo').muted = false
+    document.getElementById('localVideo').autoplay = true
     document.getElementById('localVideo').srcObject = event.streams[0]
   }
 
   useEffect(() => {
-    if (rtcPeer && stream && mute) {
-      muteConfig(false, false, false, rtcPeer)
-    }
-    if (rtcPeer && stream && !mute) {
-      if (rtcPeer.getSenders()[0].track) {
-        muteConfig(true, false, true, rtcPeer)
-      } else {
-        console.log('need authorization again')
-      }
-    }
+    // if (rtcPeer && stream && mute) {
+    //   muteConfig(false, false, false, rtcPeer)
+    // }
+    // if (rtcPeer && stream && !mute) {
+    //   if (rtcPeer.getSenders()[0].track) {
+    //     muteConfig(true, false, true, rtcPeer)
+    //   } else {
+    //     console.log('need authorization again')
+    //   }
+    // }
   }, [stream, rtcPeer])
 
   useEffect(() => {
@@ -64,121 +80,178 @@ const WebRTC = ({ user, mute, changeMute, stream, microPhoneIconChange }) => {
 
   useEffect(() => {
     socket.on('pendingCall', data => {
-      dispatch(callAction({ modal: true, navbar: true, friendInCall: true, friend: data.from, friendId: data.id }))
+      dispatch(callAction({
+        modal: true,
+        navbar: true,
+        friendInCall: true,
+        friend: data.from,
+        friendId: data.id
+      }))
     })
   }, [])
 
+  const finshCall = (peer) => {
+    const senders = peer.getSenders()
+    senders.forEach(sender => {
+      sender.track.stop()
+      peer.removeTrack(sender)
+    })
+    peer.onicecandidate = null
+    peer.restartIce()
+    setRtcPeer(false)
+    setMedia(false)
+    dispatch(callAction({
+      navbar: false,
+      inCall: false,
+      friend: false,
+      friendInCall: false,
+      modal: false,
+      friendId: false,
+      to: false,
+      mute: false,
+      closeCall: false
+    }))
+  }
+
   useEffect(() => {
-    socket.once('acceptedCall', async () => {
-      if (call.friend) {
-        const stream = await getUserMedia()
-        const peerConnection = new RTCPeerConnection({
-          iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' }
-          ]
-        })
+    socket.on('finishCall', () => {
+      if (rtcPeer) {
+        finshCall(rtcPeer)
+      }
+    })
+  }, [rtcPeer])
 
-        // RTC events and tracks
-        addTrack(peerConnection, stream)
-        peerConnection.ontrack = onTrack
-        peerConnection.onicecandidate = function (event) {
-          if (event.candidate) {
-            socket.emit('webrtc_ice_candidate', {
-              to: call.friend,
-              label: event.candidate.sdpMLineIndex,
-              candidate: event.candidate.candidate
-            })
-          }
-        }
+  useEffect(() => {
+    if (rtcPeer && !call.inCall) {
+      finshCall(rtcPeer)
+    }
+  }, [call.inCall, rtcPeer])
 
-        // set local description and create offer
-        const offer = await peerConnection.createOffer()
-        await peerConnection.setLocalDescription(offer)
+  useEffect(() => {
+    if (call.closeCall) {
+      socket.emit('finishCall', call.to)
+    }
+  }, [call.closeCall])
 
-        // send offer
-        socket.emit('callOffer', {
-          to: call.friend,
-          signal: offer,
-          from: `${user.name + '' + user.code}`,
-          id: user._id
-        })
-        dispatch(callAction({ friend: false }))
-
-        socket.on('webrtc_ice_candidate', ({ label, candidate }) => {
-          const cand = new RTCIceCandidate({
-            sdpMLineIndex: label,
-            candidate: candidate
+  useEffect(() => {
+    const offerHandler = async () => {
+      addTrack(rtcPeer, mediaStream)
+      rtcPeer.ontrack = onTrack
+      rtcPeer.onicecandidate = function (event) {
+        if (event.candidate) {
+          socket.emit('webrtc_ice_candidate', {
+            to: call.friend,
+            label: event.candidate.sdpMLineIndex,
+            candidate: event.candidate.candidate
           })
-          peerConnection.addIceCandidate(cand)
-        })
+        }
+      }
 
-        // receive answer and set remote description
-        socket.once('callAnswer', signal => {
-          peerConnection.setRemoteDescription(new RTCSessionDescription(signal))
-          dispatch(callAction({ friendInCall: true }))
-        })
+      // set local description and create offer
+      const offer = await rtcPeer.createOffer()
+      await rtcPeer.setLocalDescription(offer)
 
-        setRtcPeer(peerConnection)
+      // send offer
+      socket.emit('callOffer', {
+        to: call.friend,
+        signal: offer,
+        from: `${user.name + '' + user.code}`,
+        id: user._id
+      })
+      dispatch(callAction({ friend: false }))
+
+      socket.on('webrtc_ice_candidate', ({ label, candidate }) => {
+        const cand = new RTCIceCandidate({
+          sdpMLineIndex: label,
+          candidate: candidate
+        })
+        rtcPeer.addIceCandidate(cand)
+      })
+
+      // receive answer and set remote description
+      socket.once('callAnswer', signal => {
+        rtcPeer.setRemoteDescription(new RTCSessionDescription(signal))
+        dispatch(callAction({ friendInCall: true }))
+      })
+      setDoOffer(false)
+    }
+
+    if (doOffer && rtcPeer && mediaStream) {
+      offerHandler()
+    }
+  }, [doOffer, rtcPeer, mediaStream])
+
+  useEffect(() => {
+    const answerHandler = async () => {
+      addTrack(rtcPeer, mediaStream)
+      rtcPeer.ontrack = onTrack
+      rtcPeer.onicecandidate = function (event) {
+        if (event.candidate) {
+          socket.emit('webrtc_ice_candidate', {
+            to: doAnswer.from,
+            label: event.candidate.sdpMLineIndex,
+            candidate: event.candidate.candidate
+          })
+        }
+      }
+
+      socket.on('webrtc_ice_candidate', ({ label, candidate }) => {
+        const cand = new RTCIceCandidate({
+          sdpMLineIndex: label,
+          candidate: candidate
+        })
+        rtcPeer.addIceCandidate(cand)
+      })
+
+      // set remote and local description and create answer
+      rtcPeer.setRemoteDescription(new RTCSessionDescription(doAnswer.signal))
+      const sessionDescription = await rtcPeer.createAnswer()
+      rtcPeer.setLocalDescription(sessionDescription)
+
+      // send answer
+      await socket.emit('callAnswer', { signal: sessionDescription, to: doAnswer.from })
+    }
+
+    if (doAnswer && rtcPeer && mediaStream) {
+      answerHandler()
+    }
+  }, [doAnswer, rtcPeer, mediaStream])
+
+  useEffect(() => {
+    socket.on('acceptedCall', async () => {
+      if (call.friend) {
+        await getUserMedia()
+        createPeer()
+        setDoOffer(true)
+        setDoOffer(false)
       }
     })
   }, [call.friend])
 
   useEffect(() => {
-    socket.once('recusedCall', () => {
+    socket.on('recusedCall', () => {
       dispatch(callAction({ navbar: false, inCall: false }))
     })
   }, [])
 
   useEffect(() => {
-    socket.once('callOffer', async ({ signal, from }) => {
+    socket.once('callOffer', async (offer) => {
       try {
-        const stream = await getUserMedia()
-        const peerConnection = new RTCPeerConnection({
-          iceServers: [
-            { urls: 'stun:stun.l.google.com:19302' }
-          ]
-        })
-
-        // RTC events and tracks
-        addTrack(peerConnection, stream)
-        peerConnection.ontrack = onTrack
-        peerConnection.onicecandidate = function (event) {
-          if (event.candidate) {
-            socket.emit('webrtc_ice_candidate', {
-              to: from,
-              label: event.candidate.sdpMLineIndex,
-              candidate: event.candidate.candidate
-            })
-          }
-        }
-
-        socket.on('webrtc_ice_candidate', ({ label, candidate }) => {
-          const cand = new RTCIceCandidate({
-            sdpMLineIndex: label,
-            candidate: candidate
-          })
-          peerConnection.addIceCandidate(cand)
-        })
-
-        // set remote and local description and create answer
-        peerConnection.setRemoteDescription(new RTCSessionDescription(signal))
-        const sessionDescription = await peerConnection.createAnswer()
-        peerConnection.setLocalDescription(sessionDescription)
-
-        // send answer
-        await socket.emit('callAnswer', { signal: sessionDescription, to: from })
-        setRtcPeer(peerConnection)
+        await getUserMedia()
+        createPeer()
+        setDoAnswer(offer)
+        setDoAnswer(false)
       } catch (error) {
         console.log(error)
       }
     })
-  }, [])
+  }, [rtcPeer])
 
   return (
     <>
       <video
           id="localVideo"
-          autoPlay
+          muted
           playsInline
           controls={false}
           style={{ width: '0', height: '0' }}

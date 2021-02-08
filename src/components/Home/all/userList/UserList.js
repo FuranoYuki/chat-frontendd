@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 // style
-import './UserList.css'
+import styles from './UserList.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEllipsisV, faCommentAlt } from '@fortawesome/free-solid-svg-icons'
 // router Link
@@ -40,17 +40,17 @@ const UserList = ({ friends, online }) => {
   return (
     <>
     {friends !== undefined &&
-        <div className="all-view">
+        <div className={styles.all_view}>
             {online
-              ? <div className="all-view-header">
-                    ONLINE - {Object.values(friends).filter(data => data.status !== 'Offline').length}
+              ? <div className={styles.view_header}>
+                    ONLINE &#9866; {Object.values(friends).filter(data => data.status !== 'Offline').length}
                 </div>
-              : <div className="all-view-header">
-                    ALL FRIENDS - {friends.length}
+              : <div className={styles.view_header}>
+                    ALL FRIENDS &#9866; {friends.length}
                 </div>
             }
 
-            <div className="all-view-list">
+            <div className={styles.view_list}>
 
             {Object.values(friends)
               .filter(data => online ? data.status !== 'Offline' : data)
@@ -58,74 +58,70 @@ const UserList = ({ friends, online }) => {
 
                 <div
                     key={data._id}
-                    className="all-view-list-field"
+                    className={styles.list_field}
                     onMouseOver={mouseOver}
                     onMouseOut={mouseOut}
                 >
-                    <div className="all-field-west">
+                    <Link to={`/chat/${data._id}`} className={styles.field_west}>
 
-                        <div className="all-field-west-perfil">
-
-                            {data.imagePerfilDefault !== undefined &&
+                        <div className={styles.west_perfil}>
 
                             <img
-                                className="all-field-west-perfil-img"
+                                className={styles.perfil_img}
                                 alt="perfil"
-                                src={`/imagePerfil/${data.imagePerfilDefault}`}
+                                src={data.imagePerfil === undefined ? data.imagePerfilDefault : data.imagePerfil.path}
                             />
-                            }
 
-                            <div className="all-field-west-perfil-on">
-                                <div className={`all-field-west-perfil-on-2 ${data.status}`}>
-                                    <div className={`all-field-west-perfil-on-3 ${data.status}`}>
-
+                            <div className={styles.perfil_on}>
+                                <div className={`${styles.on_2} ${data.status}`}>
+                                    <div className={`${styles.on_3} ${data.status}`}>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
 
-                        <div className="all-field-west-info">
-                            <div className="all-field-west-info-names">
-                                <span className="all-field-west-info-name">
+                        <div className={styles.west_info}>
+                            <div className={styles.info_names}>
+                                <span className={styles.info_name}>
                                     {data.name}
                                 </span>
-                                <span className="all-field-west-info-code">
+                                <span className={styles.info_code}>
                                     {data.code}
                                 </span>
                             </div>
-                            <div className="all-field-west-info-message">
+                            <div className={styles.info_message}>
                                 {data.status}
                             </div>
                         </div>
 
-                    </div>
+                    </Link>
 
-                    <div className="all-field-east">
+                    <div className={styles.field_east}>
                         <Link
                             to={`/chat/${data._id}`}
-                            className="all-field-east-option message"
+                            className={`${styles.east_option} message`}
                         >
                             <FontAwesomeIcon icon={faCommentAlt} />
                         </Link>
                         <div
-                            className="all-field-east-option more"
+                            className={`${styles.east_option} more`}
                             onClick={openField}
                             id={data._id}
                         >
                             <FontAwesomeIcon icon={faEllipsisV} />
 
                             <div
-                                className="all-field-east-more"
+                                className={styles.more}
                             >
 
-                            <div className="all-field-east-more-option start">
+                            <div className={`${styles.more_option} ${styles.start}`}>
                                 Start Voice Call
                             </div>
                             <div
-                                    onClick={removeFriend}
-                                    className="all-field-east-more-option remove"
-                                    id={`${data._id}#${data.name}`}
+                                onClick={removeFriend}
+                                className={`${styles.more_option} ${styles.remove}`}
+                                id={`${data._id}#${data.name + '' + data.code}`}
                             >
                                 Remove Friend
                             </div>

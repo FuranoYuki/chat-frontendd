@@ -1,0 +1,164 @@
+.config_accDel{
+    padding: 30px 40px;
+    display: flex;
+    flex-direction: column;
+    color: rgb(174, 166, 166);
+    padding-bottom: 50px;
+}
+
+.config_accDel > * {
+    margin: 5px 0;
+}
+
+.accDel_header{
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.config_accDel > p{
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.accDel_btns{
+    display: flex;
+}
+
+.btns_Disable{
+    background-color: #f04747;
+    color: white;
+    border: none;
+    margin-right: 10px;
+    padding: 8px 15px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.btns_Disable:hover{
+    cursor: pointer;
+    background-color: #f13636;
+}
+
+.btns_Delete{
+    color: #f04747;
+    border: 1px solid #f04747;
+    background-color: transparent;
+    padding: 8px 15px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.btns_Delete:hover{
+    cursor: pointer;
+}
+
+.configDel_modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.856);
+}
+
+.modal_form{
+    display: flex;
+    flex-direction: column;
+}
+
+.form_body{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(37, 33, 40);
+    padding: 0 20px;
+    border-radius: 5px 5px 0 0;
+}
+
+.body_header{
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    padding: 20px 0;
+}
+
+.body_text{
+    display: flex;
+    word-break: break-all;
+    max-width: 400px;
+    background-color: #e19517;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.body_field{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.body_field > label{
+    padding: 5px 0;
+    color: rgb(174, 166, 166);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.field_input{
+    background-color: rgb(26, 24, 26);
+    border: none;
+    border-radius: 5px;
+    padding: 15px 10px;
+    color: white;
+    font-size: 14px;
+}
+
+.form_buttons{
+    background-color: rgb(26, 24, 26);
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    border-radius: 0 0 5px 5px;
+}
+
+.form_button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+}
+
+.cancel{
+    background-color: transparent;
+}
+
+.cancel:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.delete{
+    background-color: #7289da;
+}
+
+.delete:hover{
+    cursor: pointer;
+    background-color: #647dda ;
+}
+
+.password_incorrect{
+    color: #f04747;
+    font-size: 12px;
+    margin-left: 10px;
+    display: none;
+}

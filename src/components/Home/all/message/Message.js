@@ -3,9 +3,8 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 // action
 import HomeNavbarAction from '../../../../store/actions/HomeNavbarAction'
-
-// css
-import './Message.css'
+// styles
+import styles from './Message.module.css'
 
 const Message = ({ online }) => {
   const dispatch = useDispatch()
@@ -24,30 +23,30 @@ const Message = ({ online }) => {
   }, [online])
 
   return (
-        <div className="pedding-message">
+    <div className="pedding-message">
 
-            <div className="pedding-message-img">
-            </div>
-
-            {online
-              ? <div className="pedding-message-body">
-                  <div className="pedding-message-body-text">
-                    No one&apos;s around to play with Wumpus.
-                  </div>
-                </div>
-              : <div className="pedding-message-body">
-                  <div className="pedding-message-body-text">
-                    Wumpus is waiting on friends. You don&apos;t have to though!
-                  </div>
-                  <button
-                    className="pedding-message-body-btnAdd"
-                    onClick={addFriend}
-                  >
-                    Add Friend
-                  </button>
-                </div>
-            }
+        <div className={`${styles.message_img} pedding-message-img`}>
         </div>
+
+        {online
+          ? <div className={styles.message_body}>
+              <div className={styles.body_text}>
+                No one&apos;s around to play with Wumpus.
+              </div>
+            </div>
+          : <div className={styles.message_body}>
+              <div className={styles.body_text}>
+                Wumpus is waiting on friends. You don&apos;t have to though!
+              </div>
+              <button
+                className={styles.body_btnAdd}
+                onClick={addFriend}
+              >
+                Add Friend
+              </button>
+            </div>
+        }
+    </div>
   )
 }
 

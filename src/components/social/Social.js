@@ -7,9 +7,8 @@ import {
   faPlus,
   faTimes
 } from '@fortawesome/free-solid-svg-icons'
-
 // style
-import './Social.css'
+import styles from './Social.module.css'
 // api
 import api from '../../services/http/api'
 // socket-io
@@ -48,95 +47,91 @@ const Social = () => {
   }, [])
 
   useEffect(() => {
-    socket.on('friendChangeStatus', (data) => {
+    socket.on('friendChangeStatus', () => {
       getChats()
     })
   }, [])
 
   return (
-    <div className="Social">
+    <div className={styles.social}>
 
-        <form className="social__search">
-            <input
-                className="social__search--input"
-                placeholder="Encontre ou comece uma conversa"
-                onChange={searchChange}
-            />
-        </form>
+      <form className={styles.social_form}>
+        <input
+          autoComplete='off'
+          onChange={searchChange}
+          className={styles.form_input}
+          placeholder="Find or start a conversation"
+        />
+      </form>
 
-        <div className="social__body">
+      <div className={styles.social_body}>
 
-            <ul className="social__body--to_do">
+        <ul className={styles.body_list}>
+          <li className={styles.list_li}>
+            <Link className={styles.li_a} to="/">
+                <FontAwesomeIcon icon={faUserFriends}/>
+                <span>Friends</span>
+            </Link>
+          </li>
 
-                <li className="social__body--to_do-li">
-                    <Link className="social__body--to_do-link" to="/">
-                        <FontAwesomeIcon icon={faUserFriends}/>
-                        <span>Amigos</span>
-                    </Link>
-                </li>
+          <li className={styles.list_li}>
+            <Link className={styles.li_a} to="#">
+                <FontAwesomeIcon icon={faPlus}/>
+                <span>Create Group</span>
+            </Link>
+          </li>
+        </ul>
 
-                <li className="social__body--to_do-li">
-                    <Link className="social__body--to_do-link" to="#">
-                        <FontAwesomeIcon icon={faPlus}/>
-                        <span>Create Group</span>
-                    </Link>
-                </li>
+        <ul className={styles.body_list}>
+          <div className={styles.friends_header}>
+              DIRECT MESSAGES
+          </div>
 
-            </ul>
+          {
+            chat.chats !== undefined &&
 
-            <ul className="social__body--friends">
-                <div className="social_body-friends-header">
-                    DIRECT MESSAGES
+            chat.chats.map(data => data.friend
+
+            ).filter(data => (
+              search !== '' ? data.name.includes(search.toLowerCase()) : data
+
+            )).map(friend =>
+              <li
+                key={friend._id}
+                onMouseOver={showDeleteFriend}
+                className={styles.friends_li}
+                onMouseOut={hiddenDeleteFriend}
+              >
+                <Link to={`/chat/${friend._id}`} className={styles.friends_li_a}>
+                  <div className={styles.friends_icon}>
+
+                    <img
+                        className={styles.friends_img}
+                        src={friend.imagePerfil === undefined ? friend.imagePerfilDefault : friend.imagePerfil.path}
+                        alt="perfil"
+                    />
+
+                    <div className={styles.friends_layer1}>
+                      <div className={`${styles.friends_layer2} ${friend.status}`}>
+                        <div className={`${styles.friends_layer3} ${friend.status}`}>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <span>{friend.name}</span>
+                </Link>
+
+                <div className={styles.friend_delete}>
+                  <FontAwesomeIcon icon={faTimes} />
                 </div>
+              </li>
+            )
+          }
 
-                {
-                    chat.chats !== undefined &&
-
-                    chat.chats.map(data => data.friend
-
-                    ).filter(data => (
-                      search !== '' ? data.name.includes(search.toLowerCase()) : data
-
-                    )).map(friend =>
-                        <li
-                            key={friend._id}
-                            onMouseOver={showDeleteFriend}
-                            className="social__body--friends-li"
-                            onMouseOut={hiddenDeleteFriend}
-                        >
-
-                            <Link to={`/chat/${friend._id}`} className="social__body--friends-link">
-                                <div className="social__body-friends-icon">
-
-                                    {friend.imagePerfilDefault !== undefined &&
-                                    <img
-                                        className="social__body-friends-icon-img"
-                                        src={`/imagePerfil/${friend.imagePerfilDefault}`}
-                                        alt="perfil"
-                                    />
-                                    }
-
-                                    <div className='social__body-friends-icon-layer1'>
-                                        <div className={`social__body-friends-icon-layer2 ${friend.status}`}>
-                                            <div className={`social__body-friends-icon-layer3 ${friend.status}`}>
-
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <span>{friend.name}</span>
-                            </Link>
-                            <div className="social__delete-friend">
-                                <FontAwesomeIcon icon={faTimes} />
-                            </div>
-                        </li>
-                    )
-                }
-
-            </ul>
-            <CallController />
-        </div>
+        </ul>
+        <CallController />
+      </div>
 
     </div>
   )

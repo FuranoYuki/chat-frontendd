@@ -1,18 +1,13 @@
 // dependencies
-import React, { useEffect, useState, Suspense, useCallback } from 'react'
+import React, { useEffect, useState, Suspense, useCallback, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faPlusCircle,
   faGift,
   faSmile
 } from '@fortawesome/free-solid-svg-icons'
-
-// components
-import ChatNavbar from '../../components/chatNavbar/chatNavbar'
-import ChatWelcome from '../../components/chatWelcome/ChatWelcome'
-
 // styles
-import './Chat.css'
+import styles from './Chat.module.css'
 // router history
 import { useParams } from 'react-router-dom'
 // api
@@ -21,115 +16,162 @@ import api from '../../services/http/api'
 import socket from '../../services/websocket/socket'
 // form
 import { useForm } from 'react-hook-form'
+// error
+import ErrorHandler from '../../components/errorHandler/ErrorHandler'
+// components
+import ChatNavbar from '../../components/chatNavbar/chatNavbar'
+import ChatWelcome from '../../components/chatWelcome/ChatWelcome'
 
 const ChatMessage = React.lazy(() => import('../../components/chatMessage/ChatMessage'))
 
 const Chat = () => {
-  const [chat, setChat] = useState({})
+  const mounted = useRef(null)
+  const bodyMain = useRef(null)
   const { friend } = useParams()
+  const socketNewMessage = useRef(false)
+  const [chat, setChat] = useState(false)
   const { register, handleSubmit } = useForm()
+
+  const scrollBar = () => {
+    bodyMain.current.scrollTop = bodyMain.current.scrollHeight
+  }
 
   const createChat = useCallback(async () => {
     try {
-      const response = await api.post('/chat/createChat', { friend_id: friend })
-      setChat(response.data)
+      await api.post('/chat/createChat', { friend_id: friend })
+      getChat()
     } catch (error) {
-      console.log(error)
+      ErrorHandler(error)
     }
   }, [friend])
 
   const getChat = useCallback(async () => {
     try {
-      const response = await api.post('/chat/getChat', { friend_id: friend })
-      setChat(response.data)
+      const res = await api.post('/chat/getChat', { friend_id: friend })
+      setChat(res.data)
       scrollBar()
     } catch (error) {
       if (error.response.data === "chat doesn't exist") {
         createChat()
+      } else {
+        ErrorHandler(error)
       }
     }
   }, [createChat, friend])
 
+  const newMessage = useCallback(async () => {
+    socket.on('newMessage', async () => {
+      if (mounted.current) {
+        try {
+          const res = await api.post('/chat/getLastMessage', { chat_id: chat._id })
+          const updatedChat = chat
+          updatedChat.messages.push(res.data)
+          setChat(Object.assign({}, updatedChat))
+          scrollBar()
+        } catch (error) {
+          ErrorHandler(error)
+        }
+      }
+    })
+  }, [chat, mounted])
+
   const sendMessage = useCallback(async (data) => {
-    try {
-      await api.post('/chat/sendMessage', {
-        chat_id: chat._id,
-        text: data.text,
-        user: chat.friend._id,
-        friend: chat.user._id
-      })
+    if (data.text.length > 0) {
+      try {
+        const res = await api.post('/chat/sendMessage', {
+          chat_id: chat._id,
+          text: data.text,
+          user: chat.friend._id,
+          friend: chat.user._id
+        })
+        const newMessages = chat
+        newMessages.messages.push(res.data)
+        setChat(Object.assign({}, newMessages))
+        document.querySelector('.input_message').value = ''
+        socket.emit('sendMessage', `${chat.friend.name + '' + chat.friend.code}`)
+        scrollBar()
+      } catch (error) {
+        ErrorHandler(error)
+      }
+    }
+  }, [chat, scrollBar])
+
+  useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  }, [])
+
+  useEffect(() => {
+    if (mounted.current) {
+      if (chat && !socketNewMessage.current) {
+        socketNewMessage.current = true
+        newMessage()
+      }
+    }
+  }, [chat, socketNewMessage])
+
+  useEffect(() => {
+    if (mounted.current) {
       getChat()
-      document.querySelector('.chat-body-input-text').value = ''
-      socket.emit('sendMessage', `${chat.friend.name + '' + chat.friend.code}`)
-    } catch (error) {
-      console.log(error)
+    }
+  }, [friend])
+
+  useEffect(() => {
+    if (mounted.current) {
+      if (chat.friend) {
+        window.document.title = `@${chat.friend.name}`
+      }
     }
   }, [chat])
 
-  useEffect(() => {
-    getChat()
-    setTimeout(() => {
-      scrollBar()
-    }, 500)
-  }, [getChat])
-
-  useEffect(() => {
-    socket.on('newMessage', () => {
-      getChat()
-    })
-  }, [getChat])
-
-  const scrollBar = () => {
-    // const objDiv = document.querySelector('.chat-body-main')
-    // objDiv.scrollTop = objDiv.scrollHeight
-  }
-
-  // jsx
   return (
-    <div className="Chat">
-        {
-          chat.friend &&
+    <div className={styles.chat}>
+      {chat.friend &&
 
-          <div className="chat-body">
+        <div className={styles.chat_body}>
 
-              <ChatNavbar friend={chat.friend}/>
-              <div className="chat-body-main">
-                  <ChatWelcome friend={chat.friend} />
-                  <Suspense fallback={<div>loading...</div>}>
-                      <ChatMessage chat={chat} />
-                  </Suspense>
-              </div>
+            <ChatNavbar friend={chat.friend} />
+            <div className={styles.body_main} ref={bodyMain}>
+                <ChatWelcome friend={chat.friend} />
+                <Suspense fallback={<div>loading...</div>}>
+                    <ChatMessage chat={chat} scroll={scrollBar}/>
+                </Suspense>
+            </div>
 
-              <div className="chat-body-input">
+            <div className={styles.body_input}>
 
-                  <div className="chat-body-input-margin">
-                      <form
-                        onSubmit={handleSubmit(sendMessage)}
-                        className="chat-body-input-icon"
-                      >
-                          <FontAwesomeIcon icon={faPlusCircle} />
-                          <input
-                              className="chat-body-input-text"
-                              name="text"
-                              placeholder={`Message @${chat.friend.name}`}
-                              ref={register}
-                          />
-                          <button style={{ display: 'none' }}></button>
-                      </form>
+              <div className={styles.input_margin}>
+                  <form
+                    onSubmit={handleSubmit(sendMessage)}
+                    className={styles.input_icon}
+                  >
+                      <FontAwesomeIcon icon={faPlusCircle} />
+                      <input
+                        name="text"
+                        ref={register}
+                        autoComplete='off'
+                        className={`${styles.input_text} input_message`}
+                        placeholder={`Message @${chat.friend.name}`}
 
-                      <div className="chat-body-input-info">
-                          <span className="chat-body-input-info-icon">
-                              <FontAwesomeIcon icon={faGift} />
-                          </span>
-                          <span className="chat-body-input-info-icon">
-                              <FontAwesomeIcon icon={faSmile} />
-                          </span>
-                      </div>
+                      />
+                      <button style={{ display: 'none' }}></button>
+                  </form>
+
+                  <div className={styles.input_info}>
+                      <span className="chat-body-input-info-icon">
+                          <FontAwesomeIcon icon={faGift} />
+                      </span>
+                      <span className="chat-body-input-info-icon">
+                          <FontAwesomeIcon icon={faSmile} />
+                      </span>
                   </div>
-
               </div>
-          </div>
-        }
+
+            </div>
+        </div>
+      }
     </div>
   )
 }

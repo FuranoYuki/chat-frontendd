@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPhoneSquareAlt, faTimes } from '@fortawesome/free-solid-svg-icons'
 // style
-import './CallModal.css'
+import styles from './CallModal.module.css'
 // router
 import { useHistory } from 'react-router-dom'
 // redux
@@ -12,12 +12,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import callAction from '../../store/actions/call'
 import socket from '../../services/websocket/socket'
 
-const CallModal = ({ friendId }) => {
+const CallModal = () => {
   const history = useHistory()
-  const dispatch = useDispatch()
-  const call = useSelector(state => state.call)
   const callModal = useRef(null)
+  const dispatch = useDispatch()
   const callModalText = useRef(null)
+  const call = useSelector(state => state.call)
 
   const recuseCall = (to) => {
     socket.emit('recusedCall', to)
@@ -42,36 +42,36 @@ const CallModal = ({ friendId }) => {
   }, [call.modal])
 
   return (
-    <div ref={callModal} className="CallModal">
-        <div className="callmodal-main">
-            <img
-                className="callmodal-main-img"
-                src="https://discord.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
-                alt="perfil"
-            />
-            <div className="callmodal-main-text">
-                <div className="callmodal-main-text-header">
-                    Antonio
-                </div>
-                <div ref={callModalText} className="callmodal-main-text-body">
-                    Incoming call ...
-                </div>
-            </div>
-            <div className="callmodal-main-buttons">
-                <div
-                    className="callmodal-main-button decline"
-                    onClick={() => recuseCall(call.friend)}
-                >
-                    <FontAwesomeIcon icon={faTimes} />
-                </div>
-                <div
-                    onClick={() => acceptCall(call.friend, call.friendId)}
-                    className="callmodal-main-button accept"
-                >
-                    <FontAwesomeIcon icon={faPhoneSquareAlt} />
-                </div>
-            </div>
+    <div ref={callModal} className={styles.callmodal}>
+      <div className={styles.callmodal_main}>
+        <img
+          className={styles.main_img}
+          src="https://discord.com/assets/6debd47ed13483642cf09e832ed0bc1b.png"
+          alt="perfil"
+        />
+        <div className={styles.main_text}>
+          <div className={styles.text_header}>
+            Antonio
+          </div>
+          <div ref={callModalText} className={styles.text_body}>
+            Incoming call ...
+          </div>
         </div>
+        <div className={styles.main_buttons}>
+          <div
+            className={`${styles.main_buttons} ${styles.decline}`}
+            onClick={() => recuseCall(call.friend)}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </div>
+          <div
+            onClick={() => acceptCall(call.friend, call.friendId)}
+            className={`${styles.main_buttons} ${styles.accept}`}
+          >
+            <FontAwesomeIcon icon={faPhoneSquareAlt} />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faMicrophone,
@@ -11,57 +12,51 @@ import api from '../../services/http/api'
 // socket-io
 import socket from '../../services/websocket/socket'
 // style
-import './CallController.css'
+import styles from './CallController.module.css'
 // Errors handler
 import ErrorHandler from '../errorHandler/ErrorHandler'
 // component
 import CountConfig from '../CountConfig/CountConfig'
 import WebRTC from '../webRTC/WebRTC'
+// action
+import userUpdateAction from '../../store/actions/userUpdate'
 
 const CallController = () => {
+  const dispatch = useDispatch()
+  const statusList = useRef(null)
+  const _isMounted = useRef(false)
   const microphoneObj = useRef(null)
-  const [user, setUser] = useState('')
-  const [mute, setMute] = useState(false)
+  const [user, setUser] = useState(false)
   const [stream, setStream] = useState(false)
-
-  const changeMute = (state) => {
-    setMute(state)
-  }
+  const mute = useSelector(state => state.call.mute)
+  const userUpdate = useSelector(state => state.userUpdate)
 
   const microPhoneIconChange = useCallback((boon = true) => {
     setStream(boon)
-  }, [changeMute, stream, mute])
+  }, [stream])
 
-  useEffect(() => {
-    const obj = document.querySelector('#microphoneON')
-    if (obj) {
-      microphoneObj.current.id = 'microphoneOFF'
-    } else {
-      microphoneObj.current.id = 'microphoneON'
-    }
-  }, [mute])
-
-  const changeStatus = () => {
-    const obj = document.querySelector('.social__settings--info--status-list')
-    obj.style.display === 'flex' ? obj.style.display = 'none' : obj.style.display = 'flex'
-  }
-
-  const statusChange = async (event) => {
+  const statusChange = useCallback(async (event) => {
     if (user.status !== event.currentTarget.id) {
       try {
         const res = await api.post('/user/changeStatus', { status: event.currentTarget.id })
-        setUser(res.data)
-        socket.emit('changeStatus', ({ friends: res.data.friends }))
+        setUser({ ...user, status: res.data.status })
+        socket.emit('changeStatus', ({ friends: user.friends }))
       } catch (error) {
         ErrorHandler(error)
       }
     }
+  }, [user])
+
+  const changeStatus = () => {
+    statusList.current.style.display === 'flex'
+      ? statusList.current.style.display = 'none'
+      : statusList.current.style.display = 'flex'
   }
 
   const getUser = async () => {
     try {
-      const response = await api.post('/user/getUserBasicInfo')
-      setUser(response.data)
+      const res = await api.post('/user/getUserBasicInfo')
+      setUser(res.data)
     } catch (error) {
       ErrorHandler(error)
     }
@@ -72,7 +67,29 @@ const CallController = () => {
   }
 
   useEffect(() => {
-    if (user._id !== undefined) {
+    const obj = document.querySelector('#microphoneON')
+    if (obj) {
+      microphoneObj.current.id = 'microphoneOFF'
+    } else {
+      microphoneObj.current.id = 'microphoneON'
+    }
+  }, [mute])
+
+  useEffect(() => {
+  }, [user.imagePerfilDefault])
+
+  useEffect(() => {
+    _isMounted.current = true
+    return () => {
+      _isMounted.current = false
+    }
+  })
+
+  useEffect(() => {
+    if (user) {
+      if (!socket.connected) {
+        socket.connect()
+      }
       socket.emit('userRoom', `${user.name + '' + user.code}`)
     }
   }, [user])
@@ -81,165 +98,169 @@ const CallController = () => {
     getUser()
   }, [])
 
+  useEffect(() => {
+    if (userUpdate.image || userUpdate.name) {
+      dispatch(userUpdateAction({ image: false, name: false }))
+      getUser()
+    }
+  }, [userUpdate.image, userUpdate.name])
+
   return (
       <>
-        <div className="social__settings">
+        <div className={styles.social_settings}>
+          {user &&
+            <div className={styles.settings_info}>
+              <div
+                className={styles.info_status}
+                onClick={changeStatus}
+              >
+                <img
+                  src={user.imagePerfil === undefined ? user.imagePerfilDefault : user.imagePerfil.path}
+                  alt="perfil"
+                  className={styles.status_img}
+                />
 
-            <div className="social__settings--info">
+                <div className={styles.status_layer1}>
+                  <div className={`${styles.status_layer2} ${user.status}`}>
+                    <div className={`${styles.status_layer3} ${user.status}`}>
+                    </div>
+                  </div>
+                </div>
 
                 <div
-                    className="social__settings--info--status"
-                    onClick={changeStatus}
+                  className={styles.status_list}
+                  ref={statusList}
                 >
 
-                    {user.imagePerfilDefault !== undefined &&
-                    <img
-                        src={`/imagePerfil/${user.imagePerfilDefault}`}
-                        alt="perfil"
-                        className="social__settings--info--status-img"
-                    />
-                    }
-
-                    <div className="social__settings--info--status-layer1">
-                        <div className={`social__settings--info--status-layer2 ${user.status}`}>
-                            <div className={`social__settings--info--status-layer2 ${user.status}`}>
-
-                            </div>
-                        </div>
+                  <div
+                    className={styles.list_li}
+                    onClick={statusChange}
+                    id="Online"
+                  >
+                    <div className={`${styles.li_icon} Online`}>
+                      <div className={styles.li_icon_2}>
+                      </div>
                     </div>
-
-                    <div
-                        className="social__settings--info--status-list"
-                    >
-
-                        <div
-                            className="social__settings-info--status-list-li online"
-                            onClick={statusChange}
-                            id="Online"
-                        >
-                            <div className="social__settings-info-li-icon">
-                                <div className="social__settings-info-li-icon-2 Online">
-
-                                </div>
-                            </div>
-                            <div className="social__settings-info-li-text">
-                                Online
-                            </div>
-                        </div>
-
-                        <div
-                            className="social__settings-info--status-list-li"
-                            onClick={statusChange}
-                            id="Idle"
-                        >
-                            <div className="social__settings-info-li-icon">
-                                <div className="social__settings-info-li-icon-2 Idle">
-
-                                </div>
-                            </div>
-                            <div className="social__settings-info-li-text">
-                                Idle
-                            </div>
-                        </div>
-
-                        <div
-                            className="social__settings-info--status-list-li"
-                            onClick={statusChange}
-                            id="DND"
-                        >
-                            <div className="social__settings-info-li-icon">
-                                <div className="social__settings-info-li-icon-2 DND">
-
-                                </div>
-                            </div>
-                            <div className="social__settings-info-li-text">
-                                <div className="social__settings-info-li-text-header">
-                                    Do Not Disturb
-                                </div>
-                                <div className="social__settings-info-li-text-body">
-                                    You will not appear online, but will have full access to all of Discord.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            className="social__settings-info--status-list-li"
-                            onClick={statusChange}
-                            id="Offline"
-                        >
-                            <div className="social__settings-info-li-icon">
-                                <div className="social__settings-info-li-icon-2 Invisible">
-
-                                </div>
-                            </div>
-                            <div className="social__settings-info-li-text">
-                                <div className="social__settings-info-li-text-header">
-                                    Invisible
-                                </div>
-                                <div className="social__settings-info-li-text-body">
-                                    You will not appear online, but will have full access to all of Discord.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="social__settings-info--status-list-li custom">
-                            <div className="social__settings-info-li-icon">
-
-                            </div>
-                            <div className="social__settings-info-li-text">
-                                Set a custom status
-                            </div>
-                        </div>
-
+                    <div className={styles.li_text}>
+                        Online
                     </div>
+                  </div>
+
+                  <div
+                    className={styles.list_li}
+                    onClick={statusChange}
+                    id="Idle"
+                  >
+                    <div className={`${styles.li_icon} Idle`}>
+                      <div className={styles.li_icon_2}>
+                      </div>
+                    </div>
+                    <div className={styles.li_text}>
+                        Idle
+                    </div>
+                  </div>
+
+                  <div
+                    className={styles.list_li}
+                    onClick={statusChange}
+                    id="DND"
+                  >
+                    <div className={`${styles.li_icon} DND`}>
+                      <div className={styles.li_icon_2}>
+                      </div>
+                    </div>
+                    <div className={styles.li_text}>
+                      <div className="social__settings-info-li-text-header">
+                        Do Not Disturb
+                      </div>
+                      <div className={styles.text_body}>
+                        You will not appear online, but will have full access to all of Discord.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className={styles.list_li}
+                    onClick={statusChange}
+                    id="Offline"
+                  >
+                    <div className={`${styles.li_icon} Invisible`}>
+                      <div className={styles.li_icon_2}>
+                      </div>
+                    </div>
+                    <div className={styles.li_text}>
+                      <div className="social__settings-info-li-text-header">
+                        Invisible
+                      </div>
+                      <div className={styles.text_body}>
+                        You will not appear online, but will have full access to all of Discord.
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={styles.list_li}>
+                    <div className={styles.li_icon}>
+                    </div>
+                    <div className={styles.li_text}>
+                      Set a custom status
+                    </div>
+                  </div>
 
                 </div>
+              </div>
 
-                <div className="social__settings--info--user">
-                    <span className="social__settings--info--user-name">
-                        {user.name}
-                    </span>
-                    <span className="social__settings--info--user-code">
-                        {user.code}
-                    </span>
-                </div>
+              <div className={styles.info_user}>
+                <span className={styles.user_name}>
+                  {user.name}
+                </span>
+                <span className="social__settings--info--user-code">
+                  {user.code}
+                </span>
+              </div>
 
             </div>
+          }
 
-            <ul className="social__settings--actions">
+          <ul className={styles.settings_actions}>
 
-                {mute
-                  ? <li
-                    ref={microphoneObj}
-                    className="social__settings--actions-li social-microphone"
-                    id="microphoneON"
-                    onClick={microPhoneIconChange}
-                >
-                    <FontAwesomeIcon icon={faMicrophone} />
-                </li>
-                  : <li
-                    ref={microphoneObj}
-                    className="social__settings--actions-li social-microphone"
-                    id="microphoneOFF"
-                    onClick={microPhoneIconChange}
-                >
-                    <FontAwesomeIcon icon={faMicrophoneAltSlash} />
-                </li>
-                }
+            {mute
+              ? <li
+                ref={microphoneObj}
+                className={`${styles.actions_li} social-microphone`}
+                id="microphoneON"
+                onClick={microPhoneIconChange}
+              >
+                <FontAwesomeIcon icon={faMicrophone} />
+              </li>
+              : <li
+                ref={microphoneObj}
+                className={`${styles.actions_li} social-microphone`}
+                id="microphoneOFF"
+                onClick={microPhoneIconChange}
+              >
+                <FontAwesomeIcon icon={faMicrophoneAltSlash} />
+              </li>
+            }
 
-                <li className="social__settings--actions-li social-headphones">
-                    <FontAwesomeIcon icon={faHeadphones} />
-                </li>
-                <li
-                    className="social__settings--actions-li social-cog"
-                    onClick={openConfig}
-                >
-                    <FontAwesomeIcon icon={faCog} />
-                </li>
-            </ul>
+            <li className={`${styles.actions_li} social-headphones`}>
+              <FontAwesomeIcon icon={faHeadphones} />
+            </li>
+            <li
+              className={`${styles.actions_li} social-cog`}
+              onClick={openConfig}
+            >
+              <FontAwesomeIcon icon={faCog} />
+            </li>
+          </ul>
         </div>
         <CountConfig/>
-        <WebRTC user={user} mute={mute} changeMute={changeMute} stream={stream} microPhoneIconChange={microPhoneIconChange}/>
+
+        {_isMounted &&
+          <WebRTC
+            user={user} stream={stream}
+            microPhoneIconChange={microPhoneIconChange}
+          />
+        }
     </>
   )
 }
