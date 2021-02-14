@@ -43,11 +43,14 @@ const Login = () => {
   }
 
   const handleError = (error) => {
-    if (error.response.data.indexOf('email') !== -1) {
+    console.log(error.response.data)
+    if (error.response.data === "this e-mail isn't register in our database") {
       emailWarning.current.style.display = 'flex'
+      passwordWarning.current.style.display = 'none'
     }
-    if (error.response.data.indexOf('password') !== -1) {
+    if (error.response.data === 'this password is wrong') {
       passwordWarning.current.style.display = 'flex'
+      emailWarning.current.style.display = 'none'
     }
   }
 
@@ -61,6 +64,7 @@ const Login = () => {
     <div className={styles.register}>
         <form onSubmit={handleSubmit(handleLoginForm)} className={styles.register_form}>
             <img className={styles.form_icon} src={icon} alt="funny brand" />
+            <div className={styles.form_header}>Login</div>
             <div className={styles.form_inputs}>
                 <div className={styles.input_info}>
                     <span>Email</span>

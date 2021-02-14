@@ -23,37 +23,50 @@
     background-color: rgb(26, 24, 26);
     border: 1px solid rgb(11, 10, 10);
     border-radius: 10px;
-    padding: 10px 20px;
+    padding: 40px 20px;
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+}
+
+.addfriend_form > * {
+    margin: 10px 0;
 }
 
 .form_input{
     background-color: transparent;
     border: none;
-    padding: 5px 0;
+    padding: 10px 5px;
     color: rgb(187, 186, 186);
     font-size: 16px;
     width: auto;
+    border: .5px solid #7289da;
+    border-radius: 5px;
 }
 
 .inputCode{
     background-color: transparent;
     border: none;
-    padding: 5px 0;
+    padding: 10px 5px;
     color: rgb(187, 186, 186);
     font-size: 16px;
     display: flex;
     flex-grow: 1;
+    border: .5px solid #7289da;
+    border-radius: 5px;
+}
+
+.inputCode:focus{
+    outline: none;
 }
 
 .form_input:focus{
-    border: transparent;
+    outline: none;
 }
 
 .form_button{
     background-color: rgb(105, 30, 181);
-    padding: 10px;
+    padding: 15px;
     border: none;
     border-radius: 5px;
     color: white;

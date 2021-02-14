@@ -61,17 +61,20 @@ const AddFriend = () => {
         <form onSubmit={handleSubmit(addFriendSubmit)} className={styles.addfriend_form}>
 
             <input
-              placeholder="Enter a username"
+              placeholder="type a username"
               className={`${styles.form_input} addFriend__form--input`}
               name="user"
               ref={register}
               onChange={abledButton}
+              autoComplete="off"
             />
             <input
-              placeholder="#0000"
+              placeholder="type a code, ex: @9090"
               className={`${styles.inputCode} addFriend__inputCode`}
               name="code"
               ref={register}
+              maxLength={5}
+              autoComplete="off"
             />
 
             <button disabled={true} className={styles.form_button} ref={button}>
