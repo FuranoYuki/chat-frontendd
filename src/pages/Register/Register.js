@@ -43,16 +43,19 @@ const Register = () => {
   const emailExist = () => {
     errorEmail.current.innerHTML = 'this e-mail is already in use'
     errorEmail.current.style.display = 'flex'
+    errorPassword.current.style.display = 'none'
   }
 
   const emailEmpty = () => {
     errorEmail.current.innerHTML = 'empty input'
     errorEmail.current.style.display = 'flex'
+    errorPassword.current.style.display = 'none'
   }
 
   const passwordError = () => {
     errorPassword.current.innerHTML = 'password need to have more than 6 characters !'
     errorPassword.current.style.display = 'flex'
+    errorEmail.current.style.display = 'none'
   }
 
   useEffect(() => {

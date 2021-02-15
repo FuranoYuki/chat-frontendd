@@ -15,6 +15,8 @@ import socket from '../../services/websocket/socket'
 import ErrorHandler from '../../components/errorHandler/ErrorHandler'
 // action
 import notificationAction from '../../store/actions/notification'
+import Chat from '../Chat/Chat'
+import { useParams } from 'react-router-dom'
 
 const Home = () => {
   const moutend = useRef(false)
@@ -23,6 +25,7 @@ const Home = () => {
   const [pending, setPending] = useState('')
   const state = useSelector(state => state.HomeNavbarReducer)
   const notification = useSelector(state => state.notification)
+  const { friend } = useParams()
 
   const dicideView = (data) => {
     switch (data) {
@@ -106,12 +109,17 @@ const Home = () => {
   }, [notification.pending])
 
   return (
-    <div className={styles.home}>
-      <div className={styles.home_body}>
-        <HomeNavbar pending={pending}/>
-        {dicideView(state)}
-      </div>
-    </div>
+    <>
+    {friend === undefined
+      ? <div className={styles.home}>
+          <div className={styles.home_body}>
+            <HomeNavbar pending={pending}/>
+            {dicideView(state)}
+          </div>
+        </div>
+      : <Chat/>
+    }
+    </>
   )
 }
 

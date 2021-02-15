@@ -15,7 +15,6 @@ import Social from './components/social/Social'
 const Home = lazy(() => import('./pages/Home/Home'))
 const Login = lazy(() => import('./pages/Login/Login'))
 const Register = lazy(() => import('./pages/Register/Register'))
-const Chat = lazy(() => import('./pages/Chat/Chat'))
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
     <Route
@@ -41,22 +40,13 @@ const Routes = () => (
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
 
-            <PrivateRoute exact path="/" component={() => (
+            <PrivateRoute exact path={['/', '/chat/:friend']} component={() => (
               <>
                 <Group/>
                 <Social/>
                 <Home/>
               </>
             )} />
-
-            <PrivateRoute exact path={['/chat/:friend/:inCall', '/chat/:friend']} component={() => (
-              <>
-                <Group/>
-                <Social/>
-                <Chat/>
-              </>
-            )} />
-
             <Route path='*' component={NotFoundPage} />
           </Switch>
         </Suspense>
