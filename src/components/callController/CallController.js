@@ -76,14 +76,27 @@ const CallController = () => {
   }, [mute])
 
   useEffect(() => {
-  }, [user.imagePerfilDefault])
-
-  useEffect(() => {
     _isMounted.current = true
     return () => {
       _isMounted.current = false
     }
   })
+
+  useEffect(() => {
+    getUser()
+    // api.post('/user/userOnline').then(() => {
+    //   getUser()
+    //   setTimeout(() => {
+    //     socket.emit('changeStatus', ({ friends: user.friends }))
+    //   }, 3000)
+    // })
+
+    return () => {
+      api.post('/user/userOffline').then(() => {
+        socket.emit('changeStatus', ({ friends: user.friends }))
+      })
+    }
+  }, [])
 
   useEffect(() => {
     if (user) {
@@ -95,13 +108,10 @@ const CallController = () => {
   }, [user])
 
   useEffect(() => {
-    getUser()
-  }, [])
-
-  useEffect(() => {
     if (userUpdate.image || userUpdate.name) {
       dispatch(userUpdateAction({ image: false, name: false }))
       getUser()
+      socket.emit('changeStatus', ({ friends: user.friends }))
     }
   }, [userUpdate.image, userUpdate.name])
 

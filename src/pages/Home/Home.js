@@ -1,12 +1,14 @@
 // dependencies
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 // components
 import styles from './Home.module.css'
 import HomeNavbar from '../../components/Home/homeNavbar/homeNavbar'
 import AddFriend from '../../components/Home/addFriend/AddFriend'
 import Pending from '../../components/Home/pedding/Pending'
 import All from '../../components/Home/all/All'
+import Chat from '../Chat/Chat'
 // api http
 import api from '../../services/http/api'
 // api websocket
@@ -15,17 +17,14 @@ import socket from '../../services/websocket/socket'
 import ErrorHandler from '../../components/errorHandler/ErrorHandler'
 // action
 import notificationAction from '../../store/actions/notification'
-import Chat from '../Chat/Chat'
-import { useParams } from 'react-router-dom'
 
 const Home = () => {
-  const moutend = useRef(false)
   const dispatch = useDispatch()
+  const { friend } = useParams()
   const [friends, setFriends] = useState('')
   const [pending, setPending] = useState('')
   const state = useSelector(state => state.HomeNavbarReducer)
   const notification = useSelector(state => state.notification)
-  const { friend } = useParams()
 
   const dicideView = (data) => {
     switch (data) {
@@ -61,42 +60,31 @@ const Home = () => {
   }
 
   useEffect(() => {
-    moutend.current = true
-    return () => {
-      moutend.current = false
-    }
+    getFriend()
+    getPending()
+    window.document.title = 'Discord'
   }, [])
 
   useEffect(() => {
-    if (moutend.current) {
-      getFriend()
-      getPending()
-      window.document.title = 'Discord'
-    }
-  }, [])
-
-  useEffect(() => {
-    if (notification.removeFriend && moutend.current) {
+    if (notification.removeFriend) {
       getFriend()
       dispatch(notificationAction({ removeFriend: false }))
     }
   }, [notification.removeFriend])
 
   useEffect(() => {
-    if (moutend.current) {
-      socket.on('friendRemoved', () => { getFriend() })
-      socket.on('pendingRequest', () => { getPending() })
-      socket.on('friendChangeStatus', () => { getFriend() })
-      socket.on('pendingNotificationRecuse', () => { getPending() })
-      socket.on('pendingNotificationAccept', () => {
-        getPending()
-        getFriend()
-      })
-    }
+    socket.on('friendRemoved', () => { getFriend() })
+    socket.on('pendingRequest', () => { getPending() })
+    socket.on('friendChangeStatus', () => { getFriend() })
+    socket.on('pendingNotificationRecuse', () => { getPending() })
+    socket.on('pendingNotificationAccept', () => {
+      getPending()
+      getFriend()
+    })
   }, [])
 
   useEffect(() => {
-    if (notification.pending && moutend.current) {
+    if (notification.pending) {
       if (notification.pendingAccept) {
         dispatch(notificationAction({ pending: false, pendingAccept: false }))
         getFriend()

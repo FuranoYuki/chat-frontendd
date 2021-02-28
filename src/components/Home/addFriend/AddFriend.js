@@ -61,7 +61,7 @@ const AddFriend = () => {
         <form onSubmit={handleSubmit(addFriendSubmit)} className={styles.addfriend_form}>
 
             <input
-              placeholder="type a username"
+              placeholder="username"
               className={`${styles.form_input} addFriend__form--input`}
               name="user"
               ref={register}
@@ -69,7 +69,7 @@ const AddFriend = () => {
               autoComplete="off"
             />
             <input
-              placeholder="type a code, ex: @9090"
+              placeholder="discord tag, default @9090"
               className={`${styles.inputCode} addFriend__inputCode`}
               name="code"
               ref={register}
